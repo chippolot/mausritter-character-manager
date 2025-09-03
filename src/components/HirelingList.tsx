@@ -1,0 +1,219 @@
+import React, { useState } from 'react';
+import { Character, Hireling } from '../stores/characterStore-simple';
+import { createNewHireling } from '../stores/characterStore-simple';
+
+interface HirelingListProps {
+  character: Character;
+  onUpdate: (updates: Partial<Character>) => void;
+}
+
+export const HirelingList: React.FC<HirelingListProps> = ({
+  character,
+  onUpdate,
+}) => {
+  const [editingHireling, setEditingHireling] = useState<string | null>(null);
+
+  const addHireling = () => {
+    const newHireling = createNewHireling();
+    onUpdate({ 
+      hirelings: [...character.hirelings, newHireling] 
+    });
+    setEditingHireling(newHireling.id);
+  };
+
+  const updateHireling = (id: string, updates: Partial<Hireling>) => {
+    const updatedHirelings = character.hirelings.map(hireling =>
+      hireling.id === id ? { ...hireling, ...updates } : hireling
+    );
+    onUpdate({ hirelings: updatedHirelings });
+  };
+
+  const removeHireling = (id: string) => {
+    const updatedHirelings = character.hirelings.filter(h => h.id !== id);
+    onUpdate({ hirelings: updatedHirelings });
+  };
+
+  const HirelingCard: React.FC<{ hireling: Hireling }> = ({ hireling }) => {
+    const isEditing = editingHireling === hireling.id;
+
+    const handleInputChange = (field: keyof Hireling) => (
+      e: React.ChangeEvent<HTMLInputElement>
+    ) => {
+      const value = ['strength', 'dexterity', 'will', 'hitPoints', 'maxHitPoints', 'cost'].includes(field)
+        ? parseInt(e.target.value) || 0
+        : e.target.value;
+      updateHireling(hireling.id, { [field]: value });
+    };
+
+    return (
+      <div className="border border-amber-800 rounded p-4 bg-white bg-opacity-50">
+        <div className="flex justify-between items-start mb-3">
+          <h4 className="text-amber-800 text-amber-800">
+            {isEditing ? (
+              <input
+                type="text"
+                value={hireling.name}
+                onChange={handleInputChange('name')}
+                className="input-field text-amber-800"
+                placeholder="Hireling name"
+                autoFocus
+              />
+            ) : (
+              hireling.name || 'Unnamed Hireling'
+            )}
+          </h4>
+          <div className="flex space-x-1">
+            <button
+              onClick={() => setEditingHireling(isEditing ? null : hireling.id)}
+              className="text-amber-800 hover:text-yellow-600 text-sm"
+            >
+              {isEditing ? 'Save' : 'Edit'}
+            </button>
+            <button
+              onClick={() => removeHireling(hireling.id)}
+              className="text-amber-800 hover:text-red-600 text-sm"
+            >
+              Remove
+            </button>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-4 gap-2 mb-3">
+          <div>
+            <label className="text-xs text-amber-800 block">STR</label>
+            {isEditing ? (
+              <input
+                type="number"
+                value={hireling.strength}
+                onChange={handleInputChange('strength')}
+                className="input-field w-full text-sm"
+                min="1"
+                max="20"
+              />
+            ) : (
+              <div className="text-center font-bold">{hireling.strength}</div>
+            )}
+          </div>
+          <div>
+            <label className="text-xs text-amber-800 block">DEX</label>
+            {isEditing ? (
+              <input
+                type="number"
+                value={hireling.dexterity}
+                onChange={handleInputChange('dexterity')}
+                className="input-field w-full text-sm"
+                min="1"
+                max="20"
+              />
+            ) : (
+              <div className="text-center font-bold">{hireling.dexterity}</div>
+            )}
+          </div>
+          <div>
+            <label className="text-xs text-amber-800 block">WIL</label>
+            {isEditing ? (
+              <input
+                type="number"
+                value={hireling.will}
+                onChange={handleInputChange('will')}
+                className="input-field w-full text-sm"
+                min="1"
+                max="20"
+              />
+            ) : (
+              <div className="text-center font-bold">{hireling.will}</div>
+            )}
+          </div>
+          <div>
+            <label className="text-xs text-amber-800 block">Cost</label>
+            {isEditing ? (
+              <input
+                type="number"
+                value={hireling.cost}
+                onChange={handleInputChange('cost')}
+                className="input-field w-full text-sm"
+                min="0"
+              />
+            ) : (
+              <div className="text-center font-bold">{hireling.cost}p</div>
+            )}
+          </div>
+        </div>
+
+        <div className="flex items-center space-x-4">
+          <div>
+            <label className="text-xs text-amber-800 block">HP</label>
+            {isEditing ? (
+              <div className="flex items-center space-x-1">
+                <input
+                  type="number"
+                  value={hireling.hitPoints}
+                  onChange={handleInputChange('hitPoints')}
+                  className="input-field w-12 text-sm"
+                  min="0"
+                />
+                <span>/</span>
+                <input
+                  type="number"
+                  value={hireling.maxHitPoints}
+                  onChange={handleInputChange('maxHitPoints')}
+                  className="input-field w-12 text-sm"
+                  min="1"
+                />
+              </div>
+            ) : (
+              <div className="font-bold">
+                {hireling.hitPoints}/{hireling.maxHitPoints}
+              </div>
+            )}
+          </div>
+          
+          <div className="flex-1">
+            <label className="text-xs text-amber-800 block">Equipment</label>
+            {isEditing ? (
+              <input
+                type="text"
+                value={hireling.equipment || ''}
+                onChange={handleInputChange('equipment')}
+                className="input-field w-full text-sm"
+                placeholder="Equipment list"
+              />
+            ) : (
+              <div className="text-sm">{hireling.equipment || 'None'}</div>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  return (
+    <div className="card">
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-xl text-amber-800 text-amber-800">
+          Hirelings ({character.hirelings.length}/2)
+        </h2>
+        {character.hirelings.length < 2 && (
+          <button
+            onClick={addHireling}
+            className="button-primary"
+          >
+            Add Hireling
+          </button>
+        )}
+      </div>
+
+      {character.hirelings.length === 0 ? (
+        <div className="text-center text-amber-800 opacity-75 py-8">
+          No hirelings yet. Click "Add Hireling" to add one.
+        </div>
+      ) : (
+        <div className="space-y-4">
+          {character.hirelings.map(hireling => (
+            <HirelingCard key={hireling.id} hireling={hireling} />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};

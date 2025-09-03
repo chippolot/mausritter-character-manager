@@ -1,0 +1,37 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-amber-50 text-stone-800 font-serif;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Cinzel', serif;
+  }
+}
+
+@layer components {
+  .card {
+    @apply bg-white border-2 border-amber-800 rounded-lg shadow-md p-4;
+  }
+  
+  .input-field {
+    @apply border border-amber-800 rounded px-3 py-2 bg-amber-50 focus:outline-none focus:ring-2 focus:ring-yellow-500;
+  }
+  
+  .button-primary {
+    @apply bg-amber-800 text-white px-4 py-2 rounded hover:bg-amber-700 transition-colors;
+  }
+  
+  .inventory-slot {
+    @apply border-2 border-dashed border-amber-800 bg-white bg-opacity-50 rounded p-2 min-h-[60px] flex items-center justify-center text-amber-800 text-sm;
+  }
+  
+  .inventory-slot.filled {
+    @apply border-solid bg-white;
+  }
+}
