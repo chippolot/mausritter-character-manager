@@ -48,13 +48,13 @@ export const HirelingList: React.FC<HirelingListProps> = ({
     return (
       <div className="border border-amber-800 rounded p-4 bg-white bg-opacity-50">
         <div className="flex justify-between items-start mb-3">
-          <h4 className="text-amber-800 text-amber-800">
+          <h4 className="text-amber-800 text-amber-800 text-xl">
             {isEditing ? (
               <input
                 type="text"
                 value={hireling.name}
                 onChange={handleInputChange('name')}
-                className="input-field text-amber-800"
+                className="input-field text-amber-800 text-xl"
                 placeholder="Hireling name"
                 autoFocus
               />
@@ -80,7 +80,7 @@ export const HirelingList: React.FC<HirelingListProps> = ({
 
         <div className="grid grid-cols-4 gap-2 mb-3">
           <div>
-            <label className="text-xs text-amber-800 block">STR</label>
+            <label className="text-sm font-semibold text-amber-800 block">STR</label>
             {isEditing ? (
               <input
                 type="number"
@@ -95,7 +95,7 @@ export const HirelingList: React.FC<HirelingListProps> = ({
             )}
           </div>
           <div>
-            <label className="text-xs text-amber-800 block">DEX</label>
+            <label className="text-sm font-semibold text-amber-800 block">DEX</label>
             {isEditing ? (
               <input
                 type="number"
@@ -110,7 +110,7 @@ export const HirelingList: React.FC<HirelingListProps> = ({
             )}
           </div>
           <div>
-            <label className="text-xs text-amber-800 block">WIL</label>
+            <label className="text-sm font-semibold text-amber-800 block">WIL</label>
             {isEditing ? (
               <input
                 type="number"
@@ -125,7 +125,7 @@ export const HirelingList: React.FC<HirelingListProps> = ({
             )}
           </div>
           <div>
-            <label className="text-xs text-amber-800 block">Cost</label>
+            <label className="text-sm font-semibold text-amber-800 block">Cost</label>
             {isEditing ? (
               <input
                 type="number"
@@ -142,7 +142,7 @@ export const HirelingList: React.FC<HirelingListProps> = ({
 
         <div className="flex items-center space-x-4">
           <div>
-            <label className="text-xs text-amber-800 block">HP</label>
+            <label className="text-sm font-semibold text-amber-800 block">HP</label>
             {isEditing ? (
               <div className="flex items-center space-x-1">
                 <input
@@ -169,7 +169,7 @@ export const HirelingList: React.FC<HirelingListProps> = ({
           </div>
           
           <div className="flex-1">
-            <label className="text-xs text-amber-800 block">Equipment</label>
+            <label className="text-sm font-semibold text-amber-800 block">Equipment</label>
             {isEditing ? (
               <input
                 type="text"
@@ -190,7 +190,7 @@ export const HirelingList: React.FC<HirelingListProps> = ({
   return (
     <div className="card">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-bold text-amber-800">
+        <h2 className="text-2xl font-medium text-amber-800">
           Hirelings ({character.hirelings.length}/2)
         </h2>
         {character.hirelings.length < 2 && (

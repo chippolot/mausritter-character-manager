@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Pirata+One&family=Overpass:wght@300;400;600&family=Barlow+Condensed:wght@300;400;600&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,11 +6,11 @@
 
 @layer base {
   body {
-    @apply bg-amber-50 text-stone-800 font-serif;
+    @apply bg-amber-50 text-stone-800 font-body;
   }
   
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Cinzel', serif;
+    @apply font-header font-normal;
   }
 }
 

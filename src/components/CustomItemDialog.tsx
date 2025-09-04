@@ -86,7 +86,7 @@ export const CustomItemDialog: React.FC<CustomItemDialogProps> = ({
       <div className="bg-white rounded-lg shadow-lg w-full max-w-md mx-4 max-h-[90vh] overflow-y-auto">
         <div className="p-6">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-lg font-semibold text-stone-800">
+            <h2 className="text-2xl font-medium text-stone-800">
               Create Custom {getCategoryLabel()}
             </h2>
             <button

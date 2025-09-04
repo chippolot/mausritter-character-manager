@@ -69,7 +69,7 @@ export const CharacterSelector: React.FC = () => {
               onClick={() => setCurrentCharacter(character)}
             >
               <div className="flex justify-between items-start mb-2">
-                <h3 className="text-lg font-bold text-amber-800">
+                <h3 className="text-2xl font-medium text-amber-800">
                   {character.name || 'Unnamed Character'}
                 </h3>
                 <button

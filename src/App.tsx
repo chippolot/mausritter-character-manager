@@ -12,7 +12,7 @@ function App() {
         <div>
           <nav className="bg-white border-b-2 border-amber-800 p-4 shadow-sm">
             <div className="max-w-6xl mx-auto flex justify-between items-center">
-              <h1 className="text-2xl text-amber-800" style={{fontFamily: 'Cinzel, serif'}}>
+              <h1 className="text-2xl text-amber-800 font-header">
                 Mausritter Character Sheet
               </h1>
               <button

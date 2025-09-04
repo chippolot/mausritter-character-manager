@@ -39,7 +39,7 @@ export const AttributeBlock: React.FC<AttributeBlockProps> = ({
 
   return (
     <div className="card">
-      <h2 className="text-xl font-bold text-amber-800 mb-4">
+      <h2 className="text-2xl font-medium text-amber-800 mb-4">
         Attributes
       </h2>
       

@@ -11,7 +11,7 @@ export const ScratchArea: React.FC<ScratchAreaProps> = () => {
 
   return (
     <div className="mt-8">
-      <h2 className="text-xl text-amber-800 mb-4 font-bold">Scratch Area</h2>
+      <h2 className="text-2xl font-medium text-amber-800 mb-4">Scratch Area</h2>
       
       <div
         ref={setNodeRef}

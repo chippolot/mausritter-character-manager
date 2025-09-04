@@ -13,8 +13,9 @@ export default {
         gold: '#D4AF37',
       },
       fontFamily: {
-        'fantasy': ['Cinzel', 'serif'],
+        'header': ['Pirata One', 'serif'],
         'body': ['Crimson Text', 'serif'],
+        'condensed': ['Barlow Condensed', 'sans-serif'],
       }
     },
   },
