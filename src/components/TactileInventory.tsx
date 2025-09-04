@@ -85,8 +85,10 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
     const itemTopLeftY = mouseY - (actualHeight * GRID_CONFIG.cellSize / 2);
     
     // Find which grid cell the top-left corner should snap to
-    const gridX = Math.round(itemTopLeftX / GRID_CONFIG.cellSize);
-    const gridY = Math.round(itemTopLeftY / GRID_CONFIG.cellSize);
+    // Account for the 2px gaps between cells when calculating grid position
+    const cellSizeWithGap = GRID_CONFIG.cellSize + 2;
+    const gridX = Math.round(itemTopLeftX / cellSizeWithGap);
+    const gridY = Math.round(itemTopLeftY / cellSizeWithGap);
     
     // Ensure the item fits within the grid bounds
     return {
@@ -117,7 +119,7 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
     let updatedItem: PlacedItem;
 
     if (over.id === 'inventory-grid') {
-      // Use the DragOverlay position to determine where to drop
+      // Get the actual grid element to calculate precise positioning
       const gridElement = document.querySelector('[data-id="inventory-grid"]') as HTMLElement;
       if (!gridElement) return;
       
@@ -127,11 +129,12 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
       const mouseX = event.activatorEvent.clientX + (event.delta?.x || 0);
       const mouseY = event.activatorEvent.clientY + (event.delta?.y || 0);
       
-      // Convert to grid coordinates (accounting for padding and header)
-      const gridX = mouseX - rect.left - 16; // 16px padding
-      const gridY = mouseY - rect.top - 16;  // 16px padding (removed extra header offset)
+      // Convert to grid coordinates relative to the actual grid content area
+      // The grid has padding, so we need to account for that
+      const gridContentX = mouseX - rect.left - 16; // 16px = p-4 padding
+      const gridContentY = mouseY - rect.top - 16;  // 16px = p-4 padding
       
-      const dropPosition = snapToGrid(gridX, gridY, draggedItem);
+      const dropPosition = snapToGrid(gridContentX, gridContentY, draggedItem);
 
       if (canPlaceItem(draggedItem, dropPosition)) {
         updatedItem = {
@@ -325,31 +328,31 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
       >
         <div className="relative mb-8">
           <InventoryGridNew onGridDrop={handleGridDrop} />
-          <div className="absolute top-16 left-4 pointer-events-none">
-            {items.filter(item => item.isInGrid && item.id !== activeItem?.id).map((item) => {
-              const style: React.CSSProperties = {
-                position: 'absolute',
-                left: item.position.x * GRID_CONFIG.cellSize,
-                top: item.position.y * GRID_CONFIG.cellSize,
-                pointerEvents: 'auto',
-              };
-
-              return (
-                <div key={item.id} style={style}>
-                  <ItemCard
-                    item={item}
-                    onRotate={handleRotateItem}
-                    isDragging={false}
-                  />
-                </div>
-              );
-            })}
-          </div>
+          {items.filter(item => item.isInGrid && item.id !== activeItem?.id).map((item) => {
+            // Position items relative to the grid element using a more direct approach
+            return (
+              <div
+                key={item.id}
+                className="absolute pointer-events-auto"
+                style={{
+                  // Position items to align with grid cells, accounting for gaps
+                  top: 90 + item.position.y * GRID_CONFIG.cellSize + item.position.y * 2, // Add 2px for each row gap
+                  left: 18 + item.position.x * GRID_CONFIG.cellSize + item.position.x * 2, // Add 2px for each column gap
+                }}
+              >
+                <ItemCard
+                  item={item}
+                  onRotate={handleRotateItem}
+                  isDragging={false}
+                />
+              </div>
+            );
+          })}
         </div>
 
         <div className="relative">
           <ScratchArea onScratchDrop={handleScratchDrop} />
-          <div className="absolute top-16 left-4 pointer-events-none">
+          <div className="absolute top-20 left-4 pointer-events-none">
             {items.filter(item => !item.isInGrid && item.id !== activeItem?.id).map((item) => {
               if (!item.scratchPosition) return null;
               
