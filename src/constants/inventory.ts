@@ -1,0 +1,34 @@
+// Centralized inventory sizing constants
+// Change CELL_SIZE to adjust all inventory sizing throughout the app
+
+export const CELL_SIZE = 128; // Base cell size in pixels
+
+export const GRID_CONFIG = {
+  width: 5,
+  height: 2,
+  cellSize: CELL_SIZE
+} as const;
+
+export const ITEM_SIZES = {
+  small: { width: 1, height: 1 },
+  large: { width: 2, height: 1 }
+} as const;
+
+// Calculated positioning constants based on cell size
+export const GRID_GAP = 2; // Gap between grid cells in pixels
+export const GRID_PADDING = 16; // Grid container padding (p-4 in Tailwind)
+
+// Dynamic positioning offsets (scale with cell size)
+export const GRID_OFFSET = {
+  // These offsets position items correctly within the grid container
+  top: Math.round(CELL_SIZE * 0.7), // Roughly 70% of cell size
+  left: Math.round(CELL_SIZE * 0.14), // Roughly 14% of cell size
+};
+
+// Scratch area padding (scale with cell size for better proportions)
+export const SCRATCH_PADDING = {
+  top: Math.round(CELL_SIZE * -0.23), // -30px at 128px = -23%
+  left: Math.round(CELL_SIZE * -0.09), // -12px at 128px = -9%
+  bottom: Math.round(CELL_SIZE * 0.53), // 68px at 128px = 53%
+  right: Math.round(CELL_SIZE * 0.25), // 32px at 128px = 25%
+};

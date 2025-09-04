@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDroppable } from '@dnd-kit/core';
-import { GRID_CONFIG } from '../types/inventory';
+import { GRID_CONFIG } from '../constants/inventory';
 
 interface InventoryGridProps {
   onGridDrop: (position: { x: number; y: number }) => void;

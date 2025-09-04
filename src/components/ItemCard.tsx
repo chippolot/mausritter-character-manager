@@ -2,7 +2,8 @@ import React from 'react';
 import { useDraggable } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities';
 import { RiDeleteBin6Line } from 'react-icons/ri';
-import { PlacedItem, GRID_CONFIG } from '../types/inventory';
+import { PlacedItem } from '../types/inventory';
+import { GRID_CONFIG } from '../constants/inventory';
 
 interface ItemCardProps {
   item: PlacedItem;
@@ -80,26 +81,52 @@ export const ItemCard: React.FC<ItemCardProps> = ({ item, onRotate, onDelete, is
       className={`
         item-card absolute cursor-grab active:cursor-grabbing
         bg-white border-2 border-amber-800 rounded-lg
-        flex flex-col items-center justify-center p-2 select-none
+        flex flex-col p-2 select-none
         hover:border-yellow-600 group
         ${isActive ? 'dragging opacity-90' : ''}
         ${item.type === 'weapon' ? 'bg-red-50' : ''}
         ${item.type === 'armor' ? 'bg-blue-50' : ''}
         ${item.type === 'spell' ? 'bg-purple-50' : ''}
         ${item.type === 'item' ? 'bg-green-50' : ''}
+        ${item.type === 'condition' ? 'bg-red-100' : ''}
       `}
     >
-      <div className="text-center pointer-events-none">
-        <div className="font-semibold text-stone-800 text-xs leading-tight">
-          {item.name}
-        </div>
-        <div className="text-xs text-amber-800 capitalize mt-1">
-          {item.type}
-        </div>
-        {item.usageDots && (
-          <div className="text-xs text-amber-800 mt-1">
-            {item.usageDots}/{item.maxUsageDots}
-          </div>
+      <div className="text-left pointer-events-none w-full h-full flex flex-col">
+        {item.type === 'condition' ? (
+          <>
+            {/* Condition card layout */}
+            <div className="font-semibold text-stone-800 text-s leading-tight mb-1">
+              {item.name}
+            </div>
+            <hr/>
+            {item.description && (
+              <div className="text-xs text-stone-600 italic flex-1 mb-2 leading-tight">
+                {item.description}
+              </div>
+            )}
+            {item.clearInstructions && (
+              <div className="text-xs text-stone-800 mt-auto">
+                <div className="font-semibold mb-1">Clear:</div>
+                <div className="leading-tight">{item.clearInstructions}</div>
+              </div>
+            )}
+          </>
+        ) : (
+          <>
+            {/* Regular item layout */}
+            <div className="font-semibold text-stone-800 text-s leading-tight">
+              {item.name}
+            </div>
+            <hr/>
+            <div className="text-xs text-amber-800 capitalize mt-1">
+              {item.type}
+            </div>
+            {item.usageDots && (
+              <div className="text-xs text-amber-800 mt-1">
+                {item.usageDots}/{item.maxUsageDots}
+              </div>
+            )}
+          </>
         )}
       </div>
       

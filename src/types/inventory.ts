@@ -11,7 +11,7 @@ export interface ItemSize {
 export interface PlacedItem {
   id: string;
   name: string;
-  type: 'weapon' | 'armor' | 'item' | 'spell';
+  type: 'weapon' | 'armor' | 'item' | 'spell' | 'condition';
   description?: string;
   damage?: string;
   armor?: number;
@@ -19,6 +19,7 @@ export interface PlacedItem {
   maxUsageDots?: number;
   cost?: number;
   weight?: number;
+  clearInstructions?: string; // For condition cards
   size: ItemSize;
   position: GridPosition;
   rotation: 0 | 90;
@@ -32,13 +33,3 @@ export interface InventoryGrid {
   items: PlacedItem[];
 }
 
-export const GRID_CONFIG = {
-  width: 5,
-  height: 2,
-  cellSize: 96
-} as const;
-
-export const ITEM_SIZES = {
-  small: { width: 1, height: 1 },
-  large: { width: 2, height: 1 }
-} as const;

@@ -12,7 +12,8 @@ import {
 import { ItemCard } from './ItemCard';
 import { InventoryGrid } from './InventoryGrid';
 import { ScratchArea } from './ScratchArea';
-import { PlacedItem, GRID_CONFIG, ITEM_SIZES, GridPosition } from '../types/inventory';
+import { PlacedItem, GridPosition } from '../types/inventory';
+import { GRID_CONFIG, ITEM_SIZES, GRID_GAP, GRID_PADDING, GRID_OFFSET, SCRATCH_PADDING } from '../constants/inventory';
 
 interface TactileInventoryProps {
   items: PlacedItem[];
@@ -85,8 +86,8 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
     const itemTopLeftY = mouseY - (actualHeight * GRID_CONFIG.cellSize / 2);
     
     // Find which grid cell the top-left corner should snap to
-    // Account for the 2px gaps between cells when calculating grid position
-    const cellSizeWithGap = GRID_CONFIG.cellSize + 2;
+    // Account for the gaps between cells when calculating grid position
+    const cellSizeWithGap = GRID_CONFIG.cellSize + GRID_GAP;
     const gridX = Math.round(itemTopLeftX / cellSizeWithGap);
     const gridY = Math.round(itemTopLeftY / cellSizeWithGap);
     
@@ -131,8 +132,8 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
       
       // Convert to grid coordinates relative to the actual grid content area
       // The grid has padding, so we need to account for that
-      const gridContentX = mouseX - rect.left - 16; // 16px = p-4 padding
-      const gridContentY = mouseY - rect.top - 16;  // 16px = p-4 padding
+      const gridContentX = mouseX - rect.left - GRID_PADDING;
+      const gridContentY = mouseY - rect.top - GRID_PADDING;
       
       const dropPosition = snapToGrid(gridContentX, gridContentY, draggedItem);
 
@@ -171,11 +172,11 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
       const itemVisualTop = currentMouseY - (itemPixelHeight / 2);
       
       // Convert to scratch area coordinate system
-      // Define individual padding values for fine-tuning scratch area bounds
-      const paddingTop = -30;    // Top padding
-      const paddingLeft = -12;   // Left padding  
-      const paddingBottom = 68; // Bottom padding
-      const paddingRight = 32;  // Right padding
+      // Use dynamic padding values that scale with cell size
+      const paddingTop = SCRATCH_PADDING.top;
+      const paddingLeft = SCRATCH_PADDING.left;
+      const paddingBottom = SCRATCH_PADDING.bottom;
+      const paddingRight = SCRATCH_PADDING.right;
       
       const scratchX = itemVisualLeft - rect.left - paddingLeft;
       const scratchY = itemVisualTop - rect.top - paddingTop;
@@ -267,11 +268,13 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
   }, [pendingItem, canPlaceItem, items, onItemsChange]);
 
 
-  const addNewItem = (name: string, type: PlacedItem['type'], size: 'small' | 'large' = 'small') => {
+  const addNewItem = (name: string, type: PlacedItem['type'], size: 'small' | 'large' = 'small', description?: string, clearInstructions?: string) => {
     const newItem: PlacedItem = {
       id: crypto.randomUUID(),
       name,
       type,
+      description,
+      clearInstructions,
       size: ITEM_SIZES[size],
       position: { x: 0, y: 0 },
       rotation: 0,
@@ -310,6 +313,46 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
             + Rope (2×1)
           </button>
         </div>
+        
+        <div className="flex flex-wrap gap-2 mb-4">
+          <span className="text-sm text-amber-800 font-semibold mr-2">Conditions:</span>
+          <button
+            onClick={() => addNewItem(
+              'Exhausted', 
+              'condition', 
+              'small', 
+              'You are weary and need rest.', 
+              'Sleep for 6 hours in a safe place'
+            )}
+            className="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded text-sm"
+          >
+            + Exhausted
+          </button>
+          <button
+            onClick={() => addNewItem(
+              'Injured', 
+              'condition', 
+              'small', 
+              'You have suffered physical harm.', 
+              'Receive medical attention or heal naturally over time'
+            )}
+            className="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded text-sm"
+          >
+            + Injured
+          </button>
+          <button
+            onClick={() => addNewItem(
+              'Frightened', 
+              'condition', 
+              'small', 
+              'You are overcome with fear.', 
+              'Confront your fear or find safety and comfort'
+            )}
+            className="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded text-sm"
+          >
+            + Frightened
+          </button>
+        </div>
       </div>
 
       <DndContext
@@ -328,8 +371,8 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
                 className="absolute pointer-events-auto"
                 style={{
                   // Position items to align with grid cells, accounting for gaps
-                  top: 90 + item.position.y * GRID_CONFIG.cellSize + item.position.y * 2, // Add 2px for each row gap
-                  left: 18 + item.position.x * GRID_CONFIG.cellSize + item.position.x * 2, // Add 2px for each column gap
+                  top: GRID_OFFSET.top + item.position.y * GRID_CONFIG.cellSize + item.position.y * GRID_GAP,
+                  left: GRID_OFFSET.left + item.position.x * GRID_CONFIG.cellSize + item.position.x * GRID_GAP,
                 }}
               >
                 <ItemCard
