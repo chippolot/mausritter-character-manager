@@ -157,12 +157,6 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
       const mouseX = event.activatorEvent.clientX + (event.delta?.x || 0);
       const mouseY = event.activatorEvent.clientY + (event.delta?.y || 0);
       
-      // Check if the drop is actually within the scratch area bounds
-      if (mouseX < rect.left || mouseX > rect.right || mouseY < rect.top || mouseY > rect.bottom) {
-        // Drop is outside the scratch area bounds, don't allow it
-        return;
-      }
-      
       // Calculate item dimensions
       const { width, height } = draggedItem.size;
       const isRotated = draggedItem.rotation === 90;
@@ -173,27 +167,29 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
       
       // Fine-tuning variables - adjust these to align bounds with visual borders
       const paddingLeft = 0;   // Left padding offset
-      const paddingTop = 0;    // Top padding offset  
+      const paddingTop = -100;    // Top padding offset  
       const paddingRight = 36;  // Right padding offset
       const paddingBottom = 36; // Bottom padding offset
       
-      const contentWidth = rect.width - paddingLeft - paddingRight;
-      const contentHeight = rect.height - paddingTop - paddingBottom;
+      const contentWidth = rect.width;
+      const contentHeight = rect.height;
       
       // Convert to scratch area coordinates (position relative to content area)
       const scratchX = (mouseX - rect.left - paddingLeft) - (itemPixelWidth / 2);
       const scratchY = (mouseY - rect.top - paddingTop) - (itemPixelHeight / 2);
 
       // Ensure item stays within the actual visual content bounds
-      const maxX = contentWidth - itemPixelWidth;
-      const maxY = contentHeight - itemPixelHeight;
+      const minX = paddingLeft;
+      const minY = paddingTop;
+      const maxX = contentWidth - paddingRight;
+      const maxY = contentHeight - paddingBottom;
 
       updatedItem = {
         ...draggedItem,
         isInGrid: false,
         scratchPosition: { 
-          x: Math.max(paddingLeft, Math.min(maxX, scratchX)), 
-          y: Math.max(paddingTop, Math.min(maxY, scratchY)) 
+          x: Math.max(minX, Math.min(maxX, scratchX)), 
+          y: Math.max(minY, Math.min(maxY, scratchY)) 
         },
       };
     } else {
@@ -273,33 +269,6 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
       scratchPosition: { x: 50, y: 50 },
     };
     onItemsChange([...items, newItem]);
-  };
-
-  const renderItemCards = () => {
-    return items.map((item) => {
-      const style: React.CSSProperties = {
-        position: 'absolute',
-        pointerEvents: 'auto',
-      };
-      
-      if (item.isInGrid) {
-        style.left = item.position.x * GRID_CONFIG.cellSize;
-        style.top = item.position.y * GRID_CONFIG.cellSize;
-      } else if (item.scratchPosition) {
-        style.left = item.scratchPosition.x;
-        style.top = item.scratchPosition.y;
-      }
-
-      return (
-        <div key={item.id} style={style}>
-          <ItemCard
-            item={item}
-            onRotate={handleRotateItem}
-            isDragging={activeItem?.id === item.id}
-          />
-        </div>
-      );
-    });
   };
 
   return (
