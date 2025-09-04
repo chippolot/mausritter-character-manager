@@ -99,16 +99,17 @@ export const ItemCard: React.FC<ItemCardProps> = ({ item, onRotate, onDelete, on
       onContextMenu={handleRightClick}
       className={`
         item-card absolute cursor-grab active:cursor-grabbing
-        bg-white border-2 border-amber-800 rounded-lg
+        border-2 border-amber-800 rounded-lg
         flex flex-col p-2 select-none
         hover:border-yellow-600 group
         ${isActive ? 'dragging opacity-90' : ''}
-        ${item.type === 'weapon' ? 'bg-red-50' : ''}
-        ${item.type === 'armor' ? 'bg-blue-50' : ''}
-        ${item.type === 'spell' ? 'bg-purple-50' : ''}
-        ${item.type === 'item' ? 'bg-green-50' : ''}
-        ${item.type === 'condition' ? 'bg-red-100' : ''}
-        ${item.type === 'pip-purse' ? 'bg-yellow-50' : ''}
+        ${item.type === 'weapon' ? 'bg-red-50' : 
+          item.type === 'armor' ? 'bg-blue-50' : 
+          item.type === 'spell' ? 'bg-purple-50' : 
+          item.type === 'item' ? 'bg-green-50' : 
+          item.type === 'condition' ? 'bg-red-100' : 
+          item.type === 'pip-purse' ? 'bg-yellow-50' : 
+          'bg-white'}
       `}
     >
       <div className="text-left pointer-events-none w-full h-full flex flex-col">

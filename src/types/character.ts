@@ -14,7 +14,7 @@ export interface Character {
   // Character details
   background: string;
   birthsign: string;
-  coatOfArms: string;
+  coat: string;
   look: string;
   grit: number;
   pips: number;

@@ -15,7 +15,7 @@ interface Character {
   maxHitPoints: number;
   background: string;
   birthsign: string;
-  coatOfArms: string;
+  coat: string;
   look: string;
   grit: number;
   pips: number;
@@ -117,7 +117,7 @@ export const createNewCharacter = (): Character => ({
   maxHitPoints: 4,
   background: '',
   birthsign: '',
-  coatOfArms: '',
+  coat: '',
   look: '',
   grit: 0,
   pips: 0,

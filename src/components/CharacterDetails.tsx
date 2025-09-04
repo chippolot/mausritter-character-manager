@@ -95,14 +95,14 @@ export const CharacterDetails: React.FC<CharacterDetailsProps> = ({
 
         <div>
           <label className="block text-sm font-semibold text-amber-800 mb-1">
-            Coat of Arms
+            Coat
           </label>
           <input
             type="text"
-            value={character.coatOfArms}
-            onChange={handleInputChange('coatOfArms')}
+            value={character.coat}
+            onChange={handleInputChange('coat')}
             className="input-field w-full"
-            placeholder="Describe your coat of arms"
+            placeholder="Describe your coat"
           />
         </div>
 

@@ -65,7 +65,7 @@ export const createNewCharacter = (): Character => ({
   maxHitPoints: 4,
   background: '',
   birthsign: '',
-  coatOfArms: '',
+  coat: '',
   look: '',
   grit: 0,
   pips: 0,

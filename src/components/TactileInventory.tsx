@@ -28,6 +28,7 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
 }) => {
   const [activeItem, setActiveItem] = useState<PlacedItem | null>(null);
   const [pendingItem, setPendingItem] = useState<PlacedItem | null>(null);
+  const [dragOffset, setDragOffset] = useState<{ x: number; y: number } | null>(null);
   const { createItemFromData, items: itemsData } = useMausritterItems();
 
   const sensors = useSensors(
@@ -74,19 +75,14 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
     return true;
   }, [items]);
 
-  const snapToGrid = useCallback((mouseX: number, mouseY: number, item: PlacedItem): GridPosition => {
+  const snapToGrid = useCallback((itemTopLeftX: number, itemTopLeftY: number, item: PlacedItem): GridPosition => {
     // We want to snap based on the item's top-left corner position
-    // Since the mouse might be anywhere on the item, we need to estimate where the top-left corner is
-    // For simplicity, assume the mouse is roughly at the center of the item during drag
+    // The itemTopLeftX and itemTopLeftY should already be the top-left corner coordinates
     
     const { width, height } = item.size;
     const isRotated = item.rotation === 90;
     const actualWidth = isRotated ? height : width;
     const actualHeight = isRotated ? width : height;
-    
-    // Calculate where the top-left corner would be (assuming mouse is at item center)
-    const itemTopLeftX = mouseX - (actualWidth * GRID_CONFIG.cellSize / 2);
-    const itemTopLeftY = mouseY - (actualHeight * GRID_CONFIG.cellSize / 2);
     
     // Find which grid cell the top-left corner should snap to
     // Account for the gaps between cells when calculating grid position
@@ -105,12 +101,44 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
     const item = items.find((item) => item.id === event.active.id);
     if (item) {
       setActiveItem(item);
+      
+      // Calculate the offset between the mouse click and the item's visual position
+      if (!item.isInGrid && item.scratchPosition) {
+        // For items in scratch area, calculate offset from their current position
+        const scratchElement = document.querySelector('[data-id="scratch-area"]') as HTMLElement;
+        if (scratchElement) {
+          const rect = scratchElement.getBoundingClientRect();
+          const itemVisualLeft = rect.left + SCRATCH_PADDING.left + item.scratchPosition.x;
+          const itemVisualTop = rect.top + SCRATCH_PADDING.top + item.scratchPosition.y;
+          
+          setDragOffset({
+            x: event.activatorEvent.clientX - itemVisualLeft,
+            y: event.activatorEvent.clientY - itemVisualTop
+          });
+        }
+      } else if (item.isInGrid) {
+        // For items in grid, calculate offset from their grid position
+        const gridElement = document.querySelector('[data-id="inventory-grid"]') as HTMLElement;
+        if (gridElement) {
+          const rect = gridElement.getBoundingClientRect();
+          // For grid items, the GRID_OFFSET includes the section labels height and padding,
+          // but the grid element rect starts after the labels, so we need to account for this
+          const itemVisualLeft = rect.left + GRID_PADDING + item.position.x * (GRID_CONFIG.cellSize + GRID_GAP);
+          const itemVisualTop = rect.top + GRID_PADDING + item.position.y * (GRID_CONFIG.cellSize + GRID_GAP);
+          
+          setDragOffset({
+            x: event.activatorEvent.clientX - itemVisualLeft,
+            y: event.activatorEvent.clientY - itemVisualTop
+          });
+        }
+      }
     }
   };
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
     setActiveItem(null);
+    setDragOffset(null);
 
     const draggedItem = items.find((item) => item.id === active.id);
     if (!draggedItem) return;
@@ -125,7 +153,7 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
     if (over.id === 'inventory-grid') {
       // Get the actual grid element to calculate precise positioning
       const gridElement = document.querySelector('[data-id="inventory-grid"]') as HTMLElement;
-      if (!gridElement) return;
+      if (!gridElement || !dragOffset) return;
       
       const rect = gridElement.getBoundingClientRect();
       
@@ -133,10 +161,13 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
       const mouseX = event.activatorEvent.clientX + (event.delta?.x || 0);
       const mouseY = event.activatorEvent.clientY + (event.delta?.y || 0);
       
+      // Use the drag offset to calculate where the top-left corner should be
+      const itemTopLeftX = mouseX - dragOffset.x;
+      const itemTopLeftY = mouseY - dragOffset.y;
+      
       // Convert to grid coordinates relative to the actual grid content area
-      // The grid has padding, so we need to account for that
-      const gridContentX = mouseX - rect.left - GRID_PADDING;
-      const gridContentY = mouseY - rect.top - GRID_PADDING;
+      const gridContentX = itemTopLeftX - rect.left - GRID_PADDING;
+      const gridContentY = itemTopLeftY - rect.top - GRID_PADDING;
       
       const dropPosition = snapToGrid(gridContentX, gridContentY, draggedItem);
 
@@ -153,11 +184,11 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
       }
     } else if (over.id === 'scratch-area') {
       const scratchElement = document.querySelector('[data-id="scratch-area"]') as HTMLElement;
-      if (!scratchElement) return;
+      if (!scratchElement || !dragOffset) return;
       
       const rect = scratchElement.getBoundingClientRect();
       
-      // Get the current mouse position (where the DragOverlay is displayed)
+      // Get the current mouse position
       const currentMouseX = event.activatorEvent.clientX + (event.delta?.x || 0);
       const currentMouseY = event.activatorEvent.clientY + (event.delta?.y || 0);
       
@@ -169,13 +200,11 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
       const itemPixelWidth = actualWidth * GRID_CONFIG.cellSize;
       const itemPixelHeight = actualHeight * GRID_CONFIG.cellSize;
       
-      // The DragOverlay centers the item on the mouse cursor, so we need to calculate
-      // the top-left corner position of where the item visually appears
-      const itemVisualLeft = currentMouseX - (itemPixelWidth / 2);
-      const itemVisualTop = currentMouseY - (itemPixelHeight / 2);
+      // Use the drag offset to calculate where the top-left corner should be
+      const itemVisualLeft = currentMouseX - dragOffset.x;
+      const itemVisualTop = currentMouseY - dragOffset.y;
       
       // Convert to scratch area coordinate system
-      // Use dynamic padding values that scale with cell size
       const paddingTop = SCRATCH_PADDING.top;
       const paddingLeft = SCRATCH_PADDING.left;
       const paddingBottom = SCRATCH_PADDING.bottom;
@@ -189,7 +218,6 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
       const contentHeight = rect.height - paddingTop - paddingBottom;
       
       // Clamp the item position so it stays within the scratch area bounds
-      // Ensure no part of the item extends outside the dotted border
       const clampedX = Math.max(paddingLeft, Math.min(contentWidth - itemPixelWidth, scratchX));
       const clampedY = Math.max(paddingTop, Math.min(contentHeight - itemPixelHeight, scratchY));
 
@@ -268,6 +296,41 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
             
             // If no position found, don't rotate
             return item;
+          }
+        } else if (item.scratchPosition) {
+          // For items in scratch area, trigger a "resnap" after rotation
+          const scratchElement = document.querySelector('[data-id="scratch-area"]') as HTMLElement;
+          if (scratchElement) {
+            const rect = scratchElement.getBoundingClientRect();
+            
+            // Calculate item dimensions after rotation
+            const { width, height } = rotatedItem.size;
+            const isRotated = newRotation === 90;
+            const actualWidth = isRotated ? height : width;
+            const actualHeight = isRotated ? width : height;
+            const itemPixelWidth = actualWidth * GRID_CONFIG.cellSize;
+            const itemPixelHeight = actualHeight * GRID_CONFIG.cellSize;
+            
+            // Get current position and ensure it stays within bounds after rotation
+            const paddingTop = SCRATCH_PADDING.top;
+            const paddingLeft = SCRATCH_PADDING.left;
+            const paddingBottom = SCRATCH_PADDING.bottom;
+            const paddingRight = SCRATCH_PADDING.right;
+            
+            const contentWidth = rect.width - paddingLeft - paddingRight;
+            const contentHeight = rect.height - paddingTop - paddingBottom;
+            
+            // Clamp the current position to ensure the rotated item fits
+            const clampedX = Math.max(0, Math.min(contentWidth - itemPixelWidth, item.scratchPosition.x));
+            const clampedY = Math.max(0, Math.min(contentHeight - itemPixelHeight, item.scratchPosition.y));
+            
+            return {
+              ...rotatedItem,
+              scratchPosition: {
+                x: clampedX,
+                y: clampedY
+              }
+            };
           }
         }
 
