@@ -10,10 +10,11 @@ interface ItemCardProps {
   onRotate: (id: string) => void;
   onDelete: (id: string) => void;
   onToggleUsagePip?: (itemId: string, pipIndex: number) => void;
+  onPipValueChange?: (itemId: string, value: number) => void;
   isDragging?: boolean;
 }
 
-export const ItemCard: React.FC<ItemCardProps> = ({ item, onRotate, onDelete, onToggleUsagePip, isDragging }) => {
+export const ItemCard: React.FC<ItemCardProps> = ({ item, onRotate, onDelete, onToggleUsagePip, onPipValueChange, isDragging }) => {
   const {
     attributes,
     listeners,
@@ -73,6 +74,15 @@ export const ItemCard: React.FC<ItemCardProps> = ({ item, onRotate, onDelete, on
     }
   };
 
+  const handlePipValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseInt(e.target.value) || 0;
+    const maxValue = item.maxPipValue || 250;
+    const clampedValue = Math.max(0, Math.min(maxValue, value));
+    if (onPipValueChange) {
+      onPipValueChange(item.id, clampedValue);
+    }
+  };
+
   const isActive = dndKitDragging || isDragging;
 
   return (
@@ -98,6 +108,7 @@ export const ItemCard: React.FC<ItemCardProps> = ({ item, onRotate, onDelete, on
         ${item.type === 'spell' ? 'bg-purple-50' : ''}
         ${item.type === 'item' ? 'bg-green-50' : ''}
         ${item.type === 'condition' ? 'bg-red-100' : ''}
+        ${item.type === 'pip-purse' ? 'bg-yellow-50' : ''}
       `}
     >
       <div className="text-left pointer-events-none w-full h-full flex flex-col">
@@ -119,6 +130,29 @@ export const ItemCard: React.FC<ItemCardProps> = ({ item, onRotate, onDelete, on
                 <div className="leading-tight">{item.clearInstructions}</div>
               </div>
             )}
+          </>
+        ) : item.type === 'pip-purse' ? (
+          <>
+            {/* Pip purse layout */}
+            <div className="font-semibold text-stone-800 text-s leading-tight mb-1">
+              {item.name}
+            </div>
+            <hr className="my-1 border-stone-300"/>
+            
+            {/* Pip value display and input */}
+            <div className="flex-1 flex flex-col items-center justify-center">
+              <div className="text-lg font-bold text-amber-700 mb-2">
+                {item.pipValue || 0} pips
+              </div>
+              <input
+                type="number"
+                min="0"
+                max={item.maxPipValue || 250}
+                value={item.pipValue || 0}
+                onChange={handlePipValueChange}
+                className="w-16 h-8 text-center text-sm border border-amber-300 rounded bg-white pointer-events-auto focus:outline-none focus:ring-2 focus:ring-amber-500"
+              />
+            </div>
           </>
         ) : (
           <>

@@ -11,7 +11,7 @@ export interface ItemSize {
 export interface PlacedItem {
   id: string;
   name: string;
-  type: 'weapon' | 'armor' | 'item' | 'spell' | 'condition';
+  type: 'weapon' | 'armor' | 'item' | 'spell' | 'condition' | 'pip-purse';
   description?: string;
   damage?: string;
   armor?: number;
@@ -23,6 +23,8 @@ export interface PlacedItem {
   imageUrl?: string; // Optional image for regular items
   weaponCategory?: 'light' | 'medium' | 'heavy'; // For weapons
   defense?: number; // For armor (replaces armor field)
+  pipValue?: number; // For pip purses - current pip count
+  maxPipValue?: number; // For pip purses - maximum pip count (default 250)
   size: ItemSize;
   position: GridPosition;
   rotation: 0 | 90;

@@ -227,6 +227,16 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
     onItemsChange(newItems);
   }, [items, onItemsChange]);
 
+  const handlePipValueChange = useCallback((itemId: string, value: number) => {
+    const newItems = items.map(item => {
+      if (item.id === itemId) {
+        return { ...item, pipValue: value };
+      }
+      return item;
+    });
+    onItemsChange(newItems);
+  }, [items, onItemsChange]);
+
   const handleRotateItem = useCallback((itemId: string) => {
     const newItems = items.map((item) => {
       if (item.id === itemId) {
@@ -333,6 +343,12 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
           >
             + Chain Mail (2×1)
           </button>
+          <button
+            onClick={() => addNewItem('Pip Purse', 'pip-purse', 'small', undefined, undefined, { pipValue: 0, maxPipValue: 250 })}
+            className="bg-yellow-500 hover:bg-yellow-600 text-white px-2 py-1 rounded text-sm"
+          >
+            + Pip Purse (1×1)
+          </button>
         </div>
         
         <div className="flex flex-wrap gap-2 mb-4">
@@ -401,6 +417,7 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
                   onRotate={handleRotateItem}
                   onDelete={handleDeleteItem}
                   onToggleUsagePip={handleToggleUsagePip}
+                  onPipValueChange={handlePipValueChange}
                   isDragging={false}
                 />
               </div>
@@ -428,6 +445,7 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
                     onRotate={handleRotateItem}
                     onDelete={handleDeleteItem}
                     onToggleUsagePip={handleToggleUsagePip}
+                    onPipValueChange={handlePipValueChange}
                     isDragging={false}
                   />
                 </div>
@@ -443,6 +461,7 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
               onRotate={() => {}}
               onDelete={() => {}}
               onToggleUsagePip={() => {}}
+              onPipValueChange={() => {}}
               isDragging
             />
           ) : null}
