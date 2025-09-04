@@ -92,12 +92,6 @@ export const ItemCard: React.FC<ItemCardProps> = ({ item, onRotate, isDragging }
           </div>
         )}
       </div>
-      
-      {item.size.width === 2 && (
-        <div className="absolute top-1 right-1 text-xs text-amber-600">
-          2x1
-        </div>
-      )}
     </div>
   );
 };

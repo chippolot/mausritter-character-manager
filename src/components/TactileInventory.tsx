@@ -10,7 +10,7 @@ import {
   useSensors,
 } from '@dnd-kit/core';
 import { ItemCard } from './ItemCard';
-import { InventoryGridNew } from './InventoryGridNew';
+import { InventoryGrid } from './InventoryGrid';
 import { ScratchArea } from './ScratchArea';
 import { PlacedItem, GRID_CONFIG, ITEM_SIZES, GridPosition } from '../types/inventory';
 
@@ -157,16 +157,26 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
       const mouseX = event.activatorEvent.clientX + (event.delta?.x || 0);
       const mouseY = event.activatorEvent.clientY + (event.delta?.y || 0);
       
+      // Check if the drop is actually within the scratch area bounds
+      if (mouseX < rect.left || mouseX > rect.right || mouseY < rect.top || mouseY > rect.bottom) {
+        // Drop is outside the scratch area bounds, don't allow it
+        return;
+      }
+      
       // Convert to scratch area coordinates (center the item)
-      const scratchX = mouseX - rect.left - 40; // Center item (40px = half of typical item width)
-      const scratchY = mouseY - rect.top - 40;  // Center item (40px = half of typical item height)
+      const scratchX = mouseX - rect.left - 48; // Center item (48px = half of new item width)
+      const scratchY = mouseY - rect.top - 48;  // Center item (48px = half of new item height)
+
+      // Ensure item stays within scratch area bounds (accounting for padding)
+      const maxX = rect.width - 96 - 16; // Subtract item width and padding
+      const maxY = rect.height - 96 - 16; // Subtract item height and padding
 
       updatedItem = {
         ...draggedItem,
         isInGrid: false,
         scratchPosition: { 
-          x: Math.max(0, scratchX), 
-          y: Math.max(0, scratchY) 
+          x: Math.max(0, Math.min(maxX, scratchX)), 
+          y: Math.max(0, Math.min(maxY, scratchY)) 
         },
       };
     } else {
@@ -327,7 +337,7 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
         onDragEnd={handleDragEnd}
       >
         <div className="relative mb-8">
-          <InventoryGridNew onGridDrop={handleGridDrop} />
+          <InventoryGrid onGridDrop={handleGridDrop} />
           {items.filter(item => item.isInGrid && item.id !== activeItem?.id).map((item) => {
             // Position items relative to the grid element using a more direct approach
             return (

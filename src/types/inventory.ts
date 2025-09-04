@@ -35,7 +35,7 @@ export interface InventoryGrid {
 export const GRID_CONFIG = {
   width: 5,
   height: 2,
-  cellSize: 80
+  cellSize: 96
 } as const;
 
 export const ITEM_SIZES = {

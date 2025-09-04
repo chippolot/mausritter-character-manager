@@ -12,8 +12,8 @@ export const ScratchArea: React.FC<ScratchAreaProps> = ({ onScratchDrop }) => {
 
   const handleAreaClick = (e: React.MouseEvent) => {
     const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect.left - 40; // Center the item (assuming ~80px width)
-    const y = e.clientY - rect.top - 40;  // Center the item (assuming ~80px height)
+    const x = e.clientX - rect.left - 48; // Center the item (assuming ~96px width)
+    const y = e.clientY - rect.top - 48;  // Center the item (assuming ~96px height)
     
     onScratchDrop({ x: Math.max(0, x), y: Math.max(0, y) });
   };
