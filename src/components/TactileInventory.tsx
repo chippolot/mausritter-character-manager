@@ -207,6 +207,11 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
     onItemsChange(newItems);
   };
 
+  const handleDeleteItem = useCallback((itemId: string) => {
+    const newItems = items.filter(item => item.id !== itemId);
+    onItemsChange(newItems);
+  }, [items, onItemsChange]);
+
   const handleRotateItem = useCallback((itemId: string) => {
     const newItems = items.map((item) => {
       if (item.id === itemId) {
@@ -330,6 +335,7 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
                 <ItemCard
                   item={item}
                   onRotate={handleRotateItem}
+                  onDelete={handleDeleteItem}
                   isDragging={false}
                 />
               </div>
@@ -355,6 +361,7 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
                   <ItemCard
                     item={item}
                     onRotate={handleRotateItem}
+                    onDelete={handleDeleteItem}
                     isDragging={false}
                   />
                 </div>
@@ -368,6 +375,7 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
             <ItemCard
               item={activeItem}
               onRotate={() => {}}
+              onDelete={() => {}}
               isDragging
             />
           ) : null}

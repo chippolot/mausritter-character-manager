@@ -1,15 +1,17 @@
 import React from 'react';
 import { useDraggable } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities';
+import { RiDeleteBin6Line } from 'react-icons/ri';
 import { PlacedItem, GRID_CONFIG } from '../types/inventory';
 
 interface ItemCardProps {
   item: PlacedItem;
   onRotate: (id: string) => void;
+  onDelete: (id: string) => void;
   isDragging?: boolean;
 }
 
-export const ItemCard: React.FC<ItemCardProps> = ({ item, onRotate, isDragging }) => {
+export const ItemCard: React.FC<ItemCardProps> = ({ item, onRotate, onDelete, isDragging }) => {
   const {
     attributes,
     listeners,
@@ -53,6 +55,14 @@ export const ItemCard: React.FC<ItemCardProps> = ({ item, onRotate, isDragging }
     onRotate(item.id);
   };
 
+  const handleDelete = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (confirm(`Delete "${item.name}"?`)) {
+      onDelete(item.id);
+    }
+  };
+
   const isActive = dndKitDragging || isDragging;
 
   return (
@@ -71,7 +81,7 @@ export const ItemCard: React.FC<ItemCardProps> = ({ item, onRotate, isDragging }
         item-card absolute cursor-grab active:cursor-grabbing
         bg-white border-2 border-amber-800 rounded-lg
         flex flex-col items-center justify-center p-2 select-none
-        hover:border-yellow-600
+        hover:border-yellow-600 group
         ${isActive ? 'dragging opacity-90' : ''}
         ${item.type === 'weapon' ? 'bg-red-50' : ''}
         ${item.type === 'armor' ? 'bg-blue-50' : ''}
@@ -92,6 +102,17 @@ export const ItemCard: React.FC<ItemCardProps> = ({ item, onRotate, isDragging }
           </div>
         )}
       </div>
+      
+      {/* Delete button - appears on hover */}
+      <button
+        onClick={handleDelete}
+        className="absolute bottom-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 
+                   text-amber-600 hover:text-red-600 w-4 h-4 
+                   flex items-center justify-center pointer-events-auto"
+        title="Delete item"
+      >
+        <RiDeleteBin6Line size={12} />
+      </button>
     </div>
   );
 };
