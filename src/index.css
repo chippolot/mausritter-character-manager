@@ -34,4 +34,43 @@
   .inventory-slot.filled {
     @apply border-solid bg-white;
   }
+  
+  .item-card {
+    @apply transition-all duration-200 ease-out;
+    box-shadow: 0 2px 8px rgba(120, 53, 15, 0.1);
+  }
+  
+  .item-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(120, 53, 15, 0.2);
+  }
+  
+  .item-card:active {
+    transform: translateY(0px) scale(1.02);
+    box-shadow: 0 6px 16px rgba(120, 53, 15, 0.3);
+  }
+  
+  .item-card.dragging {
+    @apply rotate-3 scale-105;
+    box-shadow: 0 8px 20px rgba(120, 53, 15, 0.4);
+    z-index: 1000;
+  }
+  
+  .grid-cell {
+    @apply transition-all duration-200 ease-out;
+  }
+  
+  .grid-cell.drop-target {
+    @apply bg-yellow-100 border-yellow-400 scale-105;
+    box-shadow: inset 0 0 10px rgba(251, 191, 36, 0.3);
+  }
+  
+  .scratch-area {
+    @apply transition-all duration-300 ease-out;
+  }
+  
+  .scratch-area.drop-hover {
+    @apply bg-yellow-50 border-yellow-400;
+    box-shadow: inset 0 0 20px rgba(251, 191, 36, 0.2);
+  }
 }

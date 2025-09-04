@@ -3,6 +3,7 @@ import { Character } from '../stores/characterStore-simple';
 import { useCharacterStore } from '../stores/characterStore-simple';
 import { AttributeBlock } from './AttributeBlock';
 import { InventoryGrid } from './InventoryGrid';
+import { TactileInventory } from './TactileInventory';
 import { EquipmentSlots } from './EquipmentSlots';
 import { HirelingList } from './HirelingList';
 import { CharacterDetails } from './CharacterDetails';
@@ -37,7 +38,10 @@ export const CharacterSheet: React.FC<CharacterSheetProps> = ({ character }) => 
         </div>
 
         <div className="lg:col-span-2 space-y-6">
-          <InventoryGrid character={character} onUpdate={handleUpdate} />
+          <TactileInventory 
+            items={character.tactileInventory} 
+            onItemsChange={(items) => handleUpdate({ tactileInventory: items })}
+          />
           <HirelingList character={character} onUpdate={handleUpdate} />
         </div>
       </div>

@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
+import { PlacedItem } from '../types/inventory';
 
 // Inline types for testing
 interface Character {
@@ -22,6 +23,7 @@ interface Character {
   offHandWeapon?: InventoryItem;
   armor?: InventoryItem;
   inventory: (InventoryItem | null)[];
+  tactileInventory: PlacedItem[];
   hirelings: Hireling[];
 }
 
@@ -120,6 +122,7 @@ export const createNewCharacter = (): Character => ({
   grit: 0,
   pips: 0,
   inventory: new Array(6).fill(null),
+  tactileInventory: [],
   hirelings: [],
 });
 
