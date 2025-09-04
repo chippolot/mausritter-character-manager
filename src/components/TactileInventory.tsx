@@ -12,8 +12,10 @@ import {
 import { ItemCard } from './ItemCard';
 import { InventoryGrid } from './InventoryGrid';
 import { ScratchArea } from './ScratchArea';
+import { ItemAddForm } from './ItemAddForm';
 import { PlacedItem, GridPosition } from '../types/inventory';
 import { GRID_CONFIG, ITEM_SIZES, GRID_GAP, GRID_PADDING, GRID_OFFSET, SCRATCH_PADDING } from '../constants/inventory';
+import { useMausritterItems, MausritterItemData } from '../hooks/useMausritterItems';
 
 interface TactileInventoryProps {
   items: PlacedItem[];
@@ -26,6 +28,7 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
 }) => {
   const [activeItem, setActiveItem] = useState<PlacedItem | null>(null);
   const [pendingItem, setPendingItem] = useState<PlacedItem | null>(null);
+  const { createItemFromData, items: itemsData } = useMausritterItems();
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -309,88 +312,39 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
     onItemsChange([...items, newItem]);
   };
 
+  const handleItemSelect = useCallback((itemData: MausritterItemData, type: PlacedItem['type']) => {
+    const itemBase = createItemFromData(itemData, type);
+    const newItem: PlacedItem = {
+      id: crypto.randomUUID(),
+      ...itemBase,
+      position: { x: 0, y: 0 },
+      rotation: 0,
+      isInGrid: false,
+      scratchPosition: { x: 50, y: 50 },
+    };
+    onItemsChange([...items, newItem]);
+  }, [items, onItemsChange, createItemFromData]);
+
+  const addPipPurse = useCallback(() => {
+    const purseData = itemsData.pipPurse;
+    const itemBase = createItemFromData(purseData, 'pip-purse');
+    const newItem: PlacedItem = {
+      id: crypto.randomUUID(),
+      ...itemBase,
+      position: { x: 0, y: 0 },
+      rotation: 0,
+      isInGrid: false,
+      scratchPosition: { x: 50, y: 50 },
+    };
+    onItemsChange([...items, newItem]);
+  }, [items, onItemsChange, itemsData.pipPurse, createItemFromData]);
+
   return (
     <div className="card">
-      <div className="mb-6">
-        <div className="flex flex-wrap gap-2 mb-4">
-          <button
-            onClick={() => addNewItem('Sword', 'weapon', 'small', undefined, undefined, { damage: 'd6', weaponCategory: 'light', maxUsageDots: 3, usageDots: 3 })}
-            className="button-primary text-sm"
-          >
-            + Sword (1×1)
-          </button>
-          <button
-            onClick={() => addNewItem('Long Bow', 'weapon', 'large', undefined, undefined, { damage: 'd6', weaponCategory: 'medium', maxUsageDots: 3, usageDots: 3 })}
-            className="button-primary text-sm"
-          >
-            + Long Bow (2×1)
-          </button>
-          <button
-            onClick={() => addNewItem('Ration', 'item', 'small', undefined, undefined, { maxUsageDots: 3, usageDots: 3 })}
-            className="button-primary text-sm"
-          >
-            + Ration (1×1)
-          </button>
-          <button
-            onClick={() => addNewItem('Rope', 'item', 'large', undefined, undefined, { maxUsageDots: 6, usageDots: 6 })}
-            className="button-primary text-sm"
-          >
-            + Rope (2×1)
-          </button>
-          <button
-            onClick={() => addNewItem('Chain Mail', 'armor', 'large', undefined, undefined, { defense: 2, maxUsageDots: 3, usageDots: 3 })}
-            className="button-primary text-sm"
-          >
-            + Chain Mail (2×1)
-          </button>
-          <button
-            onClick={() => addNewItem('Pip Purse', 'pip-purse', 'small', undefined, undefined, { pipValue: 0, maxPipValue: 250 })}
-            className="bg-yellow-500 hover:bg-yellow-600 text-white px-2 py-1 rounded text-sm"
-          >
-            + Pip Purse (1×1)
-          </button>
-        </div>
-        
-        <div className="flex flex-wrap gap-2 mb-4">
-          <span className="text-sm text-amber-800 font-semibold mr-2">Conditions:</span>
-          <button
-            onClick={() => addNewItem(
-              'Exhausted', 
-              'condition', 
-              'small', 
-              'You are weary and need rest.', 
-              'Sleep for 6 hours in a safe place'
-            )}
-            className="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded text-sm"
-          >
-            + Exhausted
-          </button>
-          <button
-            onClick={() => addNewItem(
-              'Injured', 
-              'condition', 
-              'small', 
-              'You have suffered physical harm.', 
-              'Receive medical attention or heal naturally over time'
-            )}
-            className="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded text-sm"
-          >
-            + Injured
-          </button>
-          <button
-            onClick={() => addNewItem(
-              'Frightened', 
-              'condition', 
-              'small', 
-              'You are overcome with fear.', 
-              'Confront your fear or find safety and comfort'
-            )}
-            className="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded text-sm"
-          >
-            + Frightened
-          </button>
-        </div>
-      </div>
+      <ItemAddForm 
+        onItemSelect={handleItemSelect} 
+        onAddPipPurse={addPipPurse}
+      />
 
       <DndContext
         sensors={sensors}

@@ -1,0 +1,324 @@
+{
+  "weapons": [
+    {
+      "name": "Needle",
+      "damage": "d6",
+      "weaponCategory": "light",
+      "size": "small",
+      "maxUsageDots": 3,
+      "usageDots": 3
+    },
+    {
+      "name": "Dagger",
+      "damage": "d6",
+      "weaponCategory": "light",
+      "size": "small",
+      "maxUsageDots": 3,
+      "usageDots": 3
+    },
+    {
+      "name": "Hatchet",
+      "damage": "d6",
+      "weaponCategory": "light",
+      "size": "small",
+      "maxUsageDots": 3,
+      "usageDots": 3
+    },
+    {
+      "name": "Sword",
+      "damage": "d6/d8",
+      "weaponCategory": "medium",
+      "size": "small",
+      "maxUsageDots": 3,
+      "usageDots": 3
+    },
+    {
+      "name": "Axe",
+      "damage": "d6/d8",
+      "weaponCategory": "medium",
+      "size": "small",
+      "maxUsageDots": 3,
+      "usageDots": 3
+    },
+    {
+      "name": "Staff",
+      "damage": "d6/d8",
+      "weaponCategory": "medium",
+      "size": "large",
+      "maxUsageDots": 3,
+      "usageDots": 3
+    },
+    {
+      "name": "Spear",
+      "damage": "d10",
+      "weaponCategory": "heavy",
+      "size": "large",
+      "maxUsageDots": 3,
+      "usageDots": 3
+    },
+    {
+      "name": "Trashhook",
+      "damage": "d10",
+      "weaponCategory": "heavy",
+      "size": "large",
+      "maxUsageDots": 3,
+      "usageDots": 3
+    },
+    {
+      "name": "Hammer",
+      "damage": "d10",
+      "weaponCategory": "heavy",
+      "size": "large",
+      "maxUsageDots": 3,
+      "usageDots": 3
+    },
+    {
+      "name": "Sling",
+      "damage": "d6",
+      "weaponCategory": "light",
+      "size": "small",
+      "maxUsageDots": 3,
+      "usageDots": 3
+    },
+    {
+      "name": "Light Crossbow",
+      "damage": "d6",
+      "weaponCategory": "light",
+      "size": "small",
+      "maxUsageDots": 3,
+      "usageDots": 3
+    },
+    {
+      "name": "Bow",
+      "damage": "d8",
+      "weaponCategory": "heavy",
+      "size": "large",
+      "maxUsageDots": 3,
+      "usageDots": 3
+    },
+    {
+      "name": "Heavy Crossbow",
+      "damage": "d8",
+      "weaponCategory": "heavy",
+      "size": "large",
+      "maxUsageDots": 3,
+      "usageDots": 3
+    }
+  ],
+  "armor": [
+    {
+      "name": "Jerkin",
+      "defense": 1,
+      "size": "small",
+      "maxUsageDots": 3,
+      "usageDots": 3
+    },
+    {
+      "name": "Shield",
+      "defense": 1,
+      "size": "small",
+      "maxUsageDots": 3,
+      "usageDots": 3
+    },
+    {
+      "name": "Chain Mail",
+      "defense": 1,
+      "size": "large",
+      "maxUsageDots": 3,
+      "usageDots": 3
+    },
+    {
+      "name": "Plate Armor",
+      "defense": 1,
+      "size": "large",
+      "maxUsageDots": 3,
+      "usageDots": 3
+    }
+  ],
+  "items": [
+    {
+      "name": "Torch",
+      "size": "small",
+      "maxUsageDots": 3,
+      "usageDots": 3
+    },
+    {
+      "name": "Lantern",
+      "size": "small",
+      "maxUsageDots": 6,
+      "usageDots": 6
+    },
+    {
+      "name": "Rations",
+      "size": "small",
+      "maxUsageDots": 3,
+      "usageDots": 3
+    },
+    {
+      "name": "Rope",
+      "size": "small",
+      "maxUsageDots": 3,
+      "usageDots": 3
+    },
+    {
+      "name": "Cookpots",
+      "size": "small",
+      "maxUsageDots": 3,
+      "usageDots": 3
+    },
+    {
+      "name": "Bedroll",
+      "size": "small",
+      "maxUsageDots": 3,
+      "usageDots": 3
+    },
+    {
+      "name": "Grappling Hook",
+      "size": "small",
+      "maxUsageDots": 3,
+      "usageDots": 3
+    },
+    {
+      "name": "Lockpicks",
+      "size": "small",
+      "maxUsageDots": 3,
+      "usageDots": 3
+    },
+    {
+      "name": "Healing Potion",
+      "size": "small",
+      "maxUsageDots": 1,
+      "usageDots": 1
+    }
+  ],
+  "spells": [
+    {
+      "name": "Fireball",
+      "size": "small",
+      "maxUsageDots": 3,
+      "usageDots": 3
+    },
+    {
+      "name": "Heal",
+      "size": "small",
+      "maxUsageDots": 3,
+      "usageDots": 3
+    },
+    {
+      "name": "Magic Missile",
+      "size": "small",
+      "maxUsageDots": 3,
+      "usageDots": 3
+    },
+    {
+      "name": "Fear",
+      "size": "small",
+      "maxUsageDots": 3,
+      "usageDots": 3
+    },
+    {
+      "name": "Darkness",
+      "size": "small",
+      "maxUsageDots": 3,
+      "usageDots": 3
+    },
+    {
+      "name": "Restore",
+      "size": "small",
+      "maxUsageDots": 3,
+      "usageDots": 3
+    },
+    {
+      "name": "Be Understood",
+      "size": "small",
+      "maxUsageDots": 3,
+      "usageDots": 3
+    },
+    {
+      "name": "Ghost Beetle",
+      "size": "small",
+      "maxUsageDots": 3,
+      "usageDots": 3
+    },
+    {
+      "name": "Light",
+      "size": "small",
+      "maxUsageDots": 3,
+      "usageDots": 3
+    },
+    {
+      "name": "Invisible Ring",
+      "size": "small",
+      "maxUsageDots": 3,
+      "usageDots": 3
+    },
+    {
+      "name": "Knock",
+      "size": "small",
+      "maxUsageDots": 3,
+      "usageDots": 3
+    },
+    {
+      "name": "Grease",
+      "size": "small",
+      "maxUsageDots": 3,
+      "usageDots": 3
+    },
+    {
+      "name": "Grow",
+      "size": "small",
+      "maxUsageDots": 3,
+      "usageDots": 3
+    },
+    {
+      "name": "Invisibility",
+      "size": "small",
+      "maxUsageDots": 3,
+      "usageDots": 3
+    },
+    {
+      "name": "Catnip",
+      "size": "small",
+      "maxUsageDots": 3,
+      "usageDots": 3
+    }
+  ],
+  "conditions": [
+    {
+      "name": "Exhausted",
+      "description": "You are weary and need rest.",
+      "clearInstructions": "Sleep for 6 hours in a safe place",
+      "size": "small"
+    },
+    {
+      "name": "Injured",
+      "description": "You have suffered physical harm.",
+      "clearInstructions": "Receive medical attention or heal naturally over time",
+      "size": "small"
+    },
+    {
+      "name": "Frightened",
+      "description": "You are overcome with fear.",
+      "clearInstructions": "Confront your fear or find safety and comfort",
+      "size": "small"
+    },
+    {
+      "name": "Hungry",
+      "description": "You need food and sustenance.",
+      "clearInstructions": "Eat a ration or proper meal",
+      "size": "small"
+    },
+    {
+      "name": "Mad",
+      "description": "Your mind is affected by strange magic.",
+      "clearInstructions": "Rest in safety or receive magical healing",
+      "size": "small"
+    }
+  ],
+  "pipPurse": {
+    "name": "Pip Purse",
+    "size": "small",
+    "pipValue": 0,
+    "maxPipValue": 250
+  }
+}
