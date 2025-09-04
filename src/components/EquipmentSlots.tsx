@@ -53,7 +53,7 @@ export const EquipmentSlots: React.FC<EquipmentSlotsProps> = ({
 
   return (
     <div className="card">
-      <h2 className="text-xl text-amber-800 text-amber-800 mb-4">Equipment</h2>
+      <h2 className="text-xl font-bold text-amber-800 mb-4">Equipment</h2>
       
       <div className="space-y-4">
         <EquipmentSlot
@@ -76,7 +76,7 @@ export const EquipmentSlots: React.FC<EquipmentSlotsProps> = ({
       {showAddModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full mx-4">
-            <h3 className="text-lg text-amber-800 text-amber-800 mb-4">
+            <h3 className="text-lg font-bold text-amber-800 mb-4">
               Add {showAddModal === 'mainHandWeapon' || showAddModal === 'offHandWeapon' ? 'Weapon' : 'Armor'}
             </h3>
             <form

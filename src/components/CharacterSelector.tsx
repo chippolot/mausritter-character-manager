@@ -69,7 +69,7 @@ export const CharacterSelector: React.FC = () => {
               onClick={() => setCurrentCharacter(character)}
             >
               <div className="flex justify-between items-start mb-2">
-                <h3 className="text-amber-800 text-lg text-amber-800">
+                <h3 className="text-lg font-bold text-amber-800">
                   {character.name || 'Unnamed Character'}
                 </h3>
                 <button
@@ -106,7 +106,7 @@ export const CharacterSelector: React.FC = () => {
       {showDeleteConfirm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full mx-4">
-            <h3 className="text-lg text-amber-800 text-amber-800 mb-4">
+            <h3 className="text-lg font-bold text-amber-800 mb-4">
               Delete Character
             </h3>
             <p className="text-amber-800 mb-6">

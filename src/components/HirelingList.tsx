@@ -190,7 +190,7 @@ export const HirelingList: React.FC<HirelingListProps> = ({
   return (
     <div className="card">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl text-amber-800 text-amber-800">
+        <h2 className="text-xl font-bold text-amber-800">
           Hirelings ({character.hirelings.length}/2)
         </h2>
         {character.hirelings.length < 2 && (

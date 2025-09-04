@@ -24,7 +24,7 @@ export const CharacterDetails: React.FC<CharacterDetailsProps> = ({
 
   return (
     <div className="card">
-      <h2 className="text-xl text-amber-800 mb-4" style={{fontFamily: 'Cinzel, serif'}}>Character Details</h2>
+      <h2 className="text-xl font-bold text-amber-800 mb-4">Character Details</h2>
       
       <div className="space-y-4">
         <div>

@@ -94,7 +94,6 @@ export const InventoryGrid: React.FC<InventoryGridProps> = ({ onGridDrop }) => {
 
   return (
     <div className="relative">
-      <h2 className="text-xl text-amber-800 mb-4 font-bold">Inventory</h2>
       
       {/* Section labels */}
       <div className="mb-2 flex" style={{

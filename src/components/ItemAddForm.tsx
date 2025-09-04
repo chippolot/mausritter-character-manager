@@ -16,14 +16,15 @@ export const ItemAddForm: React.FC<ItemAddFormProps> = ({ onItemSelect, onAddPip
   const [selectedItem, setSelectedItem] = useState<string>('');
   const [customDialogOpen, setCustomDialogOpen] = useState(false);
   const [customDialogCategory, setCustomDialogCategory] = useState<'weapon' | 'armor' | 'item' | 'spell' | 'condition'>('weapon');
+  const [isExpanded, setIsExpanded] = useState(false);
 
   const categories = [
-    { value: 'weapon' as const, label: 'Weapons' },
-    { value: 'armor' as const, label: 'Armor' },
-    { value: 'item' as const, label: 'Items & Gear' },
-    { value: 'spell' as const, label: 'Spells' },
-    { value: 'condition' as const, label: 'Conditions' },
-    { value: 'currency' as const, label: 'Currency' },
+    { value: 'weapon' as const, label: 'Weapons', colorClass: 'bg-red-100 text-red-800 border-red-200 hover:bg-red-150' },
+    { value: 'armor' as const, label: 'Armor', colorClass: 'bg-blue-100 text-blue-800 border-blue-200 hover:bg-blue-150' },
+    { value: 'item' as const, label: 'Items & Gear', colorClass: 'bg-green-100 text-green-800 border-green-200 hover:bg-green-150' },
+    { value: 'spell' as const, label: 'Spells', colorClass: 'bg-purple-100 text-purple-800 border-purple-200 hover:bg-purple-150' },
+    { value: 'condition' as const, label: 'Conditions', colorClass: 'bg-orange-100 text-orange-800 border-orange-200 hover:bg-orange-150' },
+    { value: 'currency' as const, label: 'Currency', colorClass: 'bg-yellow-100 text-yellow-800 border-yellow-200 hover:bg-yellow-150' },
   ];
 
   const getItemsForCategory = () => {
@@ -76,8 +77,6 @@ export const ItemAddForm: React.FC<ItemAddFormProps> = ({ onItemSelect, onAddPip
 
   return (
     <div className="mb-6">
-      <h3 className="text-sm font-semibold text-stone-700 mb-3">Add Items:</h3>
-      
       <div className="flex flex-col gap-3">
         {/* Category Selection */}
         <div className="flex flex-wrap gap-2">
@@ -85,7 +84,9 @@ export const ItemAddForm: React.FC<ItemAddFormProps> = ({ onItemSelect, onAddPip
             <button
               key={category.value}
               onClick={() => handleCategoryChange(category.value)}
-              className={`button-primary text-sm transition-colors ${
+              className={`px-3 py-2 rounded border text-sm font-medium transition-colors ${
+                category.colorClass
+              } ${
                 selectedCategory === category.value 
                   ? 'ring-2 ring-offset-1 ring-amber-400' 
                   : ''

@@ -14,7 +14,7 @@ import { InventoryGrid } from './InventoryGrid';
 import { ScratchArea } from './ScratchArea';
 import { ItemAddForm } from './ItemAddForm';
 import { PlacedItem, GridPosition } from '../types/inventory';
-import { GRID_CONFIG, ITEM_SIZES, GRID_GAP, GRID_PADDING, GRID_OFFSET, SCRATCH_PADDING } from '../constants/inventory';
+import { GRID_CONFIG, GRID_GAP, GRID_PADDING, GRID_OFFSET, SCRATCH_PADDING } from '../constants/inventory';
 import { useMausritterItems, MausritterItemData } from '../hooks/useMausritterItems';
 
 interface TactileInventoryProps {
@@ -294,24 +294,6 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
     setPendingItem(null);
   }, [pendingItem, canPlaceItem, items, onItemsChange]);
 
-
-  const addNewItem = (name: string, type: PlacedItem['type'], size: 'small' | 'large' = 'small', description?: string, clearInstructions?: string, additionalProps?: Partial<PlacedItem>) => {
-    const newItem: PlacedItem = {
-      id: crypto.randomUUID(),
-      name,
-      type,
-      description,
-      clearInstructions,
-      size: ITEM_SIZES[size],
-      position: { x: 0, y: 0 },
-      rotation: 0,
-      isInGrid: false,
-      scratchPosition: { x: 50, y: 50 },
-      ...additionalProps,
-    };
-    onItemsChange([...items, newItem]);
-  };
-
   const handleItemSelect = useCallback((itemData: MausritterItemData, type: PlacedItem['type']) => {
     const itemBase = createItemFromData(itemData, type);
     const newItem: PlacedItem = {
@@ -341,6 +323,8 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
 
   return (
     <div className="card">
+      <h2 className="text-xl font-bold text-amber-800 mb-4">Inventory</h2>
+      
       <ItemAddForm 
         onItemSelect={handleItemSelect} 
         onAddPipPurse={addPipPurse}
