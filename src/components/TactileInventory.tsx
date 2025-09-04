@@ -70,10 +70,28 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
     return true;
   }, [items]);
 
-  const snapToGrid = useCallback((x: number, y: number): GridPosition => {
+  const snapToGrid = useCallback((mouseX: number, mouseY: number, item: PlacedItem): GridPosition => {
+    // We want to snap based on the item's top-left corner position
+    // Since the mouse might be anywhere on the item, we need to estimate where the top-left corner is
+    // For simplicity, assume the mouse is roughly at the center of the item during drag
+    
+    const { width, height } = item.size;
+    const isRotated = item.rotation === 90;
+    const actualWidth = isRotated ? height : width;
+    const actualHeight = isRotated ? width : height;
+    
+    // Calculate where the top-left corner would be (assuming mouse is at item center)
+    const itemTopLeftX = mouseX - (actualWidth * GRID_CONFIG.cellSize / 2);
+    const itemTopLeftY = mouseY - (actualHeight * GRID_CONFIG.cellSize / 2);
+    
+    // Find which grid cell the top-left corner should snap to
+    const gridX = Math.round(itemTopLeftX / GRID_CONFIG.cellSize);
+    const gridY = Math.round(itemTopLeftY / GRID_CONFIG.cellSize);
+    
+    // Ensure the item fits within the grid bounds
     return {
-      x: Math.max(0, Math.min(GRID_CONFIG.width - 1, Math.round(x / GRID_CONFIG.cellSize))),
-      y: Math.max(0, Math.min(GRID_CONFIG.height - 1, Math.round(y / GRID_CONFIG.cellSize))),
+      x: Math.max(0, Math.min(GRID_CONFIG.width - actualWidth, gridX)),
+      y: Math.max(0, Math.min(GRID_CONFIG.height - actualHeight, gridY)),
     };
   }, []);
 
@@ -99,32 +117,21 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
     let updatedItem: PlacedItem;
 
     if (over.id === 'inventory-grid') {
-      // Get the current position of the dragged item (where it visually appears)
+      // Use the DragOverlay position to determine where to drop
       const gridElement = document.querySelector('[data-id="inventory-grid"]') as HTMLElement;
       if (!gridElement) return;
       
       const rect = gridElement.getBoundingClientRect();
       
-      // Calculate position based on where the item currently is + delta
-      let currentX, currentY;
-      if (draggedItem.isInGrid) {
-        currentX = draggedItem.position.x * GRID_CONFIG.cellSize;
-        currentY = draggedItem.position.y * GRID_CONFIG.cellSize;
-      } else if (draggedItem.scratchPosition) {
-        // Coming from scratch area - use current mouse position
-        const mouseX = event.activatorEvent.clientX;
-        const mouseY = event.activatorEvent.clientY;
-        currentX = mouseX - rect.left - 16;
-        currentY = mouseY - rect.top - 64;
-      } else {
-        return;
-      }
-
-      // Add the drag delta
-      const finalX = currentX + (event.delta?.x || 0);
-      const finalY = currentY + (event.delta?.y || 0);
+      // Get current mouse position relative to grid
+      const mouseX = event.activatorEvent.clientX + (event.delta?.x || 0);
+      const mouseY = event.activatorEvent.clientY + (event.delta?.y || 0);
       
-      const dropPosition = snapToGrid(finalX, finalY);
+      // Convert to grid coordinates (accounting for padding and header)
+      const gridX = mouseX - rect.left - 16; // 16px padding
+      const gridY = mouseY - rect.top - 16;  // 16px padding (removed extra header offset)
+      
+      const dropPosition = snapToGrid(gridX, gridY, draggedItem);
 
       if (canPlaceItem(draggedItem, dropPosition)) {
         updatedItem = {
@@ -143,31 +150,20 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
       
       const rect = scratchElement.getBoundingClientRect();
       
-      // Calculate final position based on current position + drag delta
-      let currentX, currentY;
-      if (draggedItem.isInGrid) {
-        // Coming from grid - use mouse position
-        const mouseX = event.activatorEvent.clientX;
-        const mouseY = event.activatorEvent.clientY;
-        currentX = mouseX - rect.left;
-        currentY = mouseY - rect.top;
-      } else if (draggedItem.scratchPosition) {
-        currentX = draggedItem.scratchPosition.x;
-        currentY = draggedItem.scratchPosition.y;
-      } else {
-        return;
-      }
-
-      // Add drag delta and center the item
-      const finalX = currentX + (event.delta?.x || 0) - 40;
-      const finalY = currentY + (event.delta?.y || 0) - 40;
+      // Get current mouse position relative to scratch area
+      const mouseX = event.activatorEvent.clientX + (event.delta?.x || 0);
+      const mouseY = event.activatorEvent.clientY + (event.delta?.y || 0);
+      
+      // Convert to scratch area coordinates (center the item)
+      const scratchX = mouseX - rect.left - 40; // Center item (40px = half of typical item width)
+      const scratchY = mouseY - rect.top - 40;  // Center item (40px = half of typical item height)
 
       updatedItem = {
         ...draggedItem,
         isInGrid: false,
         scratchPosition: { 
-          x: Math.max(0, finalX), 
-          y: Math.max(0, finalY) 
+          x: Math.max(0, scratchX), 
+          y: Math.max(0, scratchY) 
         },
       };
     } else {
