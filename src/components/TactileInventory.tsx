@@ -153,11 +153,11 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
       
       const rect = scratchElement.getBoundingClientRect();
       
-      // Get current mouse position relative to scratch area
-      const mouseX = event.activatorEvent.clientX + (event.delta?.x || 0);
-      const mouseY = event.activatorEvent.clientY + (event.delta?.y || 0);
+      // Get the current mouse position (where the DragOverlay is displayed)
+      const currentMouseX = event.activatorEvent.clientX + (event.delta?.x || 0);
+      const currentMouseY = event.activatorEvent.clientY + (event.delta?.y || 0);
       
-      // Calculate item dimensions
+      // Calculate item dimensions in pixels
       const { width, height } = draggedItem.size;
       const isRotated = draggedItem.rotation === 90;
       const actualWidth = isRotated ? height : width;
@@ -165,31 +165,36 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
       const itemPixelWidth = actualWidth * GRID_CONFIG.cellSize;
       const itemPixelHeight = actualHeight * GRID_CONFIG.cellSize;
       
-      // Fine-tuning variables - adjust these to align bounds with visual borders
-      const paddingLeft = 0;   // Left padding offset
-      const paddingTop = -100;    // Top padding offset  
-      const paddingRight = 36;  // Right padding offset
-      const paddingBottom = 36; // Bottom padding offset
+      // The DragOverlay centers the item on the mouse cursor, so we need to calculate
+      // the top-left corner position of where the item visually appears
+      const itemVisualLeft = currentMouseX - (itemPixelWidth / 2);
+      const itemVisualTop = currentMouseY - (itemPixelHeight / 2);
       
-      const contentWidth = rect.width;
-      const contentHeight = rect.height;
+      // Convert to scratch area coordinate system
+      // Define individual padding values for fine-tuning scratch area bounds
+      const paddingTop = -30;    // Top padding
+      const paddingLeft = -12;   // Left padding  
+      const paddingBottom = 68; // Bottom padding
+      const paddingRight = 32;  // Right padding
       
-      // Convert to scratch area coordinates (position relative to content area)
-      const scratchX = (mouseX - rect.left - paddingLeft) - (itemPixelWidth / 2);
-      const scratchY = (mouseY - rect.top - paddingTop) - (itemPixelHeight / 2);
-
-      // Ensure item stays within the actual visual content bounds
-      const minX = paddingLeft;
-      const minY = paddingTop;
-      const maxX = contentWidth - paddingRight;
-      const maxY = contentHeight - paddingBottom;
+      const scratchX = itemVisualLeft - rect.left - paddingLeft;
+      const scratchY = itemVisualTop - rect.top - paddingTop;
+      
+      // Calculate the usable content area accounting for individual padding
+      const contentWidth = rect.width - paddingLeft - paddingRight;
+      const contentHeight = rect.height - paddingTop - paddingBottom;
+      
+      // Clamp the item position so it stays within the scratch area bounds
+      // Ensure no part of the item extends outside the dotted border
+      const clampedX = Math.max(paddingLeft, Math.min(contentWidth - itemPixelWidth, scratchX));
+      const clampedY = Math.max(paddingTop, Math.min(contentHeight - itemPixelHeight, scratchY));
 
       updatedItem = {
         ...draggedItem,
         isInGrid: false,
         scratchPosition: { 
-          x: Math.max(minX, Math.min(maxX, scratchX)), 
-          y: Math.max(minY, Math.min(maxY, scratchY)) 
+          x: clampedX, 
+          y: clampedY 
         },
       };
     } else {
