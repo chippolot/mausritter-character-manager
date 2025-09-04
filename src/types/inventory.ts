@@ -20,6 +20,9 @@ export interface PlacedItem {
   cost?: number;
   weight?: number;
   clearInstructions?: string; // For condition cards
+  imageUrl?: string; // Optional image for regular items
+  weaponCategory?: 'light' | 'medium' | 'heavy'; // For weapons
+  defense?: number; // For armor (replaces armor field)
   size: ItemSize;
   position: GridPosition;
   rotation: 0 | 90;

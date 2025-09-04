@@ -213,6 +213,20 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
     onItemsChange(newItems);
   }, [items, onItemsChange]);
 
+  const handleToggleUsagePip = useCallback((itemId: string, pipIndex: number) => {
+    const newItems = items.map(item => {
+      if (item.id === itemId) {
+        const currentUsage = item.usageDots || 0;
+        // If clicking a pip that's already filled, reduce usage to that pip
+        // If clicking an empty pip, increase usage to include that pip
+        const newUsage = pipIndex < currentUsage ? pipIndex : pipIndex + 1;
+        return { ...item, usageDots: newUsage };
+      }
+      return item;
+    });
+    onItemsChange(newItems);
+  }, [items, onItemsChange]);
+
   const handleRotateItem = useCallback((itemId: string) => {
     const newItems = items.map((item) => {
       if (item.id === itemId) {
@@ -268,7 +282,7 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
   }, [pendingItem, canPlaceItem, items, onItemsChange]);
 
 
-  const addNewItem = (name: string, type: PlacedItem['type'], size: 'small' | 'large' = 'small', description?: string, clearInstructions?: string) => {
+  const addNewItem = (name: string, type: PlacedItem['type'], size: 'small' | 'large' = 'small', description?: string, clearInstructions?: string, additionalProps?: Partial<PlacedItem>) => {
     const newItem: PlacedItem = {
       id: crypto.randomUUID(),
       name,
@@ -280,6 +294,7 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
       rotation: 0,
       isInGrid: false,
       scratchPosition: { x: 50, y: 50 },
+      ...additionalProps,
     };
     onItemsChange([...items, newItem]);
   };
@@ -289,28 +304,34 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
       <div className="mb-6">
         <div className="flex flex-wrap gap-2 mb-4">
           <button
-            onClick={() => addNewItem('Sword', 'weapon', 'small')}
+            onClick={() => addNewItem('Sword', 'weapon', 'small', undefined, undefined, { damage: 'd6', weaponCategory: 'light', maxUsageDots: 3, usageDots: 3 })}
             className="button-primary text-sm"
           >
             + Sword (1×1)
           </button>
           <button
-            onClick={() => addNewItem('Long Bow', 'weapon', 'large')}
+            onClick={() => addNewItem('Long Bow', 'weapon', 'large', undefined, undefined, { damage: 'd6', weaponCategory: 'medium', maxUsageDots: 3, usageDots: 3 })}
             className="button-primary text-sm"
           >
             + Long Bow (2×1)
           </button>
           <button
-            onClick={() => addNewItem('Ration', 'item', 'small')}
+            onClick={() => addNewItem('Ration', 'item', 'small', undefined, undefined, { maxUsageDots: 3, usageDots: 3 })}
             className="button-primary text-sm"
           >
             + Ration (1×1)
           </button>
           <button
-            onClick={() => addNewItem('Rope', 'item', 'large')}
+            onClick={() => addNewItem('Rope', 'item', 'large', undefined, undefined, { maxUsageDots: 6, usageDots: 6 })}
             className="button-primary text-sm"
           >
             + Rope (2×1)
+          </button>
+          <button
+            onClick={() => addNewItem('Chain Mail', 'armor', 'large', undefined, undefined, { defense: 2, maxUsageDots: 3, usageDots: 3 })}
+            className="button-primary text-sm"
+          >
+            + Chain Mail (2×1)
           </button>
         </div>
         
@@ -379,6 +400,7 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
                   item={item}
                   onRotate={handleRotateItem}
                   onDelete={handleDeleteItem}
+                  onToggleUsagePip={handleToggleUsagePip}
                   isDragging={false}
                 />
               </div>
@@ -405,6 +427,7 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
                     item={item}
                     onRotate={handleRotateItem}
                     onDelete={handleDeleteItem}
+                    onToggleUsagePip={handleToggleUsagePip}
                     isDragging={false}
                   />
                 </div>
@@ -419,6 +442,7 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
               item={activeItem}
               onRotate={() => {}}
               onDelete={() => {}}
+              onToggleUsagePip={() => {}}
               isDragging
             />
           ) : null}

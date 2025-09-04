@@ -9,10 +9,11 @@ interface ItemCardProps {
   item: PlacedItem;
   onRotate: (id: string) => void;
   onDelete: (id: string) => void;
+  onToggleUsagePip?: (itemId: string, pipIndex: number) => void;
   isDragging?: boolean;
 }
 
-export const ItemCard: React.FC<ItemCardProps> = ({ item, onRotate, onDelete, isDragging }) => {
+export const ItemCard: React.FC<ItemCardProps> = ({ item, onRotate, onDelete, onToggleUsagePip, isDragging }) => {
   const {
     attributes,
     listeners,
@@ -61,6 +62,14 @@ export const ItemCard: React.FC<ItemCardProps> = ({ item, onRotate, onDelete, is
     e.stopPropagation();
     if (confirm(`Delete "${item.name}"?`)) {
       onDelete(item.id);
+    }
+  };
+
+  const handlePipClick = (e: React.MouseEvent, pipIndex: number) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (onToggleUsagePip) {
+      onToggleUsagePip(item.id, pipIndex);
     }
   };
 
@@ -117,15 +126,52 @@ export const ItemCard: React.FC<ItemCardProps> = ({ item, onRotate, onDelete, is
             <div className="font-semibold text-stone-800 text-s leading-tight">
               {item.name}
             </div>
-            <hr/>
-            <div className="text-xs text-amber-800 capitalize mt-1">
-              {item.type}
+            <hr className="my-1 border-stone-300"/>
+            
+            {/* Main content area with relative positioning */}
+            <div className="flex-1 relative">
+              {/* Optional image background */}
+              {item.imageUrl && (
+                <div 
+                  className="absolute inset-0 bg-cover bg-center rounded opacity-20"
+                  style={{ backgroundImage: `url(${item.imageUrl})` }}
+                />
+              )}
+              
+              {/* Usage pips in upper-left (3 column grid) */}
+              {item.maxUsageDots && (
+                <div className="absolute top-1 left-1 grid grid-cols-3 gap-0.5">
+                  {Array.from({ length: item.maxUsageDots || 3 }, (_, index) => (
+                    <button
+                      key={index}
+                      onClick={(e) => handlePipClick(e, index)}
+                      className={`w-2 h-2 rounded-full border pointer-events-auto ${
+                        index < (item.usageDots || 0)
+                          ? 'bg-amber-600 border-amber-700'
+                          : 'bg-white border-stone-400'
+                      }`}
+                      title={`Usage pip ${index + 1}`}
+                    />
+                  ))}
+                </div>
+              )}
+              
+              {/* Damage/Defense in upper-right */}
+              {(item.damage || item.defense || item.armor) && (
+                <div className="absolute top-1 right-1 text-xs font-semibold text-stone-800 bg-white bg-opacity-80 px-1 rounded">
+                  {item.damage && item.damage}
+                  {item.defense && `${item.defense} def`}
+                  {!item.defense && item.armor && `${item.armor} def`}
+                </div>
+              )}
+              
+              {/* Weapon category in lower-left */}
+              {item.weaponCategory && (
+                <div className="absolute bottom-1 left-1 text-xs font-medium text-stone-700 bg-white bg-opacity-80 px-1 rounded capitalize">
+                  {item.weaponCategory}
+                </div>
+              )}
             </div>
-            {item.usageDots && (
-              <div className="text-xs text-amber-800 mt-1">
-                {item.usageDots}/{item.maxUsageDots}
-              </div>
-            )}
           </>
         )}
       </div>
