@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useMausritterItems, MausritterItemData } from '../hooks/useMausritterItems';
 import { PlacedItem } from '../types/inventory';
+import { CustomItemDialog } from './CustomItemDialog';
 
 interface ItemAddFormProps {
   onItemSelect: (itemData: MausritterItemData, type: PlacedItem['type']) => void;
@@ -13,6 +14,8 @@ export const ItemAddForm: React.FC<ItemAddFormProps> = ({ onItemSelect, onAddPip
   const { items } = useMausritterItems();
   const [selectedCategory, setSelectedCategory] = useState<ItemCategory>('');
   const [selectedItem, setSelectedItem] = useState<string>('');
+  const [customDialogOpen, setCustomDialogOpen] = useState(false);
+  const [customDialogCategory, setCustomDialogCategory] = useState<'weapon' | 'armor' | 'item' | 'spell' | 'condition'>('weapon');
 
   const categories = [
     { value: 'weapon' as const, label: 'Weapons' },
@@ -56,6 +59,16 @@ export const ItemAddForm: React.FC<ItemAddFormProps> = ({ onItemSelect, onAddPip
         setSelectedCategory(''); // Reset category selection
       }
     }
+  };
+
+  const handleCreateCustom = (category: 'weapon' | 'armor' | 'item' | 'spell' | 'condition') => {
+    setCustomDialogCategory(category);
+    setCustomDialogOpen(true);
+  };
+
+  const handleCustomSubmit = (itemData: MausritterItemData, type: PlacedItem['type']) => {
+    onItemSelect(itemData, type);
+    setCustomDialogOpen(false);
   };
 
   const selectedCategoryData = categories.find(cat => cat.value === selectedCategory);
@@ -108,6 +121,12 @@ export const ItemAddForm: React.FC<ItemAddFormProps> = ({ onItemSelect, onAddPip
             >
               + Add
             </button>
+            <button
+              onClick={() => handleCreateCustom(selectedCategory as 'weapon' | 'armor' | 'item' | 'spell' | 'condition')}
+              className="button-primary text-sm"
+            >
+              + Custom
+            </button>
           </div>
         )}
 
@@ -123,6 +142,13 @@ export const ItemAddForm: React.FC<ItemAddFormProps> = ({ onItemSelect, onAddPip
             </button>
           </div>
         )}
+
+        <CustomItemDialog
+          isOpen={customDialogOpen}
+          onClose={() => setCustomDialogOpen(false)}
+          category={customDialogCategory}
+          onSubmit={handleCustomSubmit}
+        />
       </div>
     </div>
   );
