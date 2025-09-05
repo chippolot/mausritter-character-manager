@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Character, Hireling } from '../stores/characterStore-simple';
 import { createNewHireling } from '../stores/characterStore-simple';
 
@@ -11,14 +11,12 @@ export const HirelingList: React.FC<HirelingListProps> = ({
   character,
   onUpdate,
 }) => {
-  const [editingHireling, setEditingHireling] = useState<string | null>(null);
 
   const addHireling = () => {
     const newHireling = createNewHireling();
     onUpdate({ 
       hirelings: [...character.hirelings, newHireling] 
     });
-    setEditingHireling(newHireling.id);
   };
 
   const updateHireling = (id: string, updates: Partial<Hireling>) => {
@@ -34,8 +32,6 @@ export const HirelingList: React.FC<HirelingListProps> = ({
   };
 
   const HirelingCard: React.FC<{ hireling: Hireling }> = ({ hireling }) => {
-    const isEditing = editingHireling === hireling.id;
-
     const handleInputChange = (field: keyof Hireling) => (
       e: React.ChangeEvent<HTMLInputElement>
     ) => {
@@ -48,139 +44,106 @@ export const HirelingList: React.FC<HirelingListProps> = ({
     return (
       <div className="border border-amber-800 rounded p-4 bg-white bg-opacity-50">
         <div className="flex justify-between items-start mb-3">
-          <h4 className="text-amber-800 text-amber-800 text-xl">
-            {isEditing ? (
-              <input
-                type="text"
-                value={hireling.name}
-                onChange={handleInputChange('name')}
-                className="input-field text-amber-800 text-xl"
-                placeholder="Hireling name"
-                autoFocus
-              />
-            ) : (
-              hireling.name || 'Unnamed Hireling'
-            )}
-          </h4>
-          <div className="flex space-x-1">
-            <button
-              onClick={() => setEditingHireling(isEditing ? null : hireling.id)}
-              className="text-amber-800 hover:text-yellow-600 text-sm"
-            >
-              {isEditing ? 'Save' : 'Edit'}
-            </button>
-            <button
-              onClick={() => removeHireling(hireling.id)}
-              className="text-amber-800 hover:text-red-600 text-sm"
-            >
-              Remove
-            </button>
+          <div className="flex-1 mr-4">
+            <label className="block text-sm font-semibold text-amber-800 mb-1">
+              Name
+            </label>
+            <input
+              type="text"
+              value={hireling.name}
+              onChange={handleInputChange('name')}
+              className="input-field text-amber-800 text-xl w-full"
+              placeholder="Hireling name"
+            />
           </div>
+          <button
+            onClick={() => removeHireling(hireling.id)}
+            className="text-amber-800 hover:text-red-600 text-sm mt-6"
+          >
+            Remove
+          </button>
         </div>
 
-        <div className="grid grid-cols-4 gap-2 mb-3">
+        <div className="flex items-end space-x-3 mb-3">
           <div>
-            <label className="text-sm font-semibold text-amber-800 block">STR</label>
-            {isEditing ? (
-              <input
-                type="number"
-                value={hireling.strength}
-                onChange={handleInputChange('strength')}
-                className="input-field w-full text-sm"
-                min="1"
-                max="20"
-              />
-            ) : (
-              <div className="text-center font-bold">{hireling.strength}</div>
-            )}
+            <label className="text-sm font-semibold text-amber-800 block mb-1">STR</label>
+            <input
+              type="number"
+              value={hireling.strength}
+              onChange={handleInputChange('strength')}
+              className="input-field w-12 text-sm text-center"
+              min="1"
+              max="20"
+            />
           </div>
           <div>
-            <label className="text-sm font-semibold text-amber-800 block">DEX</label>
-            {isEditing ? (
-              <input
-                type="number"
-                value={hireling.dexterity}
-                onChange={handleInputChange('dexterity')}
-                className="input-field w-full text-sm"
-                min="1"
-                max="20"
-              />
-            ) : (
-              <div className="text-center font-bold">{hireling.dexterity}</div>
-            )}
+            <label className="text-sm font-semibold text-amber-800 block mb-1">DEX</label>
+            <input
+              type="number"
+              value={hireling.dexterity}
+              onChange={handleInputChange('dexterity')}
+              className="input-field w-12 text-sm text-center"
+              min="1"
+              max="20"
+            />
           </div>
           <div>
-            <label className="text-sm font-semibold text-amber-800 block">WIL</label>
-            {isEditing ? (
-              <input
-                type="number"
-                value={hireling.will}
-                onChange={handleInputChange('will')}
-                className="input-field w-full text-sm"
-                min="1"
-                max="20"
-              />
-            ) : (
-              <div className="text-center font-bold">{hireling.will}</div>
-            )}
+            <label className="text-sm font-semibold text-amber-800 block mb-1">WIL</label>
+            <input
+              type="number"
+              value={hireling.will}
+              onChange={handleInputChange('will')}
+              className="input-field w-12 text-sm text-center"
+              min="1"
+              max="20"
+            />
           </div>
           <div>
-            <label className="text-sm font-semibold text-amber-800 block">Cost</label>
-            {isEditing ? (
+            <label className="text-sm font-semibold text-amber-800 block mb-1">Cost</label>
+            <div className="flex items-center">
               <input
                 type="number"
                 value={hireling.cost}
                 onChange={handleInputChange('cost')}
-                className="input-field w-full text-sm"
+                className="input-field w-20 text-sm text-center"
                 min="0"
               />
-            ) : (
-              <div className="text-center font-bold">{hireling.cost}p</div>
-            )}
+              <span className="text-amber-800 text-sm ml-1">p</span>
+            </div>
           </div>
         </div>
 
         <div className="flex items-center space-x-4">
           <div>
             <label className="text-sm font-semibold text-amber-800 block">HP</label>
-            {isEditing ? (
-              <div className="flex items-center space-x-1">
-                <input
-                  type="number"
-                  value={hireling.hitPoints}
-                  onChange={handleInputChange('hitPoints')}
-                  className="input-field w-12 text-sm"
-                  min="0"
-                />
-                <span>/</span>
-                <input
-                  type="number"
-                  value={hireling.maxHitPoints}
-                  onChange={handleInputChange('maxHitPoints')}
-                  className="input-field w-12 text-sm"
-                  min="1"
-                />
-              </div>
-            ) : (
-              <div className="font-bold">
-                {hireling.hitPoints}/{hireling.maxHitPoints}
-              </div>
-            )}
+            <div className="flex items-center space-x-1">
+              <input
+                type="number"
+                value={hireling.hitPoints}
+                onChange={handleInputChange('hitPoints')}
+                className="input-field w-12 text-sm text-center"
+                min="0"
+              />
+              <span className="text-amber-800">/</span>
+              <input
+                type="number"
+                value={hireling.maxHitPoints}
+                onChange={handleInputChange('maxHitPoints')}
+                className="input-field w-12 text-sm text-center"
+                min="1"
+              />
+            </div>
           </div>
           
           <div className="flex-1">
             <label className="text-sm font-semibold text-amber-800 block">Equipment</label>
-            {isEditing ? (
-              <input
-                type="text"
-                value={hireling.equipment || ''}
-                onChange={handleInputChange('equipment')}
-                className="input-field w-full text-sm"
-                placeholder="Equipment list"
-              />
-            ) : (
-              <div className="text-sm">{hireling.equipment || 'None'}</div>
-            )}
+            <input
+              type="text"
+              value={hireling.equipment || ''}
+              onChange={handleInputChange('equipment')}
+              className="input-field w-full text-sm"
+              placeholder="Equipment list"
+            />
           </div>
         </div>
       </div>
