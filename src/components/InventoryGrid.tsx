@@ -26,7 +26,7 @@ export const InventoryGrid: React.FC<InventoryGridProps> = ({ onGridDrop }) => {
       // Body column (middle)
       sectionClass = 'bg-blue-50 bg-opacity-40';
     } else {
-      // General inventory (right columns)
+      // Pack (right columns)
       sectionClass = 'bg-amber-50 bg-opacity-30';
     }
     
@@ -41,7 +41,7 @@ export const InventoryGrid: React.FC<InventoryGridProps> = ({ onGridDrop }) => {
       // Body column
       return 'Body';
     } else {
-      // General inventory - number sequentially
+      // Pack - number sequentially
       // Top row: cells 2,3 become 1,2
       // Bottom row: cells 2,3 become 3,4, etc.
       const inventoryIndex = (y * 3) + (x - 2) + 1;
@@ -54,7 +54,7 @@ export const InventoryGrid: React.FC<InventoryGridProps> = ({ onGridDrop }) => {
       // Paws and Body - small text at top, absolute positioned
       return 'absolute top-1 left-1/2 transform -translate-x-1/2 text-xs text-gray-500 whitespace-nowrap';
     } else {
-      // General inventory - large centered text, absolute positioned
+      // Pack - large centered text, absolute positioned
       return 'absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-lg text-gray-400 font-semibold';
     }
   };
@@ -107,7 +107,7 @@ export const InventoryGrid: React.FC<InventoryGridProps> = ({ onGridDrop }) => {
           Body
         </div>
         <div className="text-center text-sm font-semibold text-amber-700" style={{width: GRID_CONFIG.cellSize * 3 + 4}}>
-          General Inventory
+          Pack
         </div>
       </div>
       

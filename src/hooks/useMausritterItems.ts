@@ -14,6 +14,7 @@ export interface MausritterItemData {
   clearInstructions?: string;
   pipValue?: number;
   maxPipValue?: number;
+  imageKey?: string;
 }
 
 export interface MausritterItemsData {
@@ -44,6 +45,7 @@ export const useMausritterItems = () => {
       maxPipValue: itemData.maxPipValue,
       maxUsageDots: itemData.maxUsageDots,
       usageDots: itemData.usageDots,
+      imageKey: itemData.imageKey,
       size: { 
         width: itemData.size === 'small' ? 1 : 2, 
         height: 1 

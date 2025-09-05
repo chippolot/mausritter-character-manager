@@ -4,6 +4,7 @@ import { CSS } from '@dnd-kit/utilities';
 import { RiDeleteBin6Line } from 'react-icons/ri';
 import { PlacedItem } from '../types/inventory';
 import { GRID_CONFIG } from '../constants/inventory';
+import { useItemImages } from '../hooks/useItemImages';
 
 interface ItemCardProps {
   item: PlacedItem;
@@ -15,6 +16,7 @@ interface ItemCardProps {
 }
 
 export const ItemCard: React.FC<ItemCardProps> = ({ item, onRotate, onDelete, onToggleUsagePip, onPipValueChange, isDragging }) => {
+  const { getImageUrl } = useItemImages();
   const {
     attributes,
     listeners,
@@ -103,12 +105,7 @@ export const ItemCard: React.FC<ItemCardProps> = ({ item, onRotate, onDelete, on
         flex flex-col p-2 select-none
         hover:border-yellow-600 group
         ${isActive ? 'dragging opacity-90' : ''}
-        ${item.type === 'weapon' ? 'bg-red-50' : 
-          item.type === 'armor' ? 'bg-blue-50' : 
-          item.type === 'spell' ? 'bg-purple-50' : 
-          item.type === 'item' ? 'bg-green-50' : 
-          item.type === 'condition' ? 'bg-red-100' : 
-          item.type === 'pip-purse' ? 'bg-yellow-50' : 
+        ${item.type === 'condition' ? 'bg-red-100' : 
           'bg-white'}
       `}
     >
@@ -166,10 +163,12 @@ export const ItemCard: React.FC<ItemCardProps> = ({ item, onRotate, onDelete, on
             {/* Main content area with relative positioning */}
             <div className="flex-1 relative">
               {/* Optional image background */}
-              {item.imageUrl && (
+              {(item.imageUrl || item.imageKey) && (
                 <div 
-                  className="absolute inset-0 bg-cover bg-center rounded opacity-20"
-                  style={{ backgroundImage: `url(${item.imageUrl})` }}
+                  className="absolute inset-0 bg-contain bg-center bg-no-repeat rounded opacity-50"
+                  style={{ 
+                    backgroundImage: `url(${item.imageUrl || getImageUrl(item.imageKey!)})` 
+                  }}
                 />
               )}
               
@@ -193,7 +192,7 @@ export const ItemCard: React.FC<ItemCardProps> = ({ item, onRotate, onDelete, on
               
               {/* Damage/Defense in upper-right */}
               {(item.damage || item.defense || item.armor) && (
-                <div className="absolute top-1 right-1 text-xs font-semibold text-stone-800 bg-white bg-opacity-80 px-1 rounded">
+                <div className="absolute top-1 right-1 text-xs font-semibold text-stone-800 bg-white bg-opacity-80 px-1 rounded border-2 border-solid">
                   {item.damage && item.damage}
                   {item.defense && `${item.defense} def`}
                   {!item.defense && item.armor && `${item.armor} def`}
@@ -202,8 +201,8 @@ export const ItemCard: React.FC<ItemCardProps> = ({ item, onRotate, onDelete, on
               
               {/* Weapon category in lower-left */}
               {item.weaponCategory && (
-                <div className="absolute bottom-1 left-1 text-xs font-medium text-stone-700 bg-white bg-opacity-80 px-1 rounded capitalize">
-                  {item.weaponCategory}
+                <div className="absolute bottom-1 left-1 text-xs font-bold text-stone-700 bg-white bg-opacity-50 px-1 rounded">
+                  {item.weaponCategory.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
                 </div>
               )}
             </div>

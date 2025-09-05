@@ -21,6 +21,7 @@ export interface PlacedItem {
   weight?: number;
   clearInstructions?: string; // For condition cards
   imageUrl?: string; // Optional image for regular items
+  imageKey?: string; // Key to look up predefined images
   weaponCategory?: 'light' | 'medium' | 'heavy'; // For weapons
   defense?: number; // For armor (replaces armor field)
   pipValue?: number; // For pip purses - current pip count

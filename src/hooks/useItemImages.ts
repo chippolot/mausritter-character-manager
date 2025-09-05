@@ -1,0 +1,67 @@
+import { useMemo } from 'react';
+import itemImages from '../data/itemImages.json';
+
+export interface ItemImageData {
+  imageMap: Record<string, string>;
+  categories: Array<{
+    name: string;
+    images: string[];
+  }>;
+  itemNameToImage: Record<string, string>;
+}
+
+export const useItemImages = () => {
+  const imageData = useMemo(() => itemImages as ItemImageData, []);
+
+  const getImageUrl = (imageKey: string): string => {
+    const filename = imageData.imageMap[imageKey];
+    if (!filename) return '';
+    return `/src/assets/Items/${filename}`;
+  };
+
+  const getImageOptions = (category?: string) => {
+    if (category) {
+      const categoryData = imageData.categories.find(cat => 
+        cat.name.toLowerCase() === category.toLowerCase()
+      );
+      return categoryData?.images || [];
+    }
+    
+    // Return all images if no category specified
+    return Object.keys(imageData.imageMap);
+  };
+
+  const getImageKeyForItem = (itemName: string): string | undefined => {
+    return imageData.itemNameToImage[itemName];
+  };
+
+  const getAllImageOptions = () => {
+    return Object.keys(imageData.imageMap).map(key => ({
+      key,
+      filename: imageData.imageMap[key],
+      url: getImageUrl(key),
+      displayName: key.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())
+    }));
+  };
+
+  const getImageOptionsByCategory = () => {
+    return imageData.categories.map(category => ({
+      ...category,
+      options: category.images.map(key => ({
+        key,
+        filename: imageData.imageMap[key],
+        url: getImageUrl(key),
+        displayName: key.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())
+      }))
+    }));
+  };
+
+  return {
+    getImageUrl,
+    getImageOptions,
+    getImageKeyForItem,
+    getAllImageOptions,
+    getImageOptionsByCategory,
+    imageData
+  };
+};

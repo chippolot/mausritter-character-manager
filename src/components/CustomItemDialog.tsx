@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { PlacedItem } from '../types/inventory';
 import { MausritterItemData } from '../hooks/useMausritterItems';
+import { useItemImages } from '../hooks/useItemImages';
 
 interface CustomItemDialogProps {
   isOpen: boolean;
@@ -15,6 +16,7 @@ export const CustomItemDialog: React.FC<CustomItemDialogProps> = ({
   category,
   onSubmit
 }) => {
+  const { getImageOptionsByCategory, getImageUrl } = useItemImages();
   const [formData, setFormData] = useState({
     name: '',
     damage: '',
@@ -23,7 +25,8 @@ export const CustomItemDialog: React.FC<CustomItemDialogProps> = ({
     size: 'small' as 'small' | 'large',
     maxUsageDots: 3,
     description: '',
-    clearInstructions: ''
+    clearInstructions: '',
+    imageKey: ''
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -35,6 +38,7 @@ export const CustomItemDialog: React.FC<CustomItemDialogProps> = ({
       size: formData.size,
       maxUsageDots: formData.maxUsageDots,
       usageDots: formData.maxUsageDots,
+      imageKey: formData.imageKey || undefined,
       ...(category === 'weapon' && {
         damage: formData.damage || 'd6',
         weaponCategory: formData.weaponCategory
@@ -60,7 +64,8 @@ export const CustomItemDialog: React.FC<CustomItemDialogProps> = ({
       size: 'small',
       maxUsageDots: 3,
       description: '',
-      clearInstructions: ''
+      clearInstructions: '',
+      imageKey: ''
     });
   };
 
@@ -126,6 +131,40 @@ export const CustomItemDialog: React.FC<CustomItemDialogProps> = ({
                 <option value="small">Small (1×1)</option>
                 <option value="large">Large (2×1)</option>
               </select>
+            </div>
+
+            {/* Image Selector */}
+            <div>
+              <label className="block text-sm font-medium text-stone-700 mb-1">
+                Item Image
+              </label>
+              <div className="space-y-2">
+                <select
+                  value={formData.imageKey}
+                  onChange={(e) => handleInputChange('imageKey', e.target.value)}
+                  className="w-full border border-stone-300 rounded px-3 py-2 text-sm"
+                >
+                  <option value="">No image</option>
+                  {getImageOptionsByCategory().map(categoryGroup => (
+                    <optgroup key={categoryGroup.name} label={categoryGroup.name}>
+                      {categoryGroup.options.map(option => (
+                        <option key={option.key} value={option.key}>
+                          {option.displayName}
+                        </option>
+                      ))}
+                    </optgroup>
+                  ))}
+                </select>
+                {formData.imageKey && (
+                  <div className="flex justify-center">
+                    <img
+                      src={getImageUrl(formData.imageKey)}
+                      alt="Selected item"
+                      className="w-16 h-16 object-contain border border-stone-200 rounded"
+                    />
+                  </div>
+                )}
+              </div>
             </div>
 
             {/* Weapon-specific fields */}

@@ -1,0 +1,72 @@
+{
+  "imageMap": {
+    "arrows": "arrows.png",
+    "axe": "axe.png", 
+    "bow": "bow.png",
+    "dagger": "dagger.png",
+    "electric-lantern": "electric-lantern.png",
+    "hammer": "hammer.png",
+    "heavy-armour": "heavy-armour.png",
+    "hookarm": "hookarm.png",
+    "improvised": "improvised.png",
+    "lantern": "lantern.png",
+    "light-armour": "light-armour.png",
+    "mace": "mace.png",
+    "needle": "needle.png",
+    "pickaxe": "pickaxe.png",
+    "pip-purse": "pip-purse.png",
+    "rations": "rations.png",
+    "sling": "sling.png",
+    "spear": "spear.png",
+    "spell": "spell.png",
+    "stones": "stones.png",
+    "sword": "sword.png",
+    "torches": "torches.png",
+    "warhammer": "warhammer.png"
+  },
+  "categories": [
+    {
+      "name": "Weapons",
+      "images": ["dagger", "needle", "axe", "sword", "spear", "hammer", "warhammer", "mace", "pickaxe", "hookarm", "bow", "sling", "improvised"]
+    },
+    {
+      "name": "Armor", 
+      "images": ["light-armour", "heavy-armour"]
+    },
+    {
+      "name": "Items",
+      "images": ["lantern", "electric-lantern", "torches", "rations", "pip-purse", "arrows", "stones"]
+    },
+    {
+      "name": "Spells",
+      "images": ["spell"]
+    },
+    {
+      "name": "Generic",
+      "images": ["improvised"]
+    }
+  ],
+  "itemNameToImage": {
+    "Needle": "needle",
+    "Dagger": "dagger", 
+    "Hatchet": "axe",
+    "Sword": "sword",
+    "Axe": "axe",
+    "Staff": "spear",
+    "Spear": "spear",
+    "Trashhook": "hookarm",
+    "Hammer": "hammer",
+    "Sling": "sling",
+    "Light Crossbow": "bow",
+    "Bow": "bow", 
+    "Heavy Crossbow": "bow",
+    "Jerkin": "light-armour",
+    "Shield": "light-armour",
+    "Chain Mail": "heavy-armour",
+    "Plate Armor": "heavy-armour",
+    "Torch": "torches",
+    "Lantern": "lantern",
+    "Rations": "rations",
+    "Pip Purse": "pip-purse"
+  }
+}
