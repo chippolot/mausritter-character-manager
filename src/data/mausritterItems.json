@@ -6,7 +6,6 @@
       "weaponCategory": "light",
       "size": "small",
       "maxUsageDots": 3,
-      "usageDots": 3,
       "imageKey": "needle"
     },
     {
@@ -15,7 +14,6 @@
       "weaponCategory": "light",
       "size": "small",
       "maxUsageDots": 3,
-      "usageDots": 3,
       "imageKey": "dagger"
     },
     {
@@ -24,7 +22,6 @@
       "weaponCategory": "light",
       "size": "small",
       "maxUsageDots": 3,
-      "usageDots": 3,
       "imageKey": "axe"
     },
     {
@@ -33,7 +30,6 @@
       "weaponCategory": "medium",
       "size": "small",
       "maxUsageDots": 3,
-      "usageDots": 3,
       "imageKey": "sword"
     },
     {
@@ -42,7 +38,6 @@
       "weaponCategory": "medium",
       "size": "small",
       "maxUsageDots": 3,
-      "usageDots": 3,
       "imageKey": "axe"
     },
     {
@@ -51,7 +46,6 @@
       "weaponCategory": "medium",
       "size": "large",
       "maxUsageDots": 3,
-      "usageDots": 3,
       "imageKey": "spear"
     },
     {
@@ -60,7 +54,6 @@
       "weaponCategory": "heavy",
       "size": "large",
       "maxUsageDots": 3,
-      "usageDots": 3,
       "imageKey": "spear"
     },
     {
@@ -69,7 +62,6 @@
       "weaponCategory": "heavy",
       "size": "large",
       "maxUsageDots": 3,
-      "usageDots": 3,
       "imageKey": "hookarm"
     },
     {
@@ -78,7 +70,6 @@
       "weaponCategory": "heavy",
       "size": "large",
       "maxUsageDots": 3,
-      "usageDots": 3,
       "imageKey": "hammer"
     },
     {
@@ -87,7 +78,6 @@
       "weaponCategory": "light",
       "size": "small",
       "maxUsageDots": 3,
-      "usageDots": 3,
       "imageKey": "sling"
     },
     {
@@ -96,7 +86,6 @@
       "weaponCategory": "light",
       "size": "small",
       "maxUsageDots": 3,
-      "usageDots": 3,
       "imageKey": "bow"
     },
     {
@@ -105,7 +94,6 @@
       "weaponCategory": "heavy",
       "size": "large",
       "maxUsageDots": 3,
-      "usageDots": 3,
       "imageKey": "bow"
     },
     {
@@ -114,7 +102,6 @@
       "weaponCategory": "heavy",
       "size": "large",
       "maxUsageDots": 3,
-      "usageDots": 3,
       "imageKey": "bow"
     }
   ],
@@ -124,7 +111,6 @@
       "defense": 1,
       "size": "small",
       "maxUsageDots": 3,
-      "usageDots": 3,
       "imageKey": "light-armour"
     },
     {
@@ -132,7 +118,6 @@
       "defense": 1,
       "size": "small",
       "maxUsageDots": 3,
-      "usageDots": 3,
       "imageKey": "light-armour"
     },
     {
@@ -140,7 +125,6 @@
       "defense": 1,
       "size": "large",
       "maxUsageDots": 3,
-      "usageDots": 3,
       "imageKey": "heavy-armour"
     },
     {
@@ -148,7 +132,6 @@
       "defense": 1,
       "size": "large",
       "maxUsageDots": 3,
-      "usageDots": 3,
       "imageKey": "heavy-armour"
     }
   ],
@@ -157,58 +140,49 @@
       "name": "Torch",
       "size": "small",
       "maxUsageDots": 3,
-      "usageDots": 3,
       "imageKey": "torches"
     },
     {
       "name": "Lantern",
       "size": "small",
       "maxUsageDots": 6,
-      "usageDots": 6,
       "imageKey": "lantern"
     },
     {
       "name": "Rations",
       "size": "small",
       "maxUsageDots": 3,
-      "usageDots": 3,
       "imageKey": "rations"
     },
     {
       "name": "Rope",
       "size": "small",
-      "maxUsageDots": 3,
-      "usageDots": 3
+      "maxUsageDots": 3
     },
     {
       "name": "Cookpots",
       "size": "small",
-      "maxUsageDots": 3,
-      "usageDots": 3
+      "maxUsageDots": 3
     },
     {
       "name": "Bedroll",
       "size": "small",
-      "maxUsageDots": 3,
-      "usageDots": 3
+      "maxUsageDots": 3
     },
     {
       "name": "Grappling Hook",
       "size": "small",
-      "maxUsageDots": 3,
-      "usageDots": 3
+      "maxUsageDots": 3
     },
     {
       "name": "Lockpicks",
       "size": "small",
-      "maxUsageDots": 3,
-      "usageDots": 3
+      "maxUsageDots": 3
     },
     {
       "name": "Healing Potion",
       "size": "small",
-      "maxUsageDots": 1,
-      "usageDots": 1
+      "maxUsageDots": 1
     }
   ],
   "spells": [
@@ -216,94 +190,79 @@
       "name": "Fireball",
       "size": "small",
       "maxUsageDots": 3,
-      "usageDots": 3,
       "imageKey": "spell"
     },
     {
       "name": "Heal",
       "size": "small",
       "maxUsageDots": 3,
-      "usageDots": 3,
       "imageKey": "spell"
     },
     {
       "name": "Magic Missile",
       "size": "small",
       "maxUsageDots": 3,
-      "usageDots": 3,
       "imageKey": "spell"
     },
     {
       "name": "Fear",
       "size": "small",
-      "maxUsageDots": 3,
-      "usageDots": 3
+      "maxUsageDots": 3
     },
     {
       "name": "Darkness",
       "size": "small",
-      "maxUsageDots": 3,
-      "usageDots": 3
+      "maxUsageDots": 3
     },
     {
       "name": "Restore",
       "size": "small",
-      "maxUsageDots": 3,
-      "usageDots": 3
+      "maxUsageDots": 3
     },
     {
       "name": "Be Understood",
       "size": "small",
-      "maxUsageDots": 3,
-      "usageDots": 3
+      "maxUsageDots": 3
     },
     {
       "name": "Ghost Beetle",
       "size": "small",
-      "maxUsageDots": 3,
-      "usageDots": 3
+      "maxUsageDots": 3
     },
     {
       "name": "Light",
       "size": "small",
-      "maxUsageDots": 3,
-      "usageDots": 3
+      "maxUsageDots": 3
     },
     {
       "name": "Invisible Ring",
       "size": "small",
-      "maxUsageDots": 3,
-      "usageDots": 3
+      "maxUsageDots": 3
     },
     {
       "name": "Knock",
       "size": "small",
-      "maxUsageDots": 3,
-      "usageDots": 3
+      "maxUsageDots": 3
     },
     {
       "name": "Grease",
       "size": "small",
-      "maxUsageDots": 3,
-      "usageDots": 3
+      "maxUsageDots": 3
     },
     {
       "name": "Grow",
       "size": "small",
-      "maxUsageDots": 3,
-      "usageDots": 3
+      "maxUsageDots": 3
     },
     {
       "name": "Invisibility",
       "size": "small",
-      "maxUsageDots": 3,
-      "usageDots": 3
+      "maxUsageDots": 3
     },
     {
       "name": "Catnip",
       "size": "small",
-      "maxUsageDots": 3,
-      "usageDots": 3
+      "maxUsageDots": 3
     }
   ],
   "conditions": [

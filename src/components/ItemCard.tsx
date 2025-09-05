@@ -137,19 +137,29 @@ export const ItemCard: React.FC<ItemCardProps> = ({ item, onRotate, onDelete, on
             </div>
             <hr className="my-1 border-stone-300"/>
             
-            {/* Pip value display and input */}
-            <div className="flex-1 flex flex-col items-center justify-center">
-              <div className="text-lg font-bold text-amber-700 mb-2">
-                {item.pipValue || 0} pips
+            {/* Main content area with relative positioning */}
+            <div className="flex-1 relative">
+              {/* Optional image background */}
+              {(item.imageUrl || item.imageKey) && (
+                <div 
+                  className="absolute inset-0 bg-contain bg-center bg-no-repeat rounded opacity-50"
+                  style={{ 
+                    backgroundImage: `url(${item.imageUrl || getImageUrl(item.imageKey!)})` 
+                  }}
+                />
+              )}
+              
+              {/* Pip value input */}
+              <div className="flex flex-col items-center justify-end h-full relative z-10 pb-1">
+                <input
+                  type="number"
+                  min="0"
+                  max={item.maxPipValue || 250}
+                  value={item.pipValue || 0}
+                  onChange={handlePipValueChange}
+                  className="w-16 h-8 text-center text-sm border border-amber-300 rounded bg-white pointer-events-auto focus:outline-none focus:ring-2 focus:ring-amber-500"
+                />
               </div>
-              <input
-                type="number"
-                min="0"
-                max={item.maxPipValue || 250}
-                value={item.pipValue || 0}
-                onChange={handlePipValueChange}
-                className="w-16 h-8 text-center text-sm border border-amber-300 rounded bg-white pointer-events-auto focus:outline-none focus:ring-2 focus:ring-amber-500"
-              />
             </div>
           </>
         ) : (
