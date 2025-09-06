@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Background circle for better visibility -->
+  <circle cx="50" cy="50" r="45" fill="#F5F5DC" stroke="#8B4513" stroke-width="2"/>
+  
+  <!-- Mouse emoji style -->
+  <text x="50" y="65" font-size="60" text-anchor="middle" fill="#000">🐭</text>
+</svg>
