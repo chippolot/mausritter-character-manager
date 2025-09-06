@@ -44,7 +44,7 @@
       "name": "Staff",
       "damage": "d6/d8",
       "weaponCategory": "medium",
-      "size": "large",
+      "size": "tall",
       "maxUsageDots": 3,
       "imageKey": "spear"
     },
@@ -52,7 +52,7 @@
       "name": "Spear",
       "damage": "d10",
       "weaponCategory": "heavy",
-      "size": "large",
+      "size": "tall",
       "maxUsageDots": 3,
       "imageKey": "spear"
     },
@@ -60,7 +60,7 @@
       "name": "Trashhook",
       "damage": "d10",
       "weaponCategory": "heavy",
-      "size": "large",
+      "size": "tall",
       "maxUsageDots": 3,
       "imageKey": "hookarm"
     },
@@ -68,7 +68,7 @@
       "name": "Hammer",
       "damage": "d10",
       "weaponCategory": "heavy",
-      "size": "large",
+      "size": "tall",
       "maxUsageDots": 3,
       "imageKey": "hammer"
     },
@@ -92,7 +92,7 @@
       "name": "Bow",
       "damage": "d8",
       "weaponCategory": "heavy",
-      "size": "large",
+      "size": "tall",
       "maxUsageDots": 3,
       "imageKey": "bow"
     },
@@ -100,7 +100,7 @@
       "name": "Heavy Crossbow",
       "damage": "d8",
       "weaponCategory": "heavy",
-      "size": "large",
+      "size": "tall",
       "maxUsageDots": 3,
       "imageKey": "bow"
     }
@@ -123,14 +123,14 @@
     {
       "name": "Chain Mail",
       "defense": 1,
-      "size": "large",
+      "size": "tall",
       "maxUsageDots": 3,
       "imageKey": "heavy-armour"
     },
     {
       "name": "Plate Armor",
       "defense": 1,
-      "size": "large",
+      "size": "tall",
       "maxUsageDots": 3,
       "imageKey": "heavy-armour"
     }

@@ -130,9 +130,6 @@ export const InventoryGrid: React.FC<InventoryGridProps> = ({ onGridDrop }) => {
       </div>
       
       <div className="mt-2 text-sm text-amber-700">
-        <p>• <span className="text-red-700">Paws:</span> Weapons & tools you can use quickly</p>
-        <p>• <span className="text-blue-700">Body:</span> Armor & clothing worn on body</p>
-        <p>• <span className="text-amber-700">General:</span> Everything else you carry</p>
         <p>• Right-click items to rotate • Items snap to grid when dropped</p>
       </div>
     </div>

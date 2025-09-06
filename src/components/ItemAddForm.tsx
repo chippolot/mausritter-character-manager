@@ -40,7 +40,13 @@ export const ItemAddForm: React.FC<ItemAddFormProps> = ({ onItemSelect, onAddPip
   };
 
   const handleCategoryChange = (category: ItemCategory) => {
-    setSelectedCategory(category);
+    if (selectedCategory === category) {
+      // If clicking the same category, hide the section
+      setSelectedCategory('');
+    } else {
+      // If clicking a different category, show that section
+      setSelectedCategory(category);
+    }
     setSelectedItem(''); // Reset item selection when category changes
   };
 
