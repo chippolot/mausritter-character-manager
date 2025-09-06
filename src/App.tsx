@@ -7,17 +7,17 @@ function App() {
   const { currentCharacter } = useCharacterStore();
 
   return (
-    <div className="min-h-screen bg-amber-50">
+    <div className="min-h-screen bg-theme-background">
       {currentCharacter ? (
         <div>
-          <nav className="bg-white border-b-2 border-amber-800 p-4 shadow-sm">
+          <nav className="bg-theme-surface border-b-2 border-theme-primary-800 p-4 shadow-sm">
             <div className="max-w-6xl mx-auto flex justify-between items-center">
-              <h1 className="text-2xl text-amber-800 font-header">
+              <h1 className="text-2xl text-theme-primary-800 font-header">
                 Mausritter Character Sheet
               </h1>
               <button
                 onClick={() => useCharacterStore.getState().setCurrentCharacter(null)}
-                className="text-amber-800 hover:text-yellow-600 transition-colors"
+                className="text-theme-primary-800 hover:text-theme-primary-600 transition-colors"
               >
                 ← Back to Characters
               </button>

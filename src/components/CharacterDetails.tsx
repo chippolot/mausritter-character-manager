@@ -24,11 +24,11 @@ export const CharacterDetails: React.FC<CharacterDetailsProps> = ({
 
   return (
     <div className="card">
-      <h2 className="text-2xl font-medium text-amber-800 mb-4">Character Details</h2>
+      <h2 className="text-2xl font-medium text-theme-primary-800 mb-4">Character Details</h2>
       
       <div className="space-y-4">
         <div>
-          <label className="block text-sm font-semibold text-amber-800 mb-1">
+          <label className="block text-sm font-semibold text-theme-primary-800 mb-1">
             Name
           </label>
           <input
@@ -42,7 +42,7 @@ export const CharacterDetails: React.FC<CharacterDetailsProps> = ({
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-semibold text-amber-800 mb-1">
+            <label className="block text-sm font-semibold text-theme-primary-800 mb-1">
               Level
             </label>
             <input
@@ -54,7 +54,7 @@ export const CharacterDetails: React.FC<CharacterDetailsProps> = ({
             />
           </div>
           <div>
-            <label className="block text-sm font-semibold text-amber-800 mb-1">
+            <label className="block text-sm font-semibold text-theme-primary-800 mb-1">
               Experience
             </label>
             <input
@@ -68,7 +68,7 @@ export const CharacterDetails: React.FC<CharacterDetailsProps> = ({
         </div>
 
         <div>
-          <label className="block text-sm font-semibold text-amber-800 mb-1">
+          <label className="block text-sm font-semibold text-theme-primary-800 mb-1">
             Background
           </label>
           <input
@@ -81,7 +81,7 @@ export const CharacterDetails: React.FC<CharacterDetailsProps> = ({
         </div>
 
         <div>
-          <label className="block text-sm font-semibold text-amber-800 mb-1">
+          <label className="block text-sm font-semibold text-theme-primary-800 mb-1">
             Birthsign
           </label>
           <input
@@ -94,7 +94,7 @@ export const CharacterDetails: React.FC<CharacterDetailsProps> = ({
         </div>
 
         <div>
-          <label className="block text-sm font-semibold text-amber-800 mb-1">
+          <label className="block text-sm font-semibold text-theme-primary-800 mb-1">
             Coat
           </label>
           <input
@@ -107,7 +107,7 @@ export const CharacterDetails: React.FC<CharacterDetailsProps> = ({
         </div>
 
         <div>
-          <label className="block text-sm font-semibold text-amber-800 mb-1">
+          <label className="block text-sm font-semibold text-theme-primary-800 mb-1">
             Look
           </label>
           <textarea
@@ -120,7 +120,7 @@ export const CharacterDetails: React.FC<CharacterDetailsProps> = ({
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-semibold text-amber-800 mb-1">
+            <label className="block text-sm font-semibold text-theme-primary-800 mb-1">
               Grit
             </label>
             <input
@@ -132,7 +132,7 @@ export const CharacterDetails: React.FC<CharacterDetailsProps> = ({
             />
           </div>
           <div>
-            <label className="block text-sm font-semibold text-amber-800 mb-1">
+            <label className="block text-sm font-semibold text-theme-primary-800 mb-1">
               Pips
             </label>
             <div className="relative">
@@ -144,7 +144,7 @@ export const CharacterDetails: React.FC<CharacterDetailsProps> = ({
                 min="0"
                 max="250"
               />
-              <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-amber-700 text-sm font-medium pointer-events-none">
+              <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-theme-primary-700 text-sm font-medium pointer-events-none">
                 / 250
               </span>
             </div>
