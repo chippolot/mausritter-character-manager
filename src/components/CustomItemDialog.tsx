@@ -22,7 +22,7 @@ export const CustomItemDialog: React.FC<CustomItemDialogProps> = ({
     damage: '',
     weaponCategory: 'light' as 'light' | 'medium' | 'heavy',
     defense: 1,
-    size: 'small' as 'small' | 'large',
+    size: 'small' as 'small' | 'wide' | 'tall' | 'large',
     maxUsageDots: 3,
     description: '',
     clearInstructions: '',
@@ -37,7 +37,7 @@ export const CustomItemDialog: React.FC<CustomItemDialogProps> = ({
       name: formData.name.trim(),
       size: formData.size,
       maxUsageDots: formData.maxUsageDots,
-      usageDots: formData.maxUsageDots,
+      usageDots: 0,
       imageKey: formData.imageKey || undefined,
       ...(category === 'weapon' && {
         damage: formData.damage || 'd6',
@@ -129,7 +129,9 @@ export const CustomItemDialog: React.FC<CustomItemDialogProps> = ({
                 className="w-full border border-stone-300 rounded px-3 py-2 text-sm"
               >
                 <option value="small">Small (1×1)</option>
-                <option value="large">Large (2×1)</option>
+                <option value="wide">Wide (2×1)</option>
+                <option value="tall">Tall (1×2)</option>
+                <option value="large">Large (2×2)</option>
               </select>
             </div>
 

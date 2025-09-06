@@ -111,7 +111,15 @@ export const ItemAddForm: React.FC<ItemAddFormProps> = ({ onItemSelect, onAddPip
                   {item.name}
                   {item.damage && ` (${item.damage})`}
                   {item.defense && ` (${item.defense} def)`}
-                  {item.size === 'large' ? ' (2×1)' : ' (1×1)'}
+                  {(() => {
+                    switch (item.size) {
+                      case 'small': return ' (1×1)';
+                      case 'wide': return ' (2×1)';
+                      case 'tall': return ' (1×2)';
+                      case 'large': return ' (2×2)';
+                      default: return ' (1×1)';
+                    }
+                  })()}
                 </option>
               ))}
             </select>

@@ -7,7 +7,7 @@ export interface MausritterItemData {
   damage?: string;
   weaponCategory?: 'light' | 'medium' | 'heavy';
   defense?: number;
-  size: 'small' | 'large';
+  size: 'small' | 'wide' | 'tall' | 'large';
   maxUsageDots?: number;
   usageDots?: number;
   description?: string;
@@ -46,10 +46,15 @@ export const useMausritterItems = () => {
       maxUsageDots: itemData.maxUsageDots,
       usageDots: itemData.usageDots,
       imageKey: itemData.imageKey,
-      size: { 
-        width: itemData.size === 'small' ? 1 : 2, 
-        height: 1 
-      },
+      size: (() => {
+        switch (itemData.size) {
+          case 'small': return { width: 1, height: 1 };
+          case 'wide': return { width: 2, height: 1 };
+          case 'tall': return { width: 1, height: 2 };
+          case 'large': return { width: 2, height: 2 };
+          default: return { width: 1, height: 1 }; // fallback
+        }
+      })(),
     };
   };
 

@@ -10,8 +10,10 @@ export const GRID_CONFIG = {
 } as const;
 
 export const ITEM_SIZES = {
-  small: { width: 1, height: 1 },
-  large: { width: 2, height: 1 }
+  small: { width: 1, height: 1 },     // 1x1
+  wide: { width: 2, height: 1 },      // 2x1
+  tall: { width: 1, height: 2 },      // 1x2
+  large: { width: 2, height: 2 }      // 2x2
 } as const;
 
 // Calculated positioning constants based on cell size

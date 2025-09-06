@@ -73,4 +73,37 @@
     @apply bg-yellow-50 border-yellow-400;
     box-shadow: inset 0 0 20px rgba(251, 191, 36, 0.2);
   }
+
+  /* Item card size-specific styles */
+  .item-1x1 {
+    font-size: 0.75rem; /* text-xs */
+  }
+  
+  .item-2x1 {
+    font-size: 0.875rem; /* text-sm */
+  }
+  
+  .item-1x2 {
+    font-size: 0.875rem; /* text-sm */
+  }
+  
+  .item-2x2 {
+    font-size: 1rem; /* text-base */
+  }
+
+  .item-1x1 .font-semibold {
+    font-size: 0.75rem;
+    line-height: 1;
+  }
+
+  .item-2x1 .font-semibold,
+  .item-1x2 .font-semibold {
+    font-size: 0.875rem;
+    line-height: 1.1;
+  }
+
+  .item-2x2 .font-semibold {
+    font-size: 1rem;
+    line-height: 1.2;
+  }
 }

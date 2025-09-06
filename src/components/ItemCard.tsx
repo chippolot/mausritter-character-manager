@@ -53,6 +53,15 @@ export const ItemCard: React.FC<ItemCardProps> = ({ item, onRotate, onDelete, on
     };
   };
 
+  const getItemSizeClass = () => {
+    const { width, height } = item.size;
+    if (width === 1 && height === 1) return 'item-1x1';
+    if (width === 2 && height === 1) return 'item-2x1';
+    if (width === 1 && height === 2) return 'item-1x2';
+    if (width === 2 && height === 2) return 'item-2x2';
+    return 'item-1x1'; // fallback
+  };
+
   const dimensions = getItemDimensions();
 
   const handleRightClick = (e: React.MouseEvent) => {
@@ -104,6 +113,7 @@ export const ItemCard: React.FC<ItemCardProps> = ({ item, onRotate, onDelete, on
         border-2 border-amber-800 rounded-lg
         flex flex-col p-2 select-none
         hover:border-yellow-600 group
+        ${getItemSizeClass()}
         ${isActive ? 'dragging opacity-90' : ''}
         ${item.type === 'condition' ? 'bg-red-100' : 
           'bg-white'}
