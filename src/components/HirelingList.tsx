@@ -42,23 +42,23 @@ export const HirelingList: React.FC<HirelingListProps> = ({
     };
 
     return (
-      <div className="border border-amber-800 rounded p-4 bg-white bg-opacity-50">
+      <div className="border border-theme-primary-800 rounded p-4 bg-theme-surface bg-opacity-50">
         <div className="flex justify-between items-start mb-3">
           <div className="flex-1 mr-4">
-            <label className="block text-sm font-semibold text-amber-800 mb-1">
+            <label className="block text-sm font-semibold text-theme-primary-800 mb-1">
               Name
             </label>
             <input
               type="text"
               value={hireling.name}
               onChange={handleInputChange('name')}
-              className="input-field text-amber-800 text-xl w-full"
+              className="input-field text-theme-primary-800 text-xl w-full"
               placeholder="Hireling name"
             />
           </div>
           <button
             onClick={() => removeHireling(hireling.id)}
-            className="text-amber-800 hover:text-red-600 text-sm mt-6"
+            className="text-theme-primary-800 hover:text-red-600 text-sm mt-6"
           >
             Remove
           </button>
@@ -66,7 +66,7 @@ export const HirelingList: React.FC<HirelingListProps> = ({
 
         <div className="flex items-end space-x-3 mb-3">
           <div>
-            <label className="text-sm font-semibold text-amber-800 block mb-1">STR</label>
+            <label className="text-sm font-semibold text-theme-primary-800 block mb-1">STR</label>
             <input
               type="number"
               value={hireling.strength}
@@ -77,7 +77,7 @@ export const HirelingList: React.FC<HirelingListProps> = ({
             />
           </div>
           <div>
-            <label className="text-sm font-semibold text-amber-800 block mb-1">DEX</label>
+            <label className="text-sm font-semibold text-theme-primary-800 block mb-1">DEX</label>
             <input
               type="number"
               value={hireling.dexterity}
@@ -88,7 +88,7 @@ export const HirelingList: React.FC<HirelingListProps> = ({
             />
           </div>
           <div>
-            <label className="text-sm font-semibold text-amber-800 block mb-1">WIL</label>
+            <label className="text-sm font-semibold text-theme-primary-800 block mb-1">WIL</label>
             <input
               type="number"
               value={hireling.will}
@@ -99,7 +99,7 @@ export const HirelingList: React.FC<HirelingListProps> = ({
             />
           </div>
           <div>
-            <label className="text-sm font-semibold text-amber-800 block mb-1">Cost</label>
+            <label className="text-sm font-semibold text-theme-primary-800 block mb-1">Cost</label>
             <div className="flex items-center">
               <input
                 type="number"
@@ -108,14 +108,14 @@ export const HirelingList: React.FC<HirelingListProps> = ({
                 className="input-field w-20 text-sm text-center"
                 min="0"
               />
-              <span className="text-amber-800 text-sm ml-1">p</span>
+              <span className="text-theme-primary-800 text-sm ml-1">p</span>
             </div>
           </div>
         </div>
 
         <div className="flex items-center space-x-4">
           <div>
-            <label className="text-sm font-semibold text-amber-800 block">HP</label>
+            <label className="text-sm font-semibold text-theme-primary-800 block">HP</label>
             <div className="flex items-center space-x-1">
               <input
                 type="number"
@@ -124,7 +124,7 @@ export const HirelingList: React.FC<HirelingListProps> = ({
                 className="input-field w-12 text-sm text-center"
                 min="0"
               />
-              <span className="text-amber-800">/</span>
+              <span className="text-theme-primary-800">/</span>
               <input
                 type="number"
                 value={hireling.maxHitPoints}
@@ -136,7 +136,7 @@ export const HirelingList: React.FC<HirelingListProps> = ({
           </div>
           
           <div className="flex-1">
-            <label className="text-sm font-semibold text-amber-800 block">Equipment</label>
+            <label className="text-sm font-semibold text-theme-primary-800 block">Equipment</label>
             <input
               type="text"
               value={hireling.equipment || ''}
@@ -153,7 +153,7 @@ export const HirelingList: React.FC<HirelingListProps> = ({
   return (
     <div className="card">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-2xl font-medium text-amber-800">
+        <h2 className="text-2xl font-medium text-theme-primary-800">
           Hirelings ({character.hirelings.length}/2)
         </h2>
         {character.hirelings.length < 2 && (
@@ -167,7 +167,7 @@ export const HirelingList: React.FC<HirelingListProps> = ({
       </div>
 
       {character.hirelings.length === 0 ? (
-        <div className="text-center text-amber-800 opacity-75 py-8">
+        <div className="text-center text-theme-primary-800 opacity-75 py-8">
           No hirelings yet. Click "Add Hireling" to add one.
         </div>
       ) : (

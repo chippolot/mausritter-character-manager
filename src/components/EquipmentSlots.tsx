@@ -19,7 +19,7 @@ export const EquipmentSlots: React.FC<EquipmentSlotsProps> = ({
     slotKey: 'mainHandWeapon' | 'offHandWeapon' | 'armor';
   }> = ({ label, item, slotKey }) => (
     <div className="space-y-2">
-      <label className="block text-sm font-semibold text-amber-800">
+      <label className="block text-sm font-semibold text-theme-primary-800">
         {label}
       </label>
       <div
@@ -30,10 +30,10 @@ export const EquipmentSlots: React.FC<EquipmentSlotsProps> = ({
           <div className="text-center">
             <div className="font-semibold text-stone-800">{item.name}</div>
             {item.damage && (
-              <div className="text-xs text-amber-800">Damage: {item.damage}</div>
+              <div className="text-xs text-theme-primary-800">Damage: {item.damage}</div>
             )}
             {item.armor && (
-              <div className="text-xs text-amber-800">Armor: {item.armor}</div>
+              <div className="text-xs text-theme-primary-800">Armor: {item.armor}</div>
             )}
           </div>
         ) : (
@@ -53,7 +53,7 @@ export const EquipmentSlots: React.FC<EquipmentSlotsProps> = ({
 
   return (
     <div className="card">
-      <h2 className="text-2xl font-medium text-amber-800 mb-4">Equipment</h2>
+      <h2 className="text-2xl font-medium text-theme-primary-800 mb-4">Equipment</h2>
       
       <div className="space-y-4">
         <EquipmentSlot
@@ -76,7 +76,7 @@ export const EquipmentSlots: React.FC<EquipmentSlotsProps> = ({
       {showAddModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full mx-4">
-            <h3 className="text-lg font-bold text-amber-800 mb-4">
+            <h3 className="text-lg font-bold text-theme-primary-800 mb-4">
               Add {showAddModal === 'mainHandWeapon' || showAddModal === 'offHandWeapon' ? 'Weapon' : 'Armor'}
             </h3>
             <form
@@ -105,7 +105,7 @@ export const EquipmentSlots: React.FC<EquipmentSlotsProps> = ({
                 <button
                   type="button"
                   onClick={() => setShowAddModal(null)}
-                  className="px-4 py-2 border border-amber-800 text-amber-800 rounded hover:bg-amber-800 hover:text-white transition-colors"
+                  className="px-4 py-2 border border-theme-primary-800 text-theme-primary-800 rounded hover:bg-theme-primary-800 hover:text-white transition-colors"
                 >
                   Cancel
                 </button>

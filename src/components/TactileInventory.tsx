@@ -386,7 +386,7 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
 
   return (
     <div className="card">
-      <h2 className="text-2xl font-medium text-amber-800 mb-4">Inventory</h2>
+      <h2 className="text-2xl font-medium text-theme-primary-800 mb-4">Inventory</h2>
       
       <ItemAddForm 
         onItemSelect={handleItemSelect} 

@@ -4,72 +4,74 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Theme Colors - Update these to change the entire color scheme */
+/* Theme Colors - Black and White Mausritter Theme */
 :root {
-  /* Primary theme colors */
-  --theme-primary-50: rgb(255 251 235);    /* Very light background */
-  --theme-primary-100: rgb(254 243 199);   /* Light background */
-  --theme-primary-200: rgb(253 230 138);   /* Light accent */
-  --theme-primary-300: rgb(252 211 77);    /* Medium accent */
-  --theme-primary-400: rgb(251 191 36);    /* Accent */
-  --theme-primary-500: rgb(245 158 11);    /* Main accent */
-  --theme-primary-600: rgb(217 119 6);     /* Dark accent */
-  --theme-primary-700: rgb(180 83 9);      /* Primary dark */
-  --theme-primary-800: rgb(146 64 14);     /* Main primary */
-  --theme-primary-900: rgb(120 53 15);     /* Very dark primary */
+  /* Primary theme colors - Black and White */
+  --theme-primary-50: rgb(255 255 255);    /* Pure white */
+  --theme-primary-100: rgb(250 250 250);   /* Very light gray */
+  --theme-primary-200: rgb(245 245 245);   /* Light gray */
+  --theme-primary-300: rgb(229 229 229);   /* Medium light gray */
+  --theme-primary-400: rgb(212 212 212);   /* Medium gray */
+  --theme-primary-500: rgb(163 163 163);   /* Gray */
+  --theme-primary-600: rgb(115 115 115);   /* Dark gray */
+  --theme-primary-700: rgb(82 82 82);      /* Very dark gray */
+  --theme-primary-800: rgb(38 38 38);      /* Very dark */
+  --theme-primary-900: rgb(0 0 0);         /* Pure black */
   
-  /* Neutral colors */
-  --theme-neutral-50: rgb(250 250 249);    /* White-ish */
-  --theme-neutral-100: rgb(245 245 244);   /* Very light gray */
-  --theme-neutral-200: rgb(231 229 228);   /* Light gray */
-  --theme-neutral-300: rgb(214 211 209);   /* Medium light gray */
-  --theme-neutral-400: rgb(168 162 158);   /* Medium gray */
-  --theme-neutral-500: rgb(120 113 108);   /* Gray */
-  --theme-neutral-600: rgb(87 83 78);      /* Dark gray */
-  --theme-neutral-700: rgb(68 64 60);      /* Very dark gray */
-  --theme-neutral-800: rgb(41 37 36);      /* Text dark */
-  --theme-neutral-900: rgb(28 25 23);      /* Very dark text */
+  /* Neutral colors - Grayscale */
+  --theme-neutral-50: rgb(255 255 255);    /* Pure white */
+  --theme-neutral-100: rgb(250 250 250);   /* Very light gray */
+  --theme-neutral-200: rgb(245 245 245);   /* Light gray */
+  --theme-neutral-300: rgb(229 229 229);   /* Medium light gray */
+  --theme-neutral-400: rgb(163 163 163);   /* Medium gray */
+  --theme-neutral-500: rgb(115 115 115);   /* Gray */
+  --theme-neutral-600: rgb(82 82 82);      /* Dark gray */
+  --theme-neutral-700: rgb(64 64 64);      /* Very dark gray */
+  --theme-neutral-800: rgb(38 38 38);      /* Text dark */
+  --theme-neutral-900: rgb(0 0 0);         /* Pure black */
   
-  /* Semantic colors */
-  --theme-success-100: rgb(220 252 231);
-  --theme-success-800: rgb(22 101 52);
+  /* Semantic colors - Grayscale variations */
+  --theme-success-100: rgb(248 248 248);
+  --theme-success-800: rgb(64 64 64);
   
-  --theme-warning-100: rgb(255 237 213);
-  --theme-warning-800: rgb(154 52 18);
+  --theme-warning-100: rgb(245 245 245);
+  --theme-warning-800: rgb(82 82 82);
   
-  --theme-error-100: rgb(254 226 226);
-  --theme-error-600: rgb(220 38 38);
-  --theme-error-800: rgb(153 27 27);
+  --theme-error-100: rgb(242 242 242);
+  --theme-error-600: rgb(115 115 115);
+  --theme-error-800: rgb(64 64 64);
   
-  --theme-info-100: rgb(219 234 254);
-  --theme-info-800: rgb(30 64 175);
+  --theme-info-100: rgb(248 248 248);
+  --theme-info-800: rgb(82 82 82);
   
-  --theme-magic-100: rgb(243 232 255);
-  --theme-magic-800: rgb(107 33 168);
+  --theme-magic-100: rgb(245 245 245);
+  --theme-magic-800: rgb(64 64 64);
   
-  --theme-currency-100: rgb(254 249 195);
-  --theme-currency-800: rgb(133 77 14);
+  --theme-currency-100: rgb(250 250 250);
+  --theme-currency-800: rgb(38 38 38);
   
   /* Surface colors */
-  --theme-surface: rgb(255 255 255);       /* Cards, modals */
-  --theme-background: var(--theme-primary-50); /* Page background */
-  --theme-text: var(--theme-neutral-800);      /* Primary text */
-  --theme-text-light: var(--theme-neutral-600); /* Secondary text */
+  --theme-surface: rgb(255 255 255);       /* Cards, modals - pure white */
+  --theme-background: rgb(250 250 250);    /* Page background - very light gray */
+  --theme-text: rgb(0 0 0);               /* Primary text - pure black */
+  --theme-text-light: rgb(82 82 82);      /* Secondary text - dark gray */
 }
 
-/* Alternative Theme Example - Uncomment to use a blue theme */
-/*
+/* Alternative Theme Examples */
+/* Uncomment one of these to try different themes:
+
+// Original amber theme:
+:root {
+  --theme-primary-50: rgb(255 251 235);
+  --theme-primary-800: rgb(146 64 14);
+  --theme-text: rgb(41 37 36);
+}
+
+// Blue theme:
 :root {
   --theme-primary-50: rgb(240 249 255);
-  --theme-primary-100: rgb(224 242 254);
-  --theme-primary-200: rgb(186 230 253);
-  --theme-primary-300: rgb(125 211 252);
-  --theme-primary-400: rgb(56 189 248);
-  --theme-primary-500: rgb(14 165 233);
-  --theme-primary-600: rgb(2 132 199);
-  --theme-primary-700: rgb(3 105 161);
   --theme-primary-800: rgb(7 89 133);
-  --theme-primary-900: rgb(12 74 110);
+  --theme-text: rgb(30 64 175);
 }
 */
 

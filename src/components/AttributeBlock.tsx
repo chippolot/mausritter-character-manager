@@ -23,7 +23,7 @@ export const AttributeBlock: React.FC<AttributeBlockProps> = ({
     max?: number;
   }> = ({ label, value, field, max = 20 }) => (
     <div className="text-center">
-      <label className="block text-sm font-semibold text-amber-800 mb-2">
+      <label className="block text-sm font-semibold text-theme-primary-800 mb-2">
         {label}
       </label>
       <input
@@ -39,7 +39,7 @@ export const AttributeBlock: React.FC<AttributeBlockProps> = ({
 
   return (
     <div className="card">
-      <h2 className="text-2xl font-medium text-amber-800 mb-4">
+      <h2 className="text-2xl font-medium text-theme-primary-800 mb-4">
         Attributes
       </h2>
       
@@ -61,9 +61,9 @@ export const AttributeBlock: React.FC<AttributeBlockProps> = ({
         />
       </div>
 
-      <div className="border-t border-amber-800 pt-4">
+      <div className="border-t border-theme-primary-800 pt-4">
         <div className="text-center">
-          <label className="block text-sm font-semibold text-amber-800 mb-2">
+          <label className="block text-sm font-semibold text-theme-primary-800 mb-2">
             Hit Points
           </label>
           <div className="flex items-center justify-center space-x-2">
@@ -75,7 +75,7 @@ export const AttributeBlock: React.FC<AttributeBlockProps> = ({
               min="0"
               max={character.maxHitPoints}
             />
-            <span className="text-amber-800 font-bold">/</span>
+            <span className="text-theme-primary-800 font-bold">/</span>
             <input
               type="number"
               value={character.maxHitPoints}

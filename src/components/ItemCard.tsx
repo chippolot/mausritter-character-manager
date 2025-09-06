@@ -110,9 +110,9 @@ export const ItemCard: React.FC<ItemCardProps> = ({ item, onRotate, onDelete, on
       onContextMenu={handleRightClick}
       className={`
         item-card absolute cursor-grab active:cursor-grabbing
-        border-2 border-amber-800 rounded-lg
+        border-2 border-theme-primary-800 rounded-lg
         flex flex-col p-2 select-none
-        hover:border-yellow-600 group
+        hover:border-theme-primary-600 group
         ${getItemSizeClass()}
         ${isActive ? 'dragging opacity-90' : ''}
         ${item.type === 'condition' ? 'bg-red-100' : 
@@ -167,7 +167,7 @@ export const ItemCard: React.FC<ItemCardProps> = ({ item, onRotate, onDelete, on
                   max={item.maxPipValue || 250}
                   value={item.pipValue || 0}
                   onChange={handlePipValueChange}
-                  className="w-16 h-8 text-center text-sm border border-amber-300 rounded bg-white pointer-events-auto focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  className="w-16 h-8 text-center text-sm border border-theme-primary-300 rounded bg-theme-surface pointer-events-auto focus:outline-none focus:ring-2 focus:ring-theme-primary-500"
                 />
               </div>
             </div>
@@ -201,7 +201,7 @@ export const ItemCard: React.FC<ItemCardProps> = ({ item, onRotate, onDelete, on
                       onClick={(e) => handlePipClick(e, index)}
                       className={`w-2 h-2 rounded-full border pointer-events-auto ${
                         index < (item.usageDots || 0)
-                          ? 'bg-amber-600 border-amber-700'
+                          ? 'bg-theme-primary-600 border-theme-primary-700'
                           : 'bg-white border-stone-400'
                       }`}
                       title={`Usage pip ${index + 1}`}
@@ -234,7 +234,7 @@ export const ItemCard: React.FC<ItemCardProps> = ({ item, onRotate, onDelete, on
       <button
         onClick={handleDelete}
         className="absolute bottom-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 
-                   text-amber-600 hover:text-red-600 w-4 h-4 
+                   text-theme-primary-600 hover:text-theme-error-600 w-4 h-4 
                    flex items-center justify-center pointer-events-auto"
         title="Delete item"
       >

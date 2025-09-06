@@ -17,7 +17,7 @@ export const InventoryGrid: React.FC<InventoryGridProps> = ({ onGridDrop }) => {
 
   const getSectionStyle = (x: number, y: number) => {
     let sectionClass = '';
-    let borderClass = 'border border-dashed border-amber-400';
+    let borderClass = 'border border-dashed border-theme-primary-400';
     
     if (x === 0) {
       // Paws column (left)
@@ -27,7 +27,7 @@ export const InventoryGrid: React.FC<InventoryGridProps> = ({ onGridDrop }) => {
       sectionClass = 'bg-blue-50 bg-opacity-40';
     } else {
       // Pack (right columns)
-      sectionClass = 'bg-amber-50 bg-opacity-30';
+      sectionClass = 'bg-theme-primary-100 bg-opacity-30';
     }
     
     return `${borderClass} ${sectionClass}`;
@@ -70,8 +70,8 @@ export const InventoryGrid: React.FC<InventoryGridProps> = ({ onGridDrop }) => {
             className={`
               ${getSectionStyle(x, y)}
               cursor-pointer transition-colors duration-200 relative
-              hover:bg-amber-100 hover:border-amber-600
-              ${isOver ? 'bg-yellow-100 border-yellow-500' : ''}
+              hover:bg-theme-primary-100 hover:border-theme-primary-600
+              ${isOver ? 'bg-theme-primary-200 border-theme-primary-500' : ''}
             `}
             style={{
               width: GRID_CONFIG.cellSize,
@@ -100,13 +100,13 @@ export const InventoryGrid: React.FC<InventoryGridProps> = ({ onGridDrop }) => {
         paddingLeft: '16px', // Match grid padding
         gap: '2px',
       }}>
-        <div className="text-center text-sm font-semibold text-amber-700" style={{width: GRID_CONFIG.cellSize}}>
+        <div className="text-center text-sm font-semibold text-theme-primary-700" style={{width: GRID_CONFIG.cellSize}}>
           Paws
         </div>
-        <div className="text-center text-sm font-semibold text-amber-700" style={{width: GRID_CONFIG.cellSize}}>
+        <div className="text-center text-sm font-semibold text-theme-primary-700" style={{width: GRID_CONFIG.cellSize}}>
           Body
         </div>
-        <div className="text-center text-sm font-semibold text-amber-700" style={{width: GRID_CONFIG.cellSize * 3 + 4}}>
+        <div className="text-center text-sm font-semibold text-theme-primary-700" style={{width: GRID_CONFIG.cellSize * 3 + 4}}>
           Pack
         </div>
       </div>
@@ -115,9 +115,9 @@ export const InventoryGrid: React.FC<InventoryGridProps> = ({ onGridDrop }) => {
         ref={setNodeRef}
         data-id="inventory-grid"
         className={`
-          relative border-2 border-amber-800 rounded-lg p-4 bg-white
+          relative border-2 border-theme-primary-800 rounded-lg p-4 bg-theme-surface
           transition-colors duration-200
-          ${isOver ? 'bg-yellow-50 border-yellow-600' : ''}
+          ${isOver ? 'bg-theme-primary-100 border-theme-primary-600' : ''}
         `}
         style={{
           display: 'grid',
@@ -129,7 +129,7 @@ export const InventoryGrid: React.FC<InventoryGridProps> = ({ onGridDrop }) => {
         {renderGridCells()}
       </div>
       
-      <div className="mt-2 text-sm text-amber-700">
+      <div className="mt-2 text-sm text-theme-primary-700">
         <p>• Right-click items to rotate • Items snap to grid when dropped</p>
       </div>
     </div>

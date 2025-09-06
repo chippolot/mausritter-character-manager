@@ -25,10 +25,10 @@ export const CharacterSelector: React.FC = () => {
     return (
       <div className="max-w-md mx-auto mt-20 text-center">
         <div className="card">
-          <h1 className="text-3xl text-amber-800 text-amber-800 mb-6">
+          <h1 className="text-3xl text-theme-primary-800 text-theme-primary-800 mb-6">
             Mausritter Character Sheet
           </h1>
-          <p className="text-amber-800 mb-6">
+          <p className="text-theme-primary-800 mb-6">
             Welcome! You don't have any characters yet.
           </p>
           <button
@@ -46,7 +46,7 @@ export const CharacterSelector: React.FC = () => {
     <div className="max-w-4xl mx-auto p-6">
       <div className="card mb-6">
         <div className="flex justify-between items-center mb-4">
-          <h1 className="text-3xl text-amber-800 text-amber-800">
+          <h1 className="text-3xl text-theme-primary-800 text-theme-primary-800">
             Your Characters
           </h1>
           <button
@@ -63,13 +63,13 @@ export const CharacterSelector: React.FC = () => {
               key={character.id}
               className={`border-2 rounded-lg p-4 cursor-pointer transition-colors ${
                 currentCharacter?.id === character.id
-                  ? 'border-yellow-500 bg-yellow-500 bg-opacity-10'
-                  : 'border-amber-800 bg-white hover:bg-amber-800 hover:bg-opacity-10'
+                  ? 'border-theme-primary-600 bg-theme-primary-600 bg-opacity-10'
+                  : 'border-theme-primary-800 bg-theme-surface hover:bg-theme-primary-200'
               }`}
               onClick={() => setCurrentCharacter(character)}
             >
               <div className="flex justify-between items-start mb-2">
-                <h3 className="text-2xl font-medium text-amber-800">
+                <h3 className="text-2xl font-medium text-theme-primary-800">
                   {character.name || 'Unnamed Character'}
                 </h3>
                 <button
@@ -77,17 +77,17 @@ export const CharacterSelector: React.FC = () => {
                     e.stopPropagation();
                     setShowDeleteConfirm(character.id);
                   }}
-                  className="text-amber-800 hover:text-red-600 text-sm"
+                  className="text-theme-primary-800 hover:text-theme-error-600 text-sm"
                 >
                   ×
                 </button>
               </div>
               
-              <div className="text-sm text-amber-800 opacity-75 mb-2">
+              <div className="text-sm text-theme-primary-800 opacity-75 mb-2">
                 Level {character.level} • {character.experience} XP
               </div>
               
-              <div className="text-xs text-amber-800">
+              <div className="text-xs text-theme-primary-800">
                 {character.background && (
                   <div>Background: {character.background}</div>
                 )}
@@ -106,10 +106,10 @@ export const CharacterSelector: React.FC = () => {
       {showDeleteConfirm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full mx-4">
-            <h3 className="text-lg font-bold text-amber-800 mb-4">
+            <h3 className="text-lg font-bold text-theme-primary-800 mb-4">
               Delete Character
             </h3>
-            <p className="text-amber-800 mb-6">
+            <p className="text-theme-primary-800 mb-6">
               Are you sure you want to delete this character? This action cannot be undone.
             </p>
             <div className="flex space-x-2">
@@ -121,7 +121,7 @@ export const CharacterSelector: React.FC = () => {
               </button>
               <button
                 onClick={() => setShowDeleteConfirm(null)}
-                className="px-4 py-2 border border-amber-800 text-amber-800 rounded hover:bg-amber-800 hover:text-white transition-colors"
+                className="px-4 py-2 border border-theme-primary-800 text-theme-primary-800 rounded hover:bg-theme-primary-200 transition-colors"
               >
                 Cancel
               </button>
