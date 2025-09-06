@@ -11,61 +11,61 @@
   "coatPatterns": ["Solid", "Brindle", "Patchy", "Banded", "Marbled", "Flecked"],
   "backgrounds": {
     "hp1": [
-      { "name": "Leatherworker", "items": ["Leather apron", "Awl"] },
-      { "name": "Miller", "items": ["Flour sack", "Rolling pin"] },
-      { "name": "Sailor", "items": ["Rope", "Anchor"] },
-      { "name": "Gambler", "items": ["Dice", "Lucky charm"] },
-      { "name": "Ratcatcher", "items": ["Net", "Cage"] },
-      { "name": "Chef", "items": ["Ladle", "Spices"] }
+      { "name": "Test subject", "items": ["Magic Missile", "Lead coat"] },
+      { "name": "Kitchen forager", "items": ["Shield", "Cookpots"] },
+      { "name": "Cage dweller", "items": ["Be Understood", "Bottle of milk"] },
+      { "name": "Hedge witch", "items": ["Heal", "Incense stick"] },
+      { "name": "Leatherworker", "items": ["Shield", "Shears"] },
+      { "name": "Street tough", "items": ["Dagger", "Flask of coffee"] }
     ],
     "hp2": [
-      { "name": "Blacksmith", "items": ["Hammer", "Tongs"] },
-      { "name": "Forager", "items": ["Basket", "Foraging stick"] },
-      { "name": "Merchant", "items": ["Scale", "Ledger"] },
-      { "name": "Guide", "items": ["Compass", "Map"] },
-      { "name": "Baker", "items": ["Rolling pin", "Flour"] },
-      { "name": "Knight", "items": ["Shield", "Banner"] }
+      { "name": "Mendicant priest", "items": ["Restore", "Holy symbol"] },
+      { "name": "Beetleherd", "items": ["Hireling: Loyal beetle", "Pole, 6\""] },
+      { "name": "Ale brewer", "items": ["Hireling: Drunken torchbearer", "Small barrel of ale"] },
+      { "name": "Fishermouse", "items": ["Net", "Needle"] },
+      { "name": "Blacksmith", "items": ["Hammer", "Metal file"] },
+      { "name": "Wireworker", "items": ["Wire, spool", "Electric lantern"] }
     ],
     "hp3": [
-      { "name": "Scribe", "items": ["Quill", "Ink"] },
-      { "name": "Hermit", "items": ["Prayer book", "Incense"] },
-      { "name": "Noble", "items": ["Signet ring", "Fine clothes"] },
-      { "name": "Wizard", "items": ["Spell scroll", "Crystal"] },
-      { "name": "Burglar", "items": ["Lockpicks", "Black mask"] },
-      { "name": "Soldier", "items": ["Helmet", "Sword"] }
+      { "name": "Woodcutter", "items": ["Axe", "Twine, roll"] },
+      { "name": "Bat cultist", "items": ["Darkness", "Bag of bat teeth"] },
+      { "name": "Tin miner", "items": ["Pickaxe", "Lantern"] },
+      { "name": "Trash collector", "items": ["Trashhook", "Mirror"] },
+      { "name": "Wall rover", "items": ["Fishhook", "Thread, spool"] },
+      { "name": "Merchant", "items": ["Hireling: Pack rat", "20p IOU from a noblemouse"] }
     ],
     "hp4": [
-      { "name": "Hunter", "items": ["Bow", "Quiver"] },
-      { "name": "Minstrel", "items": ["Lute", "Song book"] },
-      { "name": "Carpenter", "items": ["Saw", "Wood glue"] },
-      { "name": "Healer", "items": ["Bandages", "Herbs"] },
-      { "name": "Tinker", "items": ["Tools", "Wire"] },
-      { "name": "Farmer", "items": ["Hoe", "Seeds"] }
+      { "name": "Raft crew", "items": ["Hammer", "Wooden spikes"] },
+      { "name": "Worm wrangler", "items": ["Pole, 6\"", "Soap"] },
+      { "name": "Sparrow rider", "items": ["Fishhook", "Goggles"] },
+      { "name": "Sewer guide", "items": ["Metal file", "Thread, spool"] },
+      { "name": "Prison guard", "items": ["Chain, 6\"", "Spear"] },
+      { "name": "Fungus farmer", "items": ["Dried mushroom", "Spore mask"] }
     ],
     "hp5": [
-      { "name": "Storyteller", "items": ["Story book", "Costume"] },
-      { "name": "Lookout", "items": ["Spyglass", "Signal flag"] },
-      { "name": "Archaeologist", "items": ["Brush", "Magnifying glass"] },
-      { "name": "Messenger", "items": ["Satchel", "Seal"] },
-      { "name": "Innkeeper", "items": ["Keys", "Guest book"] },
-      { "name": "Clockmaker", "items": ["Gears", "Tiny tools"] }
+      { "name": "Dam builder", "items": ["Shovel", "Wooden spikes"] },
+      { "name": "Cartographer", "items": ["Quill", "Compass"] },
+      { "name": "Trap thief", "items": ["Block of cheese", "Glue"] },
+      { "name": "Vagabond", "items": ["Tent", "Treasure map, dubious"] },
+      { "name": "Grain farmer", "items": ["Spear", "Whistle"] },
+      { "name": "Message runner", "items": ["Bedroll", "Documents, sealed"] }
     ],
     "hp6": [
-      { "name": "Alchemist", "items": ["Vial", "Mixing rod"] },
-      { "name": "Engineer", "items": ["Blueprint", "Measuring stick"] },
-      { "name": "Diplomat", "items": ["Wax seal", "Treaty"] },
-      { "name": "Cartographer", "items": ["Map case", "Measuring wheel"] },
-      { "name": "Librarian", "items": ["Bookmark", "Reading glass"] },
-      { "name": "Watchmouse", "items": ["Whistle", "Lantern"] }
+      { "name": "Troubadour", "items": ["Musical instrument", "Disguise kit"] },
+      { "name": "Gambler", "items": ["Set of loaded dice", "Mirror"] },
+      { "name": "Sap tapper", "items": ["Bucket", "Wooden spikes"] },
+      { "name": "Bee keeper", "items": ["Jar of honey", "Net"] },
+      { "name": "Librarian", "items": ["Scrap of obscure book", "Quill"] },
+      { "name": "Pauper noblemouse", "items": ["Felt hat", "Perfume"] }
     ]
   },
   "physicalDetails": [
-    "Scarred snout", "Missing whisker", "Chipped tooth", "Torn ear", "Blind in one eye", "Limping gait",
-    "Unusually large ears", "Tiny paws", "Long tail", "Short tail", "Patchy fur", "Sleek fur",
-    "Nervous twitch", "Always sniffing", "Speaks in whispers", "Booming voice", "Missing finger", "Extra toe",
-    "Crooked whiskers", "Bright eyes", "Dull eyes", "Constantly grooming", "Fidgety", "Very still",
-    "Distinctive scent", "No scent", "Raspy voice", "Musical voice", "Always cold", "Always warm",
-    "Excellent climber", "Poor climber", "Fast runner", "Slow walker", "Sharp claws", "Dull claws"
+    "Scarred body", "Corpulent body", "Skeletal body", "Willowy body", "Tiny body", "Massive body",
+    "War paint", "Foreign clothes", "Elegant clothes", "Patched clothes", "Fashionable clothes", "Unwashed clothes",
+    "Missing ear", "Lumpy face", "Beautiful face", "Round face", "Delicate face", "Elongated face",
+    "Groomed fur", "Dreadlocks", "Dyed fur", "Shaved fur", "Frizzy fur", "Silky fur",
+    "Night black eyes", "Eye patch", "Blood red eyes", "Wise eyes", "Sharp eyes", "Luminous eyes",
+    "Cropped tail", "Whip-like tail", "Tufted tail", "Stubby tail", "Prehensile tail", "Curly tail"
   ],
   "mouseNames": [
     "Pip", "Bramble", "Thistle", "Clover", "Hazel", "Sage", "Pepper", "Nutkin", "Acorn", "Berry",

@@ -640,7 +640,12 @@ export const CharacterGenerationWizard: React.FC<CharacterGenerationWizardProps>
             {results.step < 11 ? (
               <button
                 onClick={nextStep}
-                className="button-primary flex-1"
+                className={`flex-1 ${
+                  results.step === 8 && !results.selectedWeapon
+                    ? 'bg-gray-400 text-gray-600 cursor-not-allowed px-4 py-2 rounded'
+                    : 'button-primary'
+                }`}
+                disabled={results.step === 8 && !results.selectedWeapon}
               >
                 {results.step === 0 ? 'Start Generation' : 'Next Step'}
               </button>
