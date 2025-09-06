@@ -298,6 +298,7 @@ export const CharacterGenerationWizard: React.FC<CharacterGenerationWizardProps>
       look: results.customPhysicalDetail || results.physicalDetail,
       grit: 0,
       pips: results.pips,
+      alive: true,
       inventory: new Array(6).fill(null),
       tactileInventory: startingItems,
       hirelings: []

@@ -22,6 +22,12 @@ export const CharacterDetails: React.FC<CharacterDetailsProps> = ({
     onUpdate({ [field]: parseInt(e.target.value) || 0 });
   };
 
+  const handleCheckboxChange = (field: keyof Character) => (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    onUpdate({ [field]: e.target.checked });
+  };
+
   return (
     <div className="card">
       <h2 className="text-2xl font-medium text-theme-primary-800 mb-4">Character Details</h2>
@@ -35,9 +41,32 @@ export const CharacterDetails: React.FC<CharacterDetailsProps> = ({
             type="text"
             value={character.name}
             onChange={handleInputChange('name')}
-            className="input-field w-full"
+            className={`input-field w-full ${
+              !character.alive ? 'line-through opacity-60' : ''
+            }`}
             placeholder="Enter character name"
           />
+        </div>
+
+        <div className="flex items-center gap-3 p-3 bg-theme-primary-100 rounded-lg">
+          <label className="flex items-center gap-2 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={character.alive}
+              onChange={handleCheckboxChange('alive')}
+              className="w-4 h-4 text-theme-primary-600 border-theme-primary-800 rounded focus:ring-theme-primary-600"
+            />
+            <span className={`text-sm font-semibold ${
+              character.alive ? 'text-green-700' : 'text-red-700'
+            }`}>
+              {character.alive ? '✓ Alive' : '💀 Dead'}
+            </span>
+          </label>
+          {!character.alive && (
+            <span className="text-xs text-theme-primary-700">
+              Character appears crossed out in lists
+            </span>
+          )}
         </div>
 
         <div className="grid grid-cols-2 gap-4">

@@ -19,6 +19,7 @@ interface Character {
   look: string;
   grit: number;
   pips: number;
+  alive: boolean;
   mainHandWeapon?: InventoryItem;
   offHandWeapon?: InventoryItem;
   armor?: InventoryItem;
@@ -121,6 +122,7 @@ export const createNewCharacter = (): Character => ({
   look: '',
   grit: 0,
   pips: 0,
+  alive: true,
   inventory: new Array(6).fill(null),
   tactileInventory: [],
   hirelings: [],

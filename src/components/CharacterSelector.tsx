@@ -95,9 +95,14 @@ export const CharacterSelector: React.FC = () => {
               onClick={() => setCurrentCharacter(character)}
             >
               <div className="flex justify-between items-start mb-2">
-                <h3 className="text-2xl font-medium text-theme-primary-800">
-                  {character.name || 'Unnamed Character'}
-                </h3>
+                <div className="flex items-center gap-2">
+                  <h3 className={`text-2xl font-medium text-theme-primary-800 ${
+                    !character.alive ? 'line-through opacity-60' : ''
+                  }`}>
+                    {character.name || 'Unnamed Character'}
+                  </h3>
+                  {!character.alive && <span className="text-lg">💀</span>}
+                </div>
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
