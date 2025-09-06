@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useCharacterStore, createNewCharacter } from '../stores/characterStore-simple';
+import { CharacterGenerationWizard } from './CharacterGenerationWizard';
 
 export const CharacterSelector: React.FC = () => {
   const { 
@@ -10,6 +11,7 @@ export const CharacterSelector: React.FC = () => {
     deleteCharacter 
   } = useCharacterStore();
   const [showDeleteConfirm, setShowDeleteConfirm] = useState<string | null>(null);
+  const [showWizard, setShowWizard] = useState(false);
 
   const handleCreateCharacter = () => {
     const newCharacter = createNewCharacter();
@@ -23,22 +25,38 @@ export const CharacterSelector: React.FC = () => {
 
   if (characters.length === 0) {
     return (
-      <div className="max-w-md mx-auto mt-20 text-center">
-        <div className="card">
-          <h1 className="text-3xl text-theme-primary-800 text-theme-primary-800 mb-6">
-            Mausritter Character Sheet
-          </h1>
-          <p className="text-theme-primary-800 mb-6">
-            Welcome! You don't have any characters yet.
-          </p>
-          <button
-            onClick={handleCreateCharacter}
-            className="button-primary text-lg px-6 py-3"
-          >
-            Create Your First Character
-          </button>
+      <>
+        <div className="max-w-md mx-auto mt-20 text-center">
+          <div className="card">
+            <h1 className="text-3xl text-theme-primary-800 text-theme-primary-800 mb-6">
+              Mausritter Character Sheet
+            </h1>
+            <p className="text-theme-primary-800 mb-6">
+              Welcome! You don't have any characters yet.
+            </p>
+            <div className="space-y-4">
+              <button
+                onClick={() => setShowWizard(true)}
+                className="button-primary text-lg px-6 py-3 w-full"
+              >
+                🎲 Generate Random Character
+              </button>
+              <div className="text-sm text-theme-text-light">or</div>
+              <button
+                onClick={handleCreateCharacter}
+                className="px-6 py-3 border border-theme-primary-800 text-theme-primary-800 rounded hover:bg-theme-primary-100 transition-colors text-lg"
+              >
+                Create Blank Character
+              </button>
+            </div>
+          </div>
         </div>
-      </div>
+        
+        <CharacterGenerationWizard 
+          isOpen={showWizard}
+          onClose={() => setShowWizard(false)}
+        />
+      </>
     );
   }
 
@@ -49,12 +67,20 @@ export const CharacterSelector: React.FC = () => {
           <h1 className="text-3xl text-theme-primary-800 text-theme-primary-800">
             Your Characters
           </h1>
-          <button
-            onClick={handleCreateCharacter}
-            className="button-primary"
-          >
-            New Character
-          </button>
+          <div className="flex gap-2">
+            <button
+              onClick={() => setShowWizard(true)}
+              className="button-primary"
+            >
+              🎲 Generate
+            </button>
+            <button
+              onClick={handleCreateCharacter}
+              className="px-4 py-2 border border-theme-primary-800 text-theme-primary-800 rounded hover:bg-theme-primary-100 transition-colors"
+            >
+              Blank Character
+            </button>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -77,7 +103,7 @@ export const CharacterSelector: React.FC = () => {
                     e.stopPropagation();
                     setShowDeleteConfirm(character.id);
                   }}
-                  className="text-theme-primary-800 hover:text-theme-error-600 text-sm"
+                  className="text-theme-primary-800 hover:text-theme-error-600 text-xl"
                 >
                   ×
                 </button>
@@ -129,6 +155,11 @@ export const CharacterSelector: React.FC = () => {
           </div>
         </div>
       )}
+      
+      <CharacterGenerationWizard 
+        isOpen={showWizard}
+        onClose={() => setShowWizard(false)}
+      />
     </div>
   );
 };

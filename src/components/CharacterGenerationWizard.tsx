@@ -1,0 +1,386 @@
+import React, { useState } from 'react';
+import { Character } from '../stores/characterStore-simple';
+import { useCharacterStore } from '../stores/characterStore-simple';
+import { PlacedItem } from '../types/inventory';
+import { ITEM_SIZES } from '../constants/inventory';
+import generationTables from '../data/generationTables.json';
+import mausritterItems from '../data/mausritterItems.json';
+
+interface CharacterGenerationWizardProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+interface GenerationResults {
+  step: number;
+  attributes: { str: number[]; dex: number[]; wil: number[]; final: { str: number; dex: number; wil: number } };
+  hitPoints: number;
+  pips: number;
+  background: { name: string; items: string[] };
+  birthsign: { name: string; description: string };
+  coat: { color: string; pattern: string };
+  physicalDetail: string;
+  name: string;
+}
+
+// Helper function to get background by HP and Pips
+const getBackground = (hp: number, pips: number) => {
+  const hpKey = `hp${Math.min(hp, 6)}` as keyof typeof generationTables.backgrounds;
+  const pipIndex = Math.min(pips - 1, 5);
+  return generationTables.backgrounds[hpKey][pipIndex];
+};
+
+// Helper function to create PlacedItem from item name
+const createItemFromName = (itemName: string, scratchX: number, scratchY: number): PlacedItem | null => {
+  // Search for the item in all categories
+  const allItems = [
+    ...mausritterItems.weapons,
+    ...mausritterItems.armor,
+    ...mausritterItems.items,
+    ...mausritterItems.spells
+  ];
+  
+  const foundItem = allItems.find(item => item.name === itemName);
+  if (!foundItem) {
+    console.warn(`Item not found: ${itemName}`);
+    return null;
+  }
+
+  // Determine item type
+  let itemType: PlacedItem['type'] = 'item';
+  if (mausritterItems.weapons.some(w => w.name === itemName)) itemType = 'weapon';
+  else if (mausritterItems.armor.some(a => a.name === itemName)) itemType = 'armor';
+  else if (mausritterItems.spells.some(s => s.name === itemName)) itemType = 'spell';
+
+  // Get size from ITEM_SIZES constant
+  const sizeKey = foundItem.size as keyof typeof ITEM_SIZES;
+  const itemSize = ITEM_SIZES[sizeKey] || ITEM_SIZES.small;
+
+  return {
+    id: crypto.randomUUID(),
+    name: foundItem.name,
+    type: itemType,
+    damage: 'damage' in foundItem ? foundItem.damage : undefined,
+    defense: 'defense' in foundItem ? foundItem.defense : undefined,
+    usageDots: foundItem.maxUsageDots || 0,
+    maxUsageDots: foundItem.maxUsageDots || 0,
+    imageKey: foundItem.imageKey,
+    weaponCategory: 'weaponCategory' in foundItem ? foundItem.weaponCategory : undefined,
+    size: itemSize,
+    position: { x: 0, y: 0 },
+    rotation: 0,
+    isInGrid: false,
+    scratchPosition: { x: scratchX, y: scratchY }
+  };
+};
+
+export const CharacterGenerationWizard: React.FC<CharacterGenerationWizardProps> = ({ isOpen, onClose }) => {
+  const { addCharacter } = useCharacterStore();
+  const [results, setResults] = useState<GenerationResults>({
+    step: 0,
+    attributes: { str: [], dex: [], wil: [], final: { str: 0, dex: 0, wil: 0 } },
+    hitPoints: 0,
+    pips: 0,
+    background: { name: '', items: [] },
+    birthsign: { name: '', description: '' },
+    coat: { color: '', pattern: '' },
+    physicalDetail: '',
+    name: ''
+  });
+
+  const rollDice = (sides: number, count: number = 1): number[] => {
+    return Array.from({ length: count }, () => Math.floor(Math.random() * sides) + 1);
+  };
+
+  const rollAttribute = (): number[] => {
+    const rolls = rollDice(6, 3);
+    rolls.sort((a, b) => b - a); // Sort descending
+    return rolls;
+  };
+
+  const nextStep = () => {
+    const newResults = { ...results };
+    
+    switch (results.step) {
+      case 0: // Roll Attributes
+        const strRolls = rollAttribute();
+        const dexRolls = rollAttribute();
+        const wilRolls = rollAttribute();
+        
+        newResults.attributes = {
+          str: strRolls,
+          dex: dexRolls, 
+          wil: wilRolls,
+          final: {
+            str: strRolls[0] + strRolls[1],
+            dex: dexRolls[0] + dexRolls[1],
+            wil: wilRolls[0] + wilRolls[1]
+          }
+        };
+        break;
+        
+      case 1: // Roll HP
+        newResults.hitPoints = rollDice(6)[0];
+        break;
+        
+      case 2: // Roll Pips
+        newResults.pips = rollDice(6)[0];
+        break;
+        
+      case 3: // Determine Background
+        newResults.background = getBackground(newResults.hitPoints, newResults.pips);
+        break;
+        
+      case 4: // Roll Birthsign
+        const birthsignRoll = rollDice(6)[0] - 1;
+        newResults.birthsign = generationTables.birthsigns[birthsignRoll];
+        break;
+        
+      case 5: // Roll Coat
+        const colorRoll = rollDice(6)[0] - 1;
+        const patternRoll = rollDice(6)[0] - 1;
+        newResults.coat = {
+          color: generationTables.coatColors[colorRoll],
+          pattern: generationTables.coatPatterns[patternRoll]
+        };
+        break;
+        
+      case 6: // Roll Physical Detail
+        const detailRoll = rollDice(generationTables.physicalDetails.length)[0] - 1;
+        newResults.physicalDetail = generationTables.physicalDetails[detailRoll];
+        break;
+        
+      case 7: // Generate Name
+        const nameRoll = rollDice(generationTables.mouseNames.length)[0] - 1;
+        newResults.name = generationTables.mouseNames[nameRoll];
+        break;
+    }
+    
+    newResults.step = Math.min(results.step + 1, 8);
+    setResults(newResults);
+  };
+
+  const createCharacterFromResults = () => {
+    // Create PlacedItems for background items
+    const backgroundItems: PlacedItem[] = [];
+    results.background.items.forEach((itemName, index) => {
+      // Position items in the scratch area, spreading them out
+      const scratchX = 50 + (index % 3) * 150; // 3 columns
+      const scratchY = 50 + Math.floor(index / 3) * 100; // New row every 3 items
+      
+      const placedItem = createItemFromName(itemName, scratchX, scratchY);
+      if (placedItem) {
+        backgroundItems.push(placedItem);
+      }
+    });
+
+    const newCharacter: Character = {
+      id: crypto.randomUUID(),
+      name: results.name,
+      strength: results.attributes.final.str,
+      dexterity: results.attributes.final.dex,
+      will: results.attributes.final.wil,
+      hitPoints: results.hitPoints,
+      maxHitPoints: results.hitPoints,
+      level: 1,
+      experience: 0,
+      background: results.background.name,
+      birthsign: results.birthsign.name,
+      coat: `${results.coat.pattern} ${results.coat.color}`,
+      look: results.physicalDetail,
+      grit: 0,
+      pips: results.pips,
+      inventory: new Array(6).fill(null),
+      tactileInventory: backgroundItems,
+      hirelings: []
+    };
+    
+    addCharacter(newCharacter);
+    onClose();
+  };
+
+  if (!isOpen) return null;
+
+  const renderStep = () => {
+    switch (results.step) {
+      case 0:
+        return (
+          <div className="text-center">
+            <h3 className="text-xl font-bold mb-4">Welcome to Mouse Generation!</h3>
+            <p className="mb-6">Let's create your brave mouse adventurer following the official Mausritter rules.</p>
+            <p className="mb-6">First, we'll roll your attributes (STR, DEX, WIL) using 3d6, keeping the two highest dice for each.</p>
+          </div>
+        );
+        
+      case 1:
+        return (
+          <div>
+            <h3 className="text-xl font-bold mb-4">Attributes Rolled!</h3>
+            <div className="grid grid-cols-3 gap-4 mb-6">
+              <div className="text-center">
+                <div className="font-semibold">STR</div>
+                <div className="text-sm mb-2">Rolled: {results.attributes.str.join(', ')}</div>
+                <div className="text-2xl font-bold">{results.attributes.final.str}</div>
+              </div>
+              <div className="text-center">
+                <div className="font-semibold">DEX</div>
+                <div className="text-sm mb-2">Rolled: {results.attributes.dex.join(', ')}</div>
+                <div className="text-2xl font-bold">{results.attributes.final.dex}</div>
+              </div>
+              <div className="text-center">
+                <div className="font-semibold">WIL</div>
+                <div className="text-sm mb-2">Rolled: {results.attributes.wil.join(', ')}</div>
+                <div className="text-2xl font-bold">{results.attributes.final.wil}</div>
+              </div>
+            </div>
+            <p>Now let's roll for Hit Points (1d6)...</p>
+          </div>
+        );
+        
+      case 2:
+        return (
+          <div className="text-center">
+            <h3 className="text-xl font-bold mb-4">Hit Points</h3>
+            <div className="text-4xl font-bold mb-4">{results.hitPoints} HP</div>
+            <p>Now let's roll for starting Pips (currency)...</p>
+          </div>
+        );
+        
+      case 3:
+        return (
+          <div className="text-center">
+            <h3 className="text-xl font-bold mb-4">Starting Pips</h3>
+            <div className="text-4xl font-bold mb-4">{results.pips} Pips</div>
+            <p>Now we'll determine your background based on your HP and Pips...</p>
+          </div>
+        );
+        
+      case 4:
+        return (
+          <div className="text-center">
+            <h3 className="text-xl font-bold mb-4">Background</h3>
+            <div className="text-2xl font-bold mb-2">{results.background.name}</div>
+            <div className="mb-4">
+              <div className="font-semibold">Starting Items:</div>
+              <div>{results.background.items.join(', ')}</div>
+            </div>
+            <p>Now let's roll for your birthsign...</p>
+          </div>
+        );
+        
+      case 5:
+        return (
+          <div className="text-center">
+            <h3 className="text-xl font-bold mb-4">Birthsign</h3>
+            <div className="text-2xl font-bold mb-2">{results.birthsign.name}</div>
+            <div className="text-sm mb-4">{results.birthsign.description}</div>
+            <p>Now let's roll for your coat...</p>
+          </div>
+        );
+        
+      case 6:
+        return (
+          <div className="text-center">
+            <h3 className="text-xl font-bold mb-4">Coat</h3>
+            <div className="text-2xl font-bold mb-4">{results.coat.pattern} {results.coat.color}</div>
+            <p>Now let's roll for a distinguishing physical detail...</p>
+          </div>
+        );
+        
+      case 7:
+        return (
+          <div className="text-center">
+            <h3 className="text-xl font-bold mb-4">Physical Detail</h3>
+            <div className="text-xl mb-4">{results.physicalDetail}</div>
+            <p>Finally, let's give your mouse a name...</p>
+          </div>
+        );
+        
+      case 8:
+        return (
+          <div>
+            <h3 className="text-xl font-bold mb-4">Your Mouse is Complete!</h3>
+            <div className="bg-theme-primary-100 p-4 rounded-lg mb-4">
+              <div className="text-2xl font-bold mb-2">{results.name}</div>
+              <div className="grid grid-cols-2 gap-4 text-sm">
+                <div>
+                  <div><strong>STR:</strong> {results.attributes.final.str}</div>
+                  <div><strong>DEX:</strong> {results.attributes.final.dex}</div>
+                  <div><strong>WIL:</strong> {results.attributes.final.wil}</div>
+                </div>
+                <div>
+                  <div><strong>HP:</strong> {results.hitPoints}</div>
+                  <div><strong>Pips:</strong> {results.pips}</div>
+                  <div><strong>Background:</strong> {results.background.name}</div>
+                </div>
+              </div>
+              <div className="mt-2">
+                <div><strong>Birthsign:</strong> {results.birthsign.name}</div>
+                <div><strong>Coat:</strong> {results.coat.pattern} {results.coat.color}</div>
+                <div><strong>Look:</strong> {results.physicalDetail}</div>
+                <div><strong>Items:</strong> {results.background.items.join(', ')}</div>
+              </div>
+            </div>
+          </div>
+        );
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="bg-theme-surface rounded-lg shadow-lg w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto">
+        <div className="p-6">
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-2xl font-medium text-theme-primary-800">
+              Mouse Generator
+            </h2>
+            <button
+              onClick={onClose}
+              className="text-theme-primary-400 hover:text-theme-primary-600 text-xl"
+            >
+              ×
+            </button>
+          </div>
+
+          <div className="mb-6">
+            <div className="bg-theme-primary-200 h-2 rounded-full">
+              <div 
+                className="bg-theme-primary-600 h-2 rounded-full transition-all duration-300"
+                style={{ width: `${(results.step / 8) * 100}%` }}
+              />
+            </div>
+            <div className="text-sm text-theme-text-light mt-1">
+              Step {results.step + 1} of 9
+            </div>
+          </div>
+
+          {renderStep()}
+
+          <div className="flex gap-2 mt-6">
+            {results.step < 8 ? (
+              <button
+                onClick={nextStep}
+                className="button-primary flex-1"
+              >
+                {results.step === 0 ? 'Start Generation' : 'Next Step'}
+              </button>
+            ) : (
+              <button
+                onClick={createCharacterFromResults}
+                className="button-primary flex-1"
+              >
+                Create Character
+              </button>
+            )}
+            <button
+              onClick={onClose}
+              className="px-4 py-2 border border-theme-primary-800 text-theme-primary-800 rounded hover:bg-theme-primary-200 transition-colors"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};

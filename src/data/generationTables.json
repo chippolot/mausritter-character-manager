@@ -1,0 +1,75 @@
+{
+  "birthsigns": [
+    { "name": "The Star", "description": "Brave but Reckless" },
+    { "name": "The Wheel", "description": "Industrious but Unimaginative" },
+    { "name": "The Acorn", "description": "Inquisitive but Stubborn" },
+    { "name": "The Storm", "description": "Generous but Wrathful" },
+    { "name": "The Moon", "description": "Wise but Mysterious" },
+    { "name": "The Mother", "description": "Nurturing but Worrying" }
+  ],
+  "coatColors": ["Chocolate", "Black", "White", "Tan", "Grey", "Blue"],
+  "coatPatterns": ["Solid", "Brindle", "Patchy", "Banded", "Marbled", "Flecked"],
+  "backgrounds": {
+    "hp1": [
+      { "name": "Leatherworker", "items": ["Leather apron", "Awl"] },
+      { "name": "Miller", "items": ["Flour sack", "Rolling pin"] },
+      { "name": "Sailor", "items": ["Rope", "Anchor"] },
+      { "name": "Gambler", "items": ["Dice", "Lucky charm"] },
+      { "name": "Ratcatcher", "items": ["Net", "Cage"] },
+      { "name": "Chef", "items": ["Ladle", "Spices"] }
+    ],
+    "hp2": [
+      { "name": "Blacksmith", "items": ["Hammer", "Tongs"] },
+      { "name": "Forager", "items": ["Basket", "Foraging stick"] },
+      { "name": "Merchant", "items": ["Scale", "Ledger"] },
+      { "name": "Guide", "items": ["Compass", "Map"] },
+      { "name": "Baker", "items": ["Rolling pin", "Flour"] },
+      { "name": "Knight", "items": ["Shield", "Banner"] }
+    ],
+    "hp3": [
+      { "name": "Scribe", "items": ["Quill", "Ink"] },
+      { "name": "Hermit", "items": ["Prayer book", "Incense"] },
+      { "name": "Noble", "items": ["Signet ring", "Fine clothes"] },
+      { "name": "Wizard", "items": ["Spell scroll", "Crystal"] },
+      { "name": "Burglar", "items": ["Lockpicks", "Black mask"] },
+      { "name": "Soldier", "items": ["Helmet", "Sword"] }
+    ],
+    "hp4": [
+      { "name": "Hunter", "items": ["Bow", "Quiver"] },
+      { "name": "Minstrel", "items": ["Lute", "Song book"] },
+      { "name": "Carpenter", "items": ["Saw", "Wood glue"] },
+      { "name": "Healer", "items": ["Bandages", "Herbs"] },
+      { "name": "Tinker", "items": ["Tools", "Wire"] },
+      { "name": "Farmer", "items": ["Hoe", "Seeds"] }
+    ],
+    "hp5": [
+      { "name": "Storyteller", "items": ["Story book", "Costume"] },
+      { "name": "Lookout", "items": ["Spyglass", "Signal flag"] },
+      { "name": "Archaeologist", "items": ["Brush", "Magnifying glass"] },
+      { "name": "Messenger", "items": ["Satchel", "Seal"] },
+      { "name": "Innkeeper", "items": ["Keys", "Guest book"] },
+      { "name": "Clockmaker", "items": ["Gears", "Tiny tools"] }
+    ],
+    "hp6": [
+      { "name": "Alchemist", "items": ["Vial", "Mixing rod"] },
+      { "name": "Engineer", "items": ["Blueprint", "Measuring stick"] },
+      { "name": "Diplomat", "items": ["Wax seal", "Treaty"] },
+      { "name": "Cartographer", "items": ["Map case", "Measuring wheel"] },
+      { "name": "Librarian", "items": ["Bookmark", "Reading glass"] },
+      { "name": "Watchmouse", "items": ["Whistle", "Lantern"] }
+    ]
+  },
+  "physicalDetails": [
+    "Scarred snout", "Missing whisker", "Chipped tooth", "Torn ear", "Blind in one eye", "Limping gait",
+    "Unusually large ears", "Tiny paws", "Long tail", "Short tail", "Patchy fur", "Sleek fur",
+    "Nervous twitch", "Always sniffing", "Speaks in whispers", "Booming voice", "Missing finger", "Extra toe",
+    "Crooked whiskers", "Bright eyes", "Dull eyes", "Constantly grooming", "Fidgety", "Very still",
+    "Distinctive scent", "No scent", "Raspy voice", "Musical voice", "Always cold", "Always warm",
+    "Excellent climber", "Poor climber", "Fast runner", "Slow walker", "Sharp claws", "Dull claws"
+  ],
+  "mouseNames": [
+    "Pip", "Bramble", "Thistle", "Clover", "Hazel", "Sage", "Pepper", "Nutkin", "Acorn", "Berry",
+    "Willow", "Fern", "Moss", "Pebble", "Dewdrop", "Thorn", "Maple", "Cedar", "Brook", "Stone",
+    "Cricket", "Meadow", "Root", "Bark", "Leaf", "Puddle", "Ember", "Frost", "Dawn", "Dusk"
+  ]
+}

@@ -183,6 +183,326 @@
       "name": "Healing Potion",
       "size": "small",
       "maxUsageDots": 1
+    },
+    {
+      "name": "Leather apron",
+      "size": "small",
+      "maxUsageDots": 3
+    },
+    {
+      "name": "Awl",
+      "size": "small",
+      "maxUsageDots": 3
+    },
+    {
+      "name": "Flour sack",
+      "size": "small",
+      "maxUsageDots": 3
+    },
+    {
+      "name": "Rolling pin",
+      "size": "small",
+      "maxUsageDots": 3
+    },
+    {
+      "name": "Anchor",
+      "size": "wide",
+      "maxUsageDots": 3
+    },
+    {
+      "name": "Dice",
+      "size": "small",
+      "maxUsageDots": 3
+    },
+    {
+      "name": "Lucky charm",
+      "size": "small",
+      "maxUsageDots": 3
+    },
+    {
+      "name": "Net",
+      "size": "small",
+      "maxUsageDots": 3
+    },
+    {
+      "name": "Cage",
+      "size": "small",
+      "maxUsageDots": 3
+    },
+    {
+      "name": "Ladle",
+      "size": "small",
+      "maxUsageDots": 3
+    },
+    {
+      "name": "Spices",
+      "size": "small",
+      "maxUsageDots": 3
+    },
+    {
+      "name": "Tongs",
+      "size": "small",
+      "maxUsageDots": 3
+    },
+    {
+      "name": "Basket",
+      "size": "small",
+      "maxUsageDots": 3
+    },
+    {
+      "name": "Foraging stick",
+      "size": "small",
+      "maxUsageDots": 3
+    },
+    {
+      "name": "Scale",
+      "size": "small",
+      "maxUsageDots": 3
+    },
+    {
+      "name": "Ledger",
+      "size": "small",
+      "maxUsageDots": 3
+    },
+    {
+      "name": "Compass",
+      "size": "small",
+      "maxUsageDots": 3
+    },
+    {
+      "name": "Map",
+      "size": "small",
+      "maxUsageDots": 3
+    },
+    {
+      "name": "Flour",
+      "size": "small",
+      "maxUsageDots": 3
+    },
+    {
+      "name": "Banner",
+      "size": "tall",
+      "maxUsageDots": 3
+    },
+    {
+      "name": "Quill",
+      "size": "small",
+      "maxUsageDots": 3
+    },
+    {
+      "name": "Ink",
+      "size": "small",
+      "maxUsageDots": 3
+    },
+    {
+      "name": "Prayer book",
+      "size": "small",
+      "maxUsageDots": 3
+    },
+    {
+      "name": "Incense",
+      "size": "small",
+      "maxUsageDots": 3
+    },
+    {
+      "name": "Signet ring",
+      "size": "small",
+      "maxUsageDots": 3
+    },
+    {
+      "name": "Fine clothes",
+      "size": "small",
+      "maxUsageDots": 3
+    },
+    {
+      "name": "Spell scroll",
+      "size": "small",
+      "maxUsageDots": 1
+    },
+    {
+      "name": "Crystal",
+      "size": "small",
+      "maxUsageDots": 3
+    },
+    {
+      "name": "Black mask",
+      "size": "small",
+      "maxUsageDots": 3
+    },
+    {
+      "name": "Helmet",
+      "size": "small",
+      "maxUsageDots": 3
+    },
+    {
+      "name": "Quiver",
+      "size": "small",
+      "maxUsageDots": 3
+    },
+    {
+      "name": "Lute",
+      "size": "wide",
+      "maxUsageDots": 3
+    },
+    {
+      "name": "Song book",
+      "size": "small",
+      "maxUsageDots": 3
+    },
+    {
+      "name": "Saw",
+      "size": "small",
+      "maxUsageDots": 3
+    },
+    {
+      "name": "Wood glue",
+      "size": "small",
+      "maxUsageDots": 3
+    },
+    {
+      "name": "Bandages",
+      "size": "small",
+      "maxUsageDots": 3
+    },
+    {
+      "name": "Herbs",
+      "size": "small",
+      "maxUsageDots": 3
+    },
+    {
+      "name": "Tools",
+      "size": "small",
+      "maxUsageDots": 3
+    },
+    {
+      "name": "Wire",
+      "size": "small",
+      "maxUsageDots": 3
+    },
+    {
+      "name": "Hoe",
+      "size": "tall",
+      "maxUsageDots": 3
+    },
+    {
+      "name": "Seeds",
+      "size": "small",
+      "maxUsageDots": 3
+    },
+    {
+      "name": "Story book",
+      "size": "small",
+      "maxUsageDots": 3
+    },
+    {
+      "name": "Costume",
+      "size": "small",
+      "maxUsageDots": 3
+    },
+    {
+      "name": "Spyglass",
+      "size": "small",
+      "maxUsageDots": 3
+    },
+    {
+      "name": "Signal flag",
+      "size": "small",
+      "maxUsageDots": 3
+    },
+    {
+      "name": "Brush",
+      "size": "small",
+      "maxUsageDots": 3
+    },
+    {
+      "name": "Magnifying glass",
+      "size": "small",
+      "maxUsageDots": 3
+    },
+    {
+      "name": "Satchel",
+      "size": "small",
+      "maxUsageDots": 3
+    },
+    {
+      "name": "Seal",
+      "size": "small",
+      "maxUsageDots": 3
+    },
+    {
+      "name": "Keys",
+      "size": "small",
+      "maxUsageDots": 3
+    },
+    {
+      "name": "Guest book",
+      "size": "small",
+      "maxUsageDots": 3
+    },
+    {
+      "name": "Gears",
+      "size": "small",
+      "maxUsageDots": 3
+    },
+    {
+      "name": "Tiny tools",
+      "size": "small",
+      "maxUsageDots": 3
+    },
+    {
+      "name": "Vial",
+      "size": "small",
+      "maxUsageDots": 3
+    },
+    {
+      "name": "Mixing rod",
+      "size": "small",
+      "maxUsageDots": 3
+    },
+    {
+      "name": "Blueprint",
+      "size": "small",
+      "maxUsageDots": 3
+    },
+    {
+      "name": "Measuring stick",
+      "size": "small",
+      "maxUsageDots": 3
+    },
+    {
+      "name": "Wax seal",
+      "size": "small",
+      "maxUsageDots": 3
+    },
+    {
+      "name": "Treaty",
+      "size": "small",
+      "maxUsageDots": 3
+    },
+    {
+      "name": "Map case",
+      "size": "small",
+      "maxUsageDots": 3
+    },
+    {
+      "name": "Measuring wheel",
+      "size": "small",
+      "maxUsageDots": 3
+    },
+    {
+      "name": "Bookmark",
+      "size": "small",
+      "maxUsageDots": 3
+    },
+    {
+      "name": "Reading glass",
+      "size": "small",
+      "maxUsageDots": 3
+    },
+    {
+      "name": "Whistle",
+      "size": "small",
+      "maxUsageDots": 3
     }
   ],
   "spells": [
