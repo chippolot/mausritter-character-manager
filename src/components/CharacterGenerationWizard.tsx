@@ -21,6 +21,10 @@ interface GenerationResults {
   coat: { color: string; pattern: string };
   physicalDetail: string;
   name: string;
+  selectedWeapon: string;
+  customBirthsign: string;
+  customCoat: { color: string; pattern: string };
+  customPhysicalDetail: string;
 }
 
 // Helper function to get background by HP and Pips
@@ -85,7 +89,11 @@ export const CharacterGenerationWizard: React.FC<CharacterGenerationWizardProps>
     birthsign: { name: '', description: '' },
     coat: { color: '', pattern: '' },
     physicalDetail: '',
-    name: ''
+    name: '',
+    selectedWeapon: '',
+    customBirthsign: '',
+    customCoat: { color: '', pattern: '' },
+    customPhysicalDetail: ''
   });
 
   const rollDice = (sides: number, count: number = 1): number[] => {
@@ -96,6 +104,37 @@ export const CharacterGenerationWizard: React.FC<CharacterGenerationWizardProps>
     const rolls = rollDice(6, 3);
     rolls.sort((a, b) => b - a); // Sort descending
     return rolls;
+  };
+
+  const swapStats = (stat1: 'str' | 'dex' | 'wil', stat2: 'str' | 'dex' | 'wil') => {
+    const newResults = { ...results };
+    const temp = newResults.attributes.final[stat1];
+    newResults.attributes.final[stat1] = newResults.attributes.final[stat2];
+    newResults.attributes.final[stat2] = temp;
+    setResults(newResults);
+  };
+
+  const resetWizard = () => {
+    setResults({
+      step: 0,
+      attributes: { str: [], dex: [], wil: [], final: { str: 0, dex: 0, wil: 0 } },
+      hitPoints: 0,
+      pips: 0,
+      background: { name: '', items: [] },
+      birthsign: { name: '', description: '' },
+      coat: { color: '', pattern: '' },
+      physicalDetail: '',
+      name: '',
+      selectedWeapon: '',
+      customBirthsign: '',
+      customCoat: { color: '', pattern: '' },
+      customPhysicalDetail: ''
+    });
+  };
+
+  const handleClose = () => {
+    resetWizard();
+    onClose();
   };
 
   const nextStep = () => {
@@ -150,29 +189,61 @@ export const CharacterGenerationWizard: React.FC<CharacterGenerationWizardProps>
         newResults.physicalDetail = generationTables.physicalDetails[detailRoll];
         break;
         
-      case 7: // Generate Name
+      case 7: // Generate Name suggestion
         const nameRoll = rollDice(generationTables.mouseNames.length)[0] - 1;
         newResults.name = generationTables.mouseNames[nameRoll];
         break;
+        
+      case 8: // Weapon Selection
+        // Step for weapon selection - no automatic roll
+        break;
+        
+      case 9: // Final customization
+        // Step for final customization - no automatic roll
+        break;
     }
     
-    newResults.step = Math.min(results.step + 1, 8);
+    newResults.step = Math.min(results.step + 1, 11);
     setResults(newResults);
   };
 
   const createCharacterFromResults = () => {
-    // Create PlacedItems for background items
-    const backgroundItems: PlacedItem[] = [];
-    results.background.items.forEach((itemName, index) => {
-      // Position items in the scratch area, spreading them out
-      const scratchX = 50 + (index % 3) * 150; // 3 columns
-      const scratchY = 50 + Math.floor(index / 3) * 100; // New row every 3 items
-      
+    // Create PlacedItems for starting items
+    const startingItems: PlacedItem[] = [];
+    let itemIndex = 0;
+    
+    // Add torches and rations (always included)
+    const standardItems = ['Torch', 'Rations'];
+    standardItems.forEach((itemName) => {
+      const scratchX = 50 + (itemIndex % 3) * 150; // 3 columns
+      const scratchY = 50 + Math.floor(itemIndex / 3) * 100; // New row every 3 items
       const placedItem = createItemFromName(itemName, scratchX, scratchY);
       if (placedItem) {
-        backgroundItems.push(placedItem);
+        startingItems.push(placedItem);
+        itemIndex++;
       }
     });
+    
+    // Add background items
+    results.background.items.forEach((itemName) => {
+      const scratchX = 50 + (itemIndex % 3) * 150; // 3 columns
+      const scratchY = 50 + Math.floor(itemIndex / 3) * 100; // New row every 3 items
+      const placedItem = createItemFromName(itemName, scratchX, scratchY);
+      if (placedItem) {
+        startingItems.push(placedItem);
+        itemIndex++;
+      }
+    });
+    
+    // Add selected weapon
+    if (results.selectedWeapon) {
+      const scratchX = 50 + (itemIndex % 3) * 150;
+      const scratchY = 50 + Math.floor(itemIndex / 3) * 100;
+      const weaponItem = createItemFromName(results.selectedWeapon, scratchX, scratchY);
+      if (weaponItem) {
+        startingItems.push(weaponItem);
+      }
+    }
 
     const newCharacter: Character = {
       id: crypto.randomUUID(),
@@ -185,18 +256,18 @@ export const CharacterGenerationWizard: React.FC<CharacterGenerationWizardProps>
       level: 1,
       experience: 0,
       background: results.background.name,
-      birthsign: results.birthsign.name,
-      coat: `${results.coat.pattern} ${results.coat.color}`,
-      look: results.physicalDetail,
+      birthsign: results.customBirthsign || results.birthsign.name,
+      coat: `${results.customCoat.pattern || results.coat.pattern} ${results.customCoat.color || results.coat.color}`,
+      look: results.customPhysicalDetail || results.physicalDetail,
       grit: 0,
       pips: results.pips,
       inventory: new Array(6).fill(null),
-      tactileInventory: backgroundItems,
+      tactileInventory: startingItems,
       hirelings: []
     };
     
     addCharacter(newCharacter);
-    onClose();
+    handleClose();
   };
 
   if (!isOpen) return null;
@@ -231,6 +302,30 @@ export const CharacterGenerationWizard: React.FC<CharacterGenerationWizardProps>
                 <div className="font-semibold">WIL</div>
                 <div className="text-sm mb-2">Rolled: {results.attributes.wil.join(', ')}</div>
                 <div className="text-2xl font-bold">{results.attributes.final.wil}</div>
+              </div>
+            </div>
+            <div className="mb-6">
+              <h4 className="font-semibold mb-3">Optional: Swap Two Stats</h4>
+              <p className="text-sm text-theme-text-light mb-3">You may swap any two attribute values if you wish.</p>
+              <div className="grid grid-cols-3 gap-2">
+                <button
+                  onClick={() => swapStats('str', 'dex')}
+                  className="px-3 py-2 text-sm border border-theme-primary-800 text-theme-primary-800 rounded hover:bg-theme-primary-200 transition-colors"
+                >
+                  Swap STR ↔ DEX
+                </button>
+                <button
+                  onClick={() => swapStats('str', 'wil')}
+                  className="px-3 py-2 text-sm border border-theme-primary-800 text-theme-primary-800 rounded hover:bg-theme-primary-200 transition-colors"
+                >
+                  Swap STR ↔ WIL
+                </button>
+                <button
+                  onClick={() => swapStats('dex', 'wil')}
+                  className="px-3 py-2 text-sm border border-theme-primary-800 text-theme-primary-800 rounded hover:bg-theme-primary-200 transition-colors"
+                >
+                  Swap DEX ↔ WIL
+                </button>
               </div>
             </div>
             <p>Now let's roll for Hit Points (1d6)...</p>
@@ -299,6 +394,136 @@ export const CharacterGenerationWizard: React.FC<CharacterGenerationWizardProps>
       case 8:
         return (
           <div>
+            <h3 className="text-xl font-bold mb-4">Choose Your Weapon</h3>
+            <p className="mb-4">Select a starting weapon for your mouse:</p>
+            <div className="grid grid-cols-2 gap-3 mb-4">
+              {mausritterItems.weapons.map((weapon) => (
+                <button
+                  key={weapon.name}
+                  onClick={() => setResults({ ...results, selectedWeapon: weapon.name })}
+                  className={`p-3 text-sm border rounded transition-colors text-left ${
+                    results.selectedWeapon === weapon.name
+                      ? 'border-theme-primary-600 bg-theme-primary-100'
+                      : 'border-theme-primary-800 hover:bg-theme-primary-200'
+                  }`}
+                >
+                  <div className="font-semibold">{weapon.name}</div>
+                  <div className="text-xs text-theme-text-light">
+                    {weapon.damage} damage • {weapon.weaponCategory}
+                  </div>
+                </button>
+              ))}
+            </div>
+            {results.selectedWeapon && (
+              <p className="text-sm text-theme-text-light">
+                Selected: <strong>{results.selectedWeapon}</strong>
+              </p>
+            )}
+          </div>
+        );
+        
+      case 9:
+        return (
+          <div>
+            <h3 className="text-xl font-bold mb-4">Name Your Mouse</h3>
+            <p className="mb-4">We've suggested a name, but you can change it:</p>
+            <input
+              type="text"
+              value={results.name}
+              onChange={(e) => setResults({ ...results, name: e.target.value })}
+              className="w-full p-3 border border-theme-primary-800 rounded mb-4"
+              placeholder="Enter mouse name..."
+            />
+          </div>
+        );
+        
+      case 10:
+        return (
+          <div>
+            <h3 className="text-xl font-bold mb-4">Final Customization</h3>
+            <p className="mb-4">You can customize these rolled characteristics or keep them as is:</p>
+            
+            <div className="space-y-4">
+              <div>
+                <label className="block font-semibold mb-2">Birthsign:</label>
+                <select
+                  value={results.customBirthsign || results.birthsign.name}
+                  onChange={(e) => setResults({ ...results, customBirthsign: e.target.value })}
+                  className="w-full p-2 border border-theme-primary-800 rounded"
+                >
+                  {generationTables.birthsigns.map((sign) => (
+                    <option key={sign.name} value={sign.name}>
+                      {sign.name} - {sign.description}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block font-semibold mb-2">Coat Color:</label>
+                  <select
+                    value={results.customCoat.color || results.coat.color}
+                    onChange={(e) => setResults({ 
+                      ...results, 
+                      customCoat: { 
+                        ...results.customCoat, 
+                        color: e.target.value 
+                      } 
+                    })}
+                    className="w-full p-2 border border-theme-primary-800 rounded"
+                  >
+                    {generationTables.coatColors.map((color) => (
+                      <option key={color} value={color}>
+                        {color}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                
+                <div>
+                  <label className="block font-semibold mb-2">Coat Pattern:</label>
+                  <select
+                    value={results.customCoat.pattern || results.coat.pattern}
+                    onChange={(e) => setResults({ 
+                      ...results, 
+                      customCoat: { 
+                        ...results.customCoat, 
+                        pattern: e.target.value 
+                      } 
+                    })}
+                    className="w-full p-2 border border-theme-primary-800 rounded"
+                  >
+                    {generationTables.coatPatterns.map((pattern) => (
+                      <option key={pattern} value={pattern}>
+                        {pattern}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              
+              <div>
+                <label className="block font-semibold mb-2">Physical Detail:</label>
+                <select
+                  value={results.customPhysicalDetail || results.physicalDetail}
+                  onChange={(e) => setResults({ ...results, customPhysicalDetail: e.target.value })}
+                  className="w-full p-2 border border-theme-primary-800 rounded"
+                >
+                  {generationTables.physicalDetails.map((detail) => (
+                    <option key={detail} value={detail}>
+                      {detail}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          </div>
+        );
+        
+      case 11:
+        return (
+          <div>
             <h3 className="text-xl font-bold mb-4">Your Mouse is Complete!</h3>
             <div className="bg-theme-primary-100 p-4 rounded-lg mb-4">
               <div className="text-2xl font-bold mb-2">{results.name}</div>
@@ -315,10 +540,11 @@ export const CharacterGenerationWizard: React.FC<CharacterGenerationWizardProps>
                 </div>
               </div>
               <div className="mt-2">
-                <div><strong>Birthsign:</strong> {results.birthsign.name}</div>
-                <div><strong>Coat:</strong> {results.coat.pattern} {results.coat.color}</div>
-                <div><strong>Look:</strong> {results.physicalDetail}</div>
-                <div><strong>Items:</strong> {results.background.items.join(', ')}</div>
+                <div><strong>Birthsign:</strong> {results.customBirthsign || results.birthsign.name}</div>
+                <div><strong>Coat:</strong> {results.customCoat.pattern || results.coat.pattern} {results.customCoat.color || results.coat.color}</div>
+                <div><strong>Look:</strong> {results.customPhysicalDetail || results.physicalDetail}</div>
+                <div><strong>Weapon:</strong> {results.selectedWeapon}</div>
+                <div><strong>Items:</strong> Torch, Rations, {results.background.items.join(', ')}</div>
               </div>
             </div>
           </div>
@@ -335,7 +561,7 @@ export const CharacterGenerationWizard: React.FC<CharacterGenerationWizardProps>
               Mouse Generator
             </h2>
             <button
-              onClick={onClose}
+              onClick={handleClose}
               className="text-theme-primary-400 hover:text-theme-primary-600 text-xl"
             >
               ×
@@ -346,18 +572,18 @@ export const CharacterGenerationWizard: React.FC<CharacterGenerationWizardProps>
             <div className="bg-theme-primary-200 h-2 rounded-full">
               <div 
                 className="bg-theme-primary-600 h-2 rounded-full transition-all duration-300"
-                style={{ width: `${(results.step / 8) * 100}%` }}
+                style={{ width: `${(results.step / 11) * 100}%` }}
               />
             </div>
             <div className="text-sm text-theme-text-light mt-1">
-              Step {results.step + 1} of 9
+              Step {results.step + 1} of 12
             </div>
           </div>
 
           {renderStep()}
 
           <div className="flex gap-2 mt-6">
-            {results.step < 8 ? (
+            {results.step < 11 ? (
               <button
                 onClick={nextStep}
                 className="button-primary flex-1"
@@ -373,7 +599,7 @@ export const CharacterGenerationWizard: React.FC<CharacterGenerationWizardProps>
               </button>
             )}
             <button
-              onClick={onClose}
+              onClick={handleClose}
               className="px-4 py-2 border border-theme-primary-800 text-theme-primary-800 rounded hover:bg-theme-primary-200 transition-colors"
             >
               Cancel
