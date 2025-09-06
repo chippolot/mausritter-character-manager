@@ -135,13 +135,19 @@ export const CharacterDetails: React.FC<CharacterDetailsProps> = ({
             <label className="block text-sm font-semibold text-amber-800 mb-1">
               Pips
             </label>
-            <input
-              type="number"
-              value={character.pips}
-              onChange={handleNumberChange('pips')}
-              className="input-field w-full"
-              min="0"
-            />
+            <div className="relative">
+              <input
+                type="number"
+                value={character.pips}
+                onChange={handleNumberChange('pips')}
+                className="input-field w-full pr-12"
+                min="0"
+                max="250"
+              />
+              <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-amber-700 text-sm font-medium pointer-events-none">
+                / 250
+              </span>
+            </div>
           </div>
         </div>
       </div>

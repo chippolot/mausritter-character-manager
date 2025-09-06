@@ -13,9 +13,9 @@ export default {
         gold: '#D4AF37',
       },
       fontFamily: {
-        'header': ['Pirata One', 'serif'],
-        'body': ['Crimson Text', 'serif'],
-        'condensed': ['Barlow Condensed', 'sans-serif'],
+        'header': ['Germania One', 'serif'],
+        'body': ['PT Sans Narrow', 'sans-serif'],
+        'condensed': ['PT Sans Narrow', 'sans-serif'],
       }
     },
   },
