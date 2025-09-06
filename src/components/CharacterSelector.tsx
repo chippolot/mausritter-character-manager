@@ -44,7 +44,7 @@ export const CharacterSelector: React.FC = () => {
               <div className="text-sm text-theme-text-light">or</div>
               <button
                 onClick={handleCreateCharacter}
-                className="px-6 py-3 border border-theme-primary-800 text-theme-primary-800 rounded hover:bg-theme-primary-100 transition-colors text-lg"
+                className="px-6 py-3 border border-theme-primary-800 text-theme-primary-800 rounded hover:bg-theme-primary-100 transition-colors text-lg w-full"
               >
                 Create Blank Character
               </button>

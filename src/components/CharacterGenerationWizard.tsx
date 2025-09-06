@@ -13,7 +13,13 @@ interface CharacterGenerationWizardProps {
 
 interface GenerationResults {
   step: number;
-  attributes: { str: number[]; dex: number[]; wil: number[]; final: { str: number; dex: number; wil: number } };
+  attributes: { 
+    str: number[]; 
+    dex: number[]; 
+    wil: number[]; 
+    final: { str: number; dex: number; wil: number };
+    original: { str: number; dex: number; wil: number };
+  };
   hitPoints: number;
   pips: number;
   background: { name: string; items: string[] };
@@ -25,6 +31,7 @@ interface GenerationResults {
   customBirthsign: string;
   customCoat: { color: string; pattern: string };
   customPhysicalDetail: string;
+  selectedSwap: string | null;
 }
 
 // Helper function to get background by HP and Pips
@@ -82,7 +89,13 @@ export const CharacterGenerationWizard: React.FC<CharacterGenerationWizardProps>
   const { addCharacter } = useCharacterStore();
   const [results, setResults] = useState<GenerationResults>({
     step: 0,
-    attributes: { str: [], dex: [], wil: [], final: { str: 0, dex: 0, wil: 0 } },
+    attributes: { 
+      str: [], 
+      dex: [], 
+      wil: [], 
+      final: { str: 0, dex: 0, wil: 0 },
+      original: { str: 0, dex: 0, wil: 0 }
+    },
     hitPoints: 0,
     pips: 0,
     background: { name: '', items: [] },
@@ -93,7 +106,8 @@ export const CharacterGenerationWizard: React.FC<CharacterGenerationWizardProps>
     selectedWeapon: '',
     customBirthsign: '',
     customCoat: { color: '', pattern: '' },
-    customPhysicalDetail: ''
+    customPhysicalDetail: '',
+    selectedSwap: null
   });
 
   const rollDice = (sides: number, count: number = 1): number[] => {
@@ -107,17 +121,35 @@ export const CharacterGenerationWizard: React.FC<CharacterGenerationWizardProps>
   };
 
   const swapStats = (stat1: 'str' | 'dex' | 'wil', stat2: 'str' | 'dex' | 'wil') => {
+    const swapKey = `${stat1}-${stat2}`;
     const newResults = { ...results };
-    const temp = newResults.attributes.final[stat1];
-    newResults.attributes.final[stat1] = newResults.attributes.final[stat2];
-    newResults.attributes.final[stat2] = temp;
+    
+    // If same swap is selected, revert to original
+    if (results.selectedSwap === swapKey) {
+      newResults.attributes.final = { ...results.attributes.original };
+      newResults.selectedSwap = null;
+    } else {
+      // Apply new swap from original values
+      newResults.attributes.final = { ...results.attributes.original };
+      const temp = newResults.attributes.final[stat1];
+      newResults.attributes.final[stat1] = newResults.attributes.final[stat2];
+      newResults.attributes.final[stat2] = temp;
+      newResults.selectedSwap = swapKey;
+    }
+    
     setResults(newResults);
   };
 
   const resetWizard = () => {
     setResults({
       step: 0,
-      attributes: { str: [], dex: [], wil: [], final: { str: 0, dex: 0, wil: 0 } },
+      attributes: { 
+        str: [], 
+        dex: [], 
+        wil: [], 
+        final: { str: 0, dex: 0, wil: 0 },
+        original: { str: 0, dex: 0, wil: 0 }
+      },
       hitPoints: 0,
       pips: 0,
       background: { name: '', items: [] },
@@ -128,7 +160,8 @@ export const CharacterGenerationWizard: React.FC<CharacterGenerationWizardProps>
       selectedWeapon: '',
       customBirthsign: '',
       customCoat: { color: '', pattern: '' },
-      customPhysicalDetail: ''
+      customPhysicalDetail: '',
+      selectedSwap: null
     });
   };
 
@@ -146,16 +179,20 @@ export const CharacterGenerationWizard: React.FC<CharacterGenerationWizardProps>
         const dexRolls = rollAttribute();
         const wilRolls = rollAttribute();
         
+        const finalStats = {
+          str: strRolls[0] + strRolls[1],
+          dex: dexRolls[0] + dexRolls[1],
+          wil: wilRolls[0] + wilRolls[1]
+        };
+        
         newResults.attributes = {
           str: strRolls,
           dex: dexRolls, 
           wil: wilRolls,
-          final: {
-            str: strRolls[0] + strRolls[1],
-            dex: dexRolls[0] + dexRolls[1],
-            wil: wilRolls[0] + wilRolls[1]
-          }
+          final: finalStats,
+          original: { ...finalStats }
         };
+        newResults.selectedSwap = null;
         break;
         
       case 1: // Roll HP
@@ -306,27 +343,44 @@ export const CharacterGenerationWizard: React.FC<CharacterGenerationWizardProps>
             </div>
             <div className="mb-6">
               <h4 className="font-semibold mb-3">Optional: Swap Two Stats</h4>
-              <p className="text-sm text-theme-text-light mb-3">You may swap any two attribute values if you wish.</p>
+              <p className="text-sm text-theme-text-light mb-3">You may swap any two attribute values if you wish. Click again to undo.</p>
               <div className="grid grid-cols-3 gap-2">
                 <button
                   onClick={() => swapStats('str', 'dex')}
-                  className="px-3 py-2 text-sm border border-theme-primary-800 text-theme-primary-800 rounded hover:bg-theme-primary-200 transition-colors"
+                  className={`px-3 py-2 text-sm border rounded transition-colors ${
+                    results.selectedSwap === 'str-dex' 
+                      ? 'border-theme-primary-600 bg-theme-primary-100 text-theme-primary-800'
+                      : 'border-theme-primary-800 text-theme-primary-800 hover:bg-theme-primary-200'
+                  }`}
                 >
                   Swap STR ↔ DEX
                 </button>
                 <button
                   onClick={() => swapStats('str', 'wil')}
-                  className="px-3 py-2 text-sm border border-theme-primary-800 text-theme-primary-800 rounded hover:bg-theme-primary-200 transition-colors"
+                  className={`px-3 py-2 text-sm border rounded transition-colors ${
+                    results.selectedSwap === 'str-wil' 
+                      ? 'border-theme-primary-600 bg-theme-primary-100 text-theme-primary-800'
+                      : 'border-theme-primary-800 text-theme-primary-800 hover:bg-theme-primary-200'
+                  }`}
                 >
                   Swap STR ↔ WIL
                 </button>
                 <button
                   onClick={() => swapStats('dex', 'wil')}
-                  className="px-3 py-2 text-sm border border-theme-primary-800 text-theme-primary-800 rounded hover:bg-theme-primary-200 transition-colors"
+                  className={`px-3 py-2 text-sm border rounded transition-colors ${
+                    results.selectedSwap === 'dex-wil' 
+                      ? 'border-theme-primary-600 bg-theme-primary-100 text-theme-primary-800'
+                      : 'border-theme-primary-800 text-theme-primary-800 hover:bg-theme-primary-200'
+                  }`}
                 >
                   Swap DEX ↔ WIL
                 </button>
               </div>
+              {results.selectedSwap && (
+                <p className="text-sm text-theme-primary-600 mt-2">
+                  Current swap: <strong>{results.selectedSwap.replace('-', ' ↔ ').toUpperCase()}</strong>
+                </p>
+              )}
             </div>
             <p>Now let's roll for Hit Points (1d6)...</p>
           </div>
