@@ -1,6 +1,7 @@
 import { useCharacterStore } from './stores/characterStore-simple';
 import { CharacterSelector } from './components/CharacterSelector';
 import { CharacterSheet } from './components/CharacterSheet';
+import compatibleLogo from '/compatible-with-mausritter.png';
 
 function App() {
   const { currentCharacter } = useCharacterStore();
@@ -36,7 +37,7 @@ function App() {
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-4">
               <img 
-                src="/compatible-with-mausritter.png" 
+                src={compatibleLogo} 
                 alt="Compatible with Mausritter" 
                 className="h-16 w-auto"
               />
