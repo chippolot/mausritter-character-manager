@@ -92,6 +92,16 @@
   button, input, select, textarea {
     touch-action: manipulation;
   }
+
+  /* Prevent scrolling during drag operations on mobile */
+  .item-card {
+    touch-action: none;
+  }
+
+  /* Allow pan-y (vertical scrolling) but prevent pan-x during drag */
+  .inventory-container {
+    touch-action: pan-y;
+  }
 }
 
 @layer components {

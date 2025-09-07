@@ -105,7 +105,7 @@ export const InventoryGrid: React.FC<InventoryGridProps> = ({ onGridDrop, onMobi
           <>
             <div className="text-center">
               <div className="text-xs font-semibold text-theme-primary-700">Carried | Worn | Pack (1-6)</div>
-              <div className="text-xs text-theme-primary-600">Touch items to select, long press for options</div>
+              <div className="text-xs text-theme-primary-600">Tap to select items</div>
             </div>
           </>
         ) : (
@@ -149,7 +149,7 @@ export const InventoryGrid: React.FC<InventoryGridProps> = ({ onGridDrop, onMobi
       
       <div className="mt-2 text-sm text-theme-primary-700">
         {isMobile ? (
-          <p>• Long press items for options • Tap to select/move</p>
+          <p>• Tap item to select, tap grid cell to move, tap scratch area to unequip</p>
         ) : (
           <p>• Right-click items to rotate • Items snap to grid when dropped</p>
         )}

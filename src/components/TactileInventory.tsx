@@ -44,13 +44,13 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
-        distance: isMobile ? 15 : 8, // Longer distance on mobile to prevent accidental drags
+        distance: isMobile ? 20 : 8, // Longer distance on mobile to prevent accidental drags
       },
     }),
     useSensor(TouchSensor, {
       activationConstraint: {
-        delay: 250, // Require 250ms press for drag to start
-        tolerance: 8, // Allow 8px of movement during the delay
+        delay: isMobile ? 100 : 250, // Shorter delay on mobile 
+        tolerance: 15, // More tolerance for movement during delay
       },
     })
   );
@@ -399,6 +399,23 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
     }
   }, [isMobile, selectedItem, items, canPlaceItem, onItemsChange]);
 
+  const handleMobileItemToScratch = useCallback(() => {
+    if (!isMobile || !selectedItem) return;
+    
+    const item = items.find(i => i.id === selectedItem);
+    if (!item) return;
+
+    // Move item to scratch area at a default position
+    const updatedItem = {
+      ...item,
+      isInGrid: false,
+      scratchPosition: { x: 50, y: 50 }, // Default scratch position
+    };
+    const newItems = items.map((i) => i.id === selectedItem ? updatedItem : i);
+    onItemsChange(newItems);
+    setSelectedItem(null);
+  }, [isMobile, selectedItem, items, onItemsChange]);
+
   const handleItemSelect = useCallback((itemData: MausritterItemData, type: PlacedItem['type']) => {
     const itemBase = createItemFromData(itemData, type);
     const newItem: PlacedItem = {
@@ -427,7 +444,7 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
   }, [items, onItemsChange, itemsData.pipPurse, createItemFromData]);
 
   return (
-    <div className="card">
+    <div className="card inventory-container">
       <h2 className={`font-medium text-theme-primary-800 mb-4 ${isMobile ? 'text-xl' : 'text-2xl'}`}>Inventory</h2>
       
       {selectedItem && isMobile && (
@@ -455,13 +472,13 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
             onMobileGridClick={isMobile ? (pos) => selectedItem && handleMobileItemMove(selectedItem, pos) : undefined}
           />
           {items.filter(item => item.isInGrid && item.id !== activeItem?.id).map((item) => {
-            // Position items relative to the grid element using a more direct approach
+            // Position items relative to the grid element using responsive offsets
             return (
               <div
                 key={item.id}
                 className="absolute pointer-events-auto"
                 style={{
-                  // Position items to align with grid cells, accounting for gaps
+                  // Position items to align with grid cells, accounting for gaps and responsive sizing
                   top: GRID_OFFSET.top + item.position.y * GRID_CONFIG.cellSize + item.position.y * GRID_GAP,
                   left: GRID_OFFSET.left + item.position.x * GRID_CONFIG.cellSize + item.position.x * GRID_GAP,
                 }}
@@ -482,7 +499,7 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
         </div>
 
         <div className="relative">
-          <ScratchArea />
+          <ScratchArea onMobileScratchClick={handleMobileItemToScratch} />
           <div className="absolute top-20 left-4 pointer-events-none">
             {items.filter(item => !item.isInGrid && item.id !== activeItem?.id).map((item) => {
               if (!item.scratchPosition) return null;
