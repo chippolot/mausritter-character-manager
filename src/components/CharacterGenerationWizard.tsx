@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Character } from '../stores/characterStore-simple';
 import { useCharacterStore } from '../stores/characterStore-simple';
 import { PlacedItem } from '../types/inventory';
-import { HirelingFactory, PlacedItemFactory } from '../factories';
+import { CharacterFactory, HirelingFactory, PlacedItemFactory } from '../factories';
 import generationTables from '../data/generationTables.json';
 import mausritterItems from '../data/mausritterItems.json';
 
@@ -288,32 +288,20 @@ export const CharacterGenerationWizard: React.FC<CharacterGenerationWizardProps>
       }
     }
 
-    const newCharacter: Character = {
-      id: crypto.randomUUID(),
+    const newCharacter = CharacterFactory.createFromGeneration({
       name: results.name,
       strength: results.attributes.final.str,
-      maxStrength: results.attributes.final.str,
       dexterity: results.attributes.final.dex,
-      maxDexterity: results.attributes.final.dex,
       will: results.attributes.final.wil,
-      maxWill: results.attributes.final.wil,
       hitPoints: results.hitPoints,
-      maxHitPoints: results.hitPoints,
-      level: 1,
-      experience: 0,
       background: results.background.name,
       birthsign: results.customBirthsign || results.birthsign.name,
       coat: `${results.customCoat.pattern || results.coat.pattern} ${results.customCoat.color || results.coat.color}`,
       look: results.customPhysicalDetail || results.physicalDetail,
-      grit: 0,
       pips: results.pips,
-      alive: true,
-      ignoredConditions: '',
-      bankedItemsAndPips: '',
-      inventory: new Array(6).fill(null),
       tactileInventory: startingItems,
       hirelings: startingHirelings
-    };
+    });
     
     addCharacter(newCharacter);
     handleClose();

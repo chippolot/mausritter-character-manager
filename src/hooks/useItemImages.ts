@@ -32,10 +32,6 @@ export const useItemImages = () => {
     return Object.keys(imageData.imageMap);
   };
 
-  const getImageKeyForItem = (itemName: string): string | undefined => {
-    return imageData.itemNameToImage[itemName];
-  };
-
   const getAllImageOptions = () => {
     return Object.keys(imageData.imageMap).map(key => ({
       key,
@@ -60,7 +56,6 @@ export const useItemImages = () => {
   return {
     getImageUrl,
     getImageOptions,
-    getImageKeyForItem,
     getAllImageOptions,
     getImageOptionsByCategory,
     imageData

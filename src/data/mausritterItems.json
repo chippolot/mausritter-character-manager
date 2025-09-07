@@ -115,28 +115,35 @@
   ],
   "armor": [
     {
-      "name": "Jerkin",
+      "name": "Helm",
       "defense": 1,
       "size": "small",
       "maxUsageDots": 3,
-      "imageKey": "light-armour"
+      "imageKey": "helm"
+    },
+    {
+      "name": "Armour",
+      "defense": 1,
+      "size": "small",
+      "maxUsageDots": 3,
+      "imageKey": "chestpiece"
     },
     {
       "name": "Shield",
       "defense": 1,
       "size": "small",
       "maxUsageDots": 3,
+      "imageKey": "shield"
+    },
+    {
+      "name": "Light Armour",
+      "defense": 1,
+      "size": "wide",
+      "maxUsageDots": 3,
       "imageKey": "light-armour"
     },
     {
-      "name": "Chain Mail",
-      "defense": 1,
-      "size": "tall",
-      "maxUsageDots": 3,
-      "imageKey": "heavy-armour"
-    },
-    {
-      "name": "Plate Armor",
+      "name": "Heavy Armour",
       "defense": 1,
       "size": "tall",
       "maxUsageDots": 3,
@@ -518,79 +525,91 @@
       "name": "Fireball",
       "size": "small",
       "maxUsageDots": 3,
-      "imageKey": "spell"
+      "imageKey": "spell01"
     },
     {
       "name": "Heal",
       "size": "small",
       "maxUsageDots": 3,
-      "imageKey": "spell"
+      "imageKey": "spell02"
     },
     {
       "name": "Magic Missile",
       "size": "small",
       "maxUsageDots": 3,
-      "imageKey": "spell"
+      "imageKey": "spell03"
     },
     {
       "name": "Fear",
       "size": "small",
-      "maxUsageDots": 3
+      "maxUsageDots": 3,
+      "imageKey": "spell04"
     },
     {
       "name": "Darkness",
       "size": "small",
-      "maxUsageDots": 3
+      "maxUsageDots": 3,
+      "imageKey": "spell05"
     },
     {
       "name": "Restore",
       "size": "small",
-      "maxUsageDots": 3
+      "maxUsageDots": 3,
+      "imageKey": "spell01"
     },
     {
       "name": "Be Understood",
       "size": "small",
-      "maxUsageDots": 3
+      "maxUsageDots": 3,
+      "imageKey": "spell02"
     },
     {
       "name": "Ghost Beetle",
       "size": "small",
-      "maxUsageDots": 3
+      "maxUsageDots": 3,
+      "imageKey": "spell03"
     },
     {
       "name": "Light",
       "size": "small",
-      "maxUsageDots": 3
+      "maxUsageDots": 3,
+      "imageKey": "spell04"
     },
     {
       "name": "Invisible Ring",
       "size": "small",
-      "maxUsageDots": 3
+      "maxUsageDots": 3,
+      "imageKey": "spell05"
     },
     {
       "name": "Knock",
       "size": "small",
-      "maxUsageDots": 3
+      "maxUsageDots": 3,
+      "imageKey": "spell01"
     },
     {
       "name": "Grease",
       "size": "small",
-      "maxUsageDots": 3
+      "maxUsageDots": 3,
+      "imageKey": "spell02"
     },
     {
       "name": "Grow",
       "size": "small",
-      "maxUsageDots": 3
+      "maxUsageDots": 3,
+      "imageKey": "spell03"
     },
     {
       "name": "Invisibility",
       "size": "small",
-      "maxUsageDots": 3
+      "maxUsageDots": 3,
+      "imageKey": "spell04"
     },
     {
       "name": "Catnip",
       "size": "small",
-      "maxUsageDots": 3
+      "maxUsageDots": 3,
+      "imageKey": "spell05"
     }
   ],
   "conditions": [

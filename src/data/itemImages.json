@@ -3,6 +3,7 @@
     "arrows": "arrows.png",
     "axe": "axe.png", 
     "bow": "bow.png",
+    "chestpiece": "chestpiece.png",
     "dagger": "dagger.png",
     "electric-lantern": "electric-lantern.png",
     "hammer": "hammer.png",
@@ -16,9 +17,14 @@
     "pickaxe": "pickaxe.png",
     "pip-purse": "pip-purse.png",
     "rations": "rations.png",
+    "shield": "shield.png",
     "sling": "sling.png",
     "spear": "spear.png",
-    "spell": "spell.png",
+    "spell01": "spell01.png",
+    "spell02": "spell02.png",
+    "spell03": "spell03.png",
+    "spell04": "spell04.png",
+    "spell05": "spell05.png",
     "stones": "stones.png",
     "sword": "sword.png",
     "torches": "torches.png",
@@ -31,7 +37,7 @@
     },
     {
       "name": "Armor", 
-      "images": ["light-armour", "heavy-armour"]
+      "images": ["chestpiece", "light-armour", "heavy-armour", "shield"]
     },
     {
       "name": "Items",
@@ -39,34 +45,11 @@
     },
     {
       "name": "Spells",
-      "images": ["spell"]
+      "images": ["spell01","spell02","spell03","spell04","spell05"]
     },
     {
       "name": "Generic",
       "images": ["improvised"]
     }
-  ],
-  "itemNameToImage": {
-    "Needle": "needle",
-    "Dagger": "dagger", 
-    "Hatchet": "axe",
-    "Sword": "sword",
-    "Axe": "axe",
-    "Staff": "spear",
-    "Spear": "spear",
-    "Trashhook": "hookarm",
-    "Hammer": "hammer",
-    "Sling": "sling",
-    "Light Crossbow": "bow",
-    "Bow": "bow", 
-    "Heavy Crossbow": "bow",
-    "Jerkin": "light-armour",
-    "Shield": "light-armour",
-    "Chain Mail": "heavy-armour",
-    "Plate Armor": "heavy-armour",
-    "Torch": "torches",
-    "Lantern": "lantern",
-    "Rations": "rations",
-    "Pip Purse": "pip-purse"
-  }
+  ]
 }
