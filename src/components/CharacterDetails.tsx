@@ -305,12 +305,24 @@ export const CharacterDetails: React.FC<CharacterDetailsProps> = ({
           <textarea
             value={character.ignoredConditions}
             onChange={handleInputChange('ignoredConditions')}
-            className="input-field w-full h-16 resize-none"
+            className="input-field w-full h-24 resize-none"
             placeholder="List conditions you are ignoring due to Grit"
           />
           <div className="text-xs text-theme-primary-600 mt-1">
             Ignore a number of conditions equal to your Grit
           </div>
+        </div>
+
+        <div>
+          <label className="block text-sm font-semibold text-theme-primary-800 mb-1">
+            Banked Items and Pips
+          </label>
+          <textarea
+            value={character.bankedItemsAndPips}
+            onChange={handleInputChange('bankedItemsAndPips')}
+            className="input-field w-full h-24 resize-none"
+            placeholder="List items and pips you have banked for safekeeping"
+          />
         </div>
 
       </div>

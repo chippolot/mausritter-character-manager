@@ -303,6 +303,7 @@ export const CharacterGenerationWizard: React.FC<CharacterGenerationWizardProps>
       pips: results.pips,
       alive: true,
       ignoredConditions: '',
+      bankedItemsAndPips: '',
       inventory: new Array(6).fill(null),
       tactileInventory: startingItems,
       hirelings: []

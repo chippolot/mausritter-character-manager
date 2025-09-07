@@ -24,6 +24,7 @@ interface Character {
   pips: number;
   alive: boolean;
   ignoredConditions: string;
+  bankedItemsAndPips: string;
   mainHandWeapon?: InventoryItem;
   offHandWeapon?: InventoryItem;
   armor?: InventoryItem;
@@ -131,6 +132,7 @@ export const createNewCharacter = (): Character => ({
   pips: 0,
   alive: true,
   ignoredConditions: '',
+  bankedItemsAndPips: '',
   inventory: new Array(6).fill(null),
   tactileInventory: [],
   hirelings: [],
