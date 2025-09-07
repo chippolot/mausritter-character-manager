@@ -16,7 +16,8 @@ export const useItemImages = () => {
   const getImageUrl = (imageKey: string): string => {
     const filename = imageData.imageMap[imageKey];
     if (!filename) return '';
-    return `/src/assets/Items/${filename}`;
+    const basePath = import.meta.env.BASE_URL || '/';
+    return `${basePath}Items/${filename}`;
   };
 
   const getImageOptions = (category?: string) => {
