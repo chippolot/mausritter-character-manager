@@ -78,16 +78,26 @@
 @layer base {
   body {
     @apply bg-theme-background text-theme-text font-body;
+    /* Prevent zoom on double tap on mobile */
+    touch-action: manipulation;
+    /* Improve mobile scrolling */
+    -webkit-overflow-scrolling: touch;
   }
   
   h1, h2, h3, h4, h5, h6 {
     @apply font-header font-normal text-theme-primary-800;
   }
+
+  /* Better touch targets */
+  button, input, select, textarea {
+    touch-action: manipulation;
+  }
 }
 
 @layer components {
   .card {
-    @apply bg-theme-surface border-2 border-theme-primary-800 rounded-lg shadow-md p-4;
+    @apply bg-theme-surface border-2 border-theme-primary-800 rounded-lg shadow-md;
+    padding: clamp(0.75rem, 2vw, 1rem); /* Responsive padding */
   }
   
   .input-field {

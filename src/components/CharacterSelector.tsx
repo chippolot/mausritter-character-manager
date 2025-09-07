@@ -60,9 +60,9 @@ export const CharacterSelector: React.FC = () => {
   if (characters.length === 0) {
     return (
       <>
-        <div className="max-w-md mx-auto mt-20 text-center">
+        <div className="max-w-md mx-auto mt-20 text-center px-4">
           <div className="card">
-            <h1 className="text-3xl text-theme-primary-800 text-theme-primary-800 mb-6">
+            <h1 className="text-2xl sm:text-3xl text-theme-primary-800 text-theme-primary-800 mb-6">
               Mausritter Character Manager
             </h1>
             <p className="text-theme-primary-800 mb-6">
@@ -71,21 +71,21 @@ export const CharacterSelector: React.FC = () => {
             <div className="space-y-4">
               <button
                 onClick={() => setShowWizard(true)}
-                className="button-primary text-lg px-6 py-3 w-full"
+                className="button-primary text-base sm:text-lg px-4 sm:px-6 py-3 w-full min-h-[44px] touch-manipulation"
               >
                 🎲 Generate Random Character
               </button>
               <div className="text-sm text-theme-text-light">or</div>
               <button
                 onClick={handleCreateCharacter}
-                className="px-6 py-3 border border-theme-primary-800 text-theme-primary-800 rounded hover:bg-theme-primary-100 transition-colors text-lg w-full"
+                className="px-4 sm:px-6 py-3 border border-theme-primary-800 text-theme-primary-800 rounded hover:bg-theme-primary-100 transition-colors text-base sm:text-lg w-full min-h-[44px] touch-manipulation"
               >
                 Create Blank Character
               </button>
               <div className="text-sm text-theme-text-light">or</div>
               <button
                 onClick={() => importFileInputRef.current?.click()}
-                className="px-6 py-3 border border-theme-primary-800 text-theme-primary-800 rounded hover:bg-theme-primary-100 transition-colors text-lg w-full"
+                className="px-4 sm:px-6 py-3 border border-theme-primary-800 text-theme-primary-800 rounded hover:bg-theme-primary-100 transition-colors text-base sm:text-lg w-full min-h-[44px] touch-manipulation"
               >
                 📄 Import from JSON
               </button>
@@ -110,28 +110,28 @@ export const CharacterSelector: React.FC = () => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
+    <div className="max-w-4xl mx-auto p-4 sm:p-6">
       <div className="card mb-6">
-        <div className="flex justify-between items-center mb-4">
-          <h1 className="text-3xl text-theme-primary-800 text-theme-primary-800">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-4">
+          <h1 className="text-2xl sm:text-3xl text-theme-primary-800 text-theme-primary-800">
             Your Characters
           </h1>
-          <div className="flex gap-2">
+          <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
             <button
               onClick={() => setShowWizard(true)}
-              className="button-primary"
+              className="button-primary min-h-[44px] touch-manipulation text-sm sm:text-base"
             >
               🎲 Generate
             </button>
             <button
               onClick={handleCreateCharacter}
-              className="px-4 py-2 border border-theme-primary-800 text-theme-primary-800 rounded hover:bg-theme-primary-100 transition-colors"
+              className="px-3 sm:px-4 py-2 border border-theme-primary-800 text-theme-primary-800 rounded hover:bg-theme-primary-100 transition-colors min-h-[44px] touch-manipulation text-sm sm:text-base"
             >
               Blank Character
             </button>
             <button
               onClick={() => importFileInputRef.current?.click()}
-              className="px-4 py-2 border border-theme-primary-800 text-theme-primary-800 rounded hover:bg-theme-primary-100 transition-colors"
+              className="px-3 sm:px-4 py-2 border border-theme-primary-800 text-theme-primary-800 rounded hover:bg-theme-primary-100 transition-colors min-h-[44px] touch-manipulation text-sm sm:text-base"
               title="Import character from JSON file"
             >
               📄 Import

@@ -1,7 +1,8 @@
 // Centralized inventory sizing constants
 // Change CELL_SIZE to adjust all inventory sizing throughout the app
 
-export const CELL_SIZE = 128; // Base cell size in pixels
+export const CELL_SIZE = 128; // Base cell size in pixels for desktop
+export const MOBILE_CELL_SIZE = 64; // Smaller cell size for mobile devices
 
 export const GRID_CONFIG = {
   width: 5,

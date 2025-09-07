@@ -1,18 +1,24 @@
 import React from 'react';
 import { useDroppable } from '@dnd-kit/core';
-import { GRID_CONFIG } from '../constants/inventory';
+import { useResponsiveInventory } from '../hooks/useResponsiveInventory';
 
 interface InventoryGridProps {
   onGridDrop: (position: { x: number; y: number }) => void;
+  onMobileGridClick?: (position: { x: number; y: number }) => void;
 }
 
-export const InventoryGrid: React.FC<InventoryGridProps> = ({ onGridDrop }) => {
+export const InventoryGrid: React.FC<InventoryGridProps> = ({ onGridDrop, onMobileGridClick }) => {
   const { isOver, setNodeRef } = useDroppable({
     id: 'inventory-grid',
   });
+  const { GRID_CONFIG, isMobile } = useResponsiveInventory();
 
   const handleCellClick = (x: number, y: number) => {
-    onGridDrop({ x, y });
+    if (isMobile && onMobileGridClick) {
+      onMobileGridClick({ x, y });
+    } else {
+      onGridDrop({ x, y });
+    }
   };
 
   const getSectionStyle = (x: number, y: number) => {
@@ -44,10 +50,12 @@ export const InventoryGrid: React.FC<InventoryGridProps> = ({ onGridDrop }) => {
   const getCellLabelStyle = (x: number, y: number) => {
     if (x <= 1) {
       // Paws and Body - small text at top, absolute positioned
-      return 'absolute top-1 left-1/2 transform -translate-x-1/2 text-xs text-gray-500 whitespace-nowrap';
+      const textSize = isMobile ? 'text-xs' : 'text-xs';
+      return `absolute top-1 left-1/2 transform -translate-x-1/2 ${textSize} text-gray-500 whitespace-nowrap`;
     } else {
       // Pack - large centered text, absolute positioned
-      return 'absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-lg text-gray-400 font-semibold';
+      const textSize = isMobile ? 'text-sm' : 'text-lg';
+      return `absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 ${textSize} text-gray-400 font-semibold`;
     }
   };
 
@@ -88,44 +96,63 @@ export const InventoryGrid: React.FC<InventoryGridProps> = ({ onGridDrop }) => {
     <div className="relative">
       
       {/* Section labels */}
-      <div className="mb-3 flex" style={{
-        paddingLeft: '16px', // Match grid padding
-        gap: '2px',
+      <div className={`mb-3 ${isMobile ? 'flex-col space-y-2' : 'flex'}`} style={{
+        paddingLeft: isMobile ? '8px' : '16px', // Match grid padding
+        gap: isMobile ? '0' : '2px',
       }}>
-        <div className="text-center" style={{width: GRID_CONFIG.cellSize}}>
-          <div className="text-sm font-semibold text-theme-primary-700">Carried</div>
-          <div className="text-xs text-theme-primary-600">Ready to use.</div>
-        </div>
-        <div className="text-center" style={{width: GRID_CONFIG.cellSize}}>
-          <div className="text-sm font-semibold text-theme-primary-700">Worn</div>
-          <div className="text-xs text-theme-primary-600">Quick to ready.</div>
-        </div>
-        <div className="text-center" style={{width: GRID_CONFIG.cellSize * 3 + 4}}>
-          <div className="text-sm font-semibold text-theme-primary-700">Pack</div>
-          <div className="text-xs text-theme-primary-600">Takes time to ready. During combat, requires an action to retrieve.</div>
-        </div>
+        {isMobile ? (
+          // Mobile layout - stacked labels
+          <>
+            <div className="text-center">
+              <div className="text-xs font-semibold text-theme-primary-700">Carried | Worn | Pack (1-6)</div>
+              <div className="text-xs text-theme-primary-600">Touch items to select, long press for options</div>
+            </div>
+          </>
+        ) : (
+          // Desktop layout - inline labels
+          <>
+            <div className="text-center" style={{width: GRID_CONFIG.cellSize}}>
+              <div className="text-sm font-semibold text-theme-primary-700">Carried</div>
+              <div className="text-xs text-theme-primary-600">Ready to use.</div>
+            </div>
+            <div className="text-center" style={{width: GRID_CONFIG.cellSize}}>
+              <div className="text-sm font-semibold text-theme-primary-700">Worn</div>
+              <div className="text-xs text-theme-primary-600">Quick to ready.</div>
+            </div>
+            <div className="text-center" style={{width: GRID_CONFIG.cellSize * 3 + 4}}>
+              <div className="text-sm font-semibold text-theme-primary-700">Pack</div>
+              <div className="text-xs text-theme-primary-600">Takes time to ready. During combat, requires an action to retrieve.</div>
+            </div>
+          </>
+        )}
       </div>
       
       <div
         ref={setNodeRef}
         data-id="inventory-grid"
         className={`
-          relative border-2 border-theme-primary-800 rounded-lg p-4 bg-theme-surface
-          transition-colors duration-200
+          relative border-2 border-theme-primary-800 rounded-lg bg-theme-surface
+          transition-colors duration-200 overflow-x-auto
           ${isOver ? 'bg-theme-primary-100 border-theme-primary-600' : ''}
+          ${isMobile ? 'p-2' : 'p-4'}
         `}
         style={{
           display: 'grid',
           gridTemplateColumns: `repeat(${GRID_CONFIG.width}, ${GRID_CONFIG.cellSize}px)`,
           gridTemplateRows: `repeat(${GRID_CONFIG.height}, ${GRID_CONFIG.cellSize}px)`,
           gap: '2px',
+          minWidth: isMobile ? `${GRID_CONFIG.width * GRID_CONFIG.cellSize + 4 * (GRID_CONFIG.width - 1)}px` : 'auto',
         }}
       >
         {renderGridCells()}
       </div>
       
       <div className="mt-2 text-sm text-theme-primary-700">
-        <p>• Right-click items to rotate • Items snap to grid when dropped</p>
+        {isMobile ? (
+          <p>• Long press items for options • Tap to select/move</p>
+        ) : (
+          <p>• Right-click items to rotate • Items snap to grid when dropped</p>
+        )}
       </div>
     </div>
   );

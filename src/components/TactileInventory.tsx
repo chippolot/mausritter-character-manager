@@ -6,6 +6,7 @@ import {
   DragStartEvent,
   closestCenter,
   PointerSensor,
+  TouchSensor,
   useSensor,
   useSensors,
 } from '@dnd-kit/core';
@@ -14,8 +15,8 @@ import { InventoryGrid } from './InventoryGrid';
 import { ScratchArea } from './ScratchArea';
 import { ItemAddForm } from './ItemAddForm';
 import { PlacedItem, GridPosition } from '../types/inventory';
-import { GRID_CONFIG, GRID_GAP, GRID_PADDING, GRID_OFFSET, SCRATCH_PADDING } from '../constants/inventory';
 import { useMausritterItems, MausritterItemData } from '../hooks/useMausritterItems';
+import { useResponsiveInventory } from '../hooks/useResponsiveInventory';
 
 interface TactileInventoryProps {
   items: PlacedItem[];
@@ -29,12 +30,27 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
   const [activeItem, setActiveItem] = useState<PlacedItem | null>(null);
   const [pendingItem, setPendingItem] = useState<PlacedItem | null>(null);
   const [dragOffset, setDragOffset] = useState<{ x: number; y: number } | null>(null);
+  const [selectedItem, setSelectedItem] = useState<string | null>(null); // For mobile item selection
   const { createItemFromData, items: itemsData } = useMausritterItems();
+  const { 
+    isMobile, 
+    GRID_CONFIG, 
+    GRID_GAP, 
+    GRID_PADDING, 
+    GRID_OFFSET, 
+    SCRATCH_PADDING 
+  } = useResponsiveInventory();
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
-        distance: 8,
+        distance: isMobile ? 15 : 8, // Longer distance on mobile to prevent accidental drags
+      },
+    }),
+    useSensor(TouchSensor, {
+      activationConstraint: {
+        delay: 250, // Require 250ms press for drag to start
+        tolerance: 8, // Allow 8px of movement during the delay
       },
     })
   );
@@ -357,6 +373,32 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
     setPendingItem(null);
   }, [pendingItem, canPlaceItem, items, onItemsChange]);
 
+  // Mobile-specific item handling
+  const handleMobileItemClick = useCallback((itemId: string) => {
+    if (isMobile) {
+      setSelectedItem(selectedItem === itemId ? null : itemId);
+    }
+  }, [isMobile, selectedItem]);
+
+  const handleMobileItemMove = useCallback((itemId: string, targetPosition: GridPosition) => {
+    if (!isMobile || !selectedItem) return;
+    
+    const item = items.find(i => i.id === itemId);
+    if (!item) return;
+
+    if (canPlaceItem(item, targetPosition)) {
+      const updatedItem = {
+        ...item,
+        position: targetPosition,
+        isInGrid: true,
+        scratchPosition: undefined,
+      };
+      const newItems = items.map((i) => i.id === itemId ? updatedItem : i);
+      onItemsChange(newItems);
+      setSelectedItem(null);
+    }
+  }, [isMobile, selectedItem, items, canPlaceItem, onItemsChange]);
+
   const handleItemSelect = useCallback((itemData: MausritterItemData, type: PlacedItem['type']) => {
     const itemBase = createItemFromData(itemData, type);
     const newItem: PlacedItem = {
@@ -386,7 +428,15 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
 
   return (
     <div className="card">
-      <h2 className="text-2xl font-medium text-theme-primary-800 mb-4">Inventory</h2>
+      <h2 className={`font-medium text-theme-primary-800 mb-4 ${isMobile ? 'text-xl' : 'text-2xl'}`}>Inventory</h2>
+      
+      {selectedItem && isMobile && (
+        <div className="mb-4 p-2 bg-theme-primary-100 rounded-lg border border-theme-primary-300">
+          <p className="text-sm text-theme-primary-800">
+            Item selected. Tap a grid cell to move it there, or tap the item again to deselect.
+          </p>
+        </div>
+      )}
       
       <ItemAddForm 
         onItemSelect={handleItemSelect} 
@@ -394,13 +444,16 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
       />
 
       <DndContext
-        sensors={sensors}
+        sensors={isMobile ? [] : sensors} // Disable drag and drop on mobile
         collisionDetection={closestCenter}
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
       >
         <div className="relative mb-8">
-          <InventoryGrid onGridDrop={handleGridDrop} />
+          <InventoryGrid 
+            onGridDrop={handleGridDrop}
+            onMobileGridClick={isMobile ? (pos) => selectedItem && handleMobileItemMove(selectedItem, pos) : undefined}
+          />
           {items.filter(item => item.isInGrid && item.id !== activeItem?.id).map((item) => {
             // Position items relative to the grid element using a more direct approach
             return (
@@ -420,6 +473,8 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
                   onToggleUsagePip={handleToggleUsagePip}
                   onPipValueChange={handlePipValueChange}
                   isDragging={false}
+                  onMobileClick={handleMobileItemClick}
+                  isSelected={selectedItem === item.id}
                 />
               </div>
             );
@@ -448,6 +503,8 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
                     onToggleUsagePip={handleToggleUsagePip}
                     onPipValueChange={handlePipValueChange}
                     isDragging={false}
+                    onMobileClick={handleMobileItemClick}
+                    isSelected={selectedItem === item.id}
                   />
                 </div>
               );
@@ -464,6 +521,8 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
               onToggleUsagePip={() => {}}
               onPipValueChange={() => {}}
               isDragging
+              onMobileClick={() => {}}
+              isSelected={false}
             />
           ) : null}
         </DragOverlay>

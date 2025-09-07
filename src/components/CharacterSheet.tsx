@@ -101,12 +101,41 @@ export const CharacterSheet: React.FC<CharacterSheetProps> = ({ character }) => 
   };
 
   return (
-    <div className="max-w-6xl mx-auto p-6 space-y-6">
+    <div className="max-w-6xl mx-auto p-4 sm:p-6 space-y-4 sm:space-y-6">
       <header className="text-center border-b-2 border-theme-primary-800 pb-4">
-        <div className="flex items-center justify-between">
+        {/* Mobile layout: buttons above name */}
+        <div className="flex flex-col sm:hidden gap-4">
+          <div className="flex flex-row justify-center gap-2">
+            <button
+              onClick={exportCharacter}
+              className="px-3 py-2 text-sm border border-theme-primary-600 text-theme-primary-600 rounded hover:bg-theme-primary-100 transition-colors min-h-[44px] touch-manipulation"
+              title="Export character to JSON file"
+            >
+              Export
+            </button>
+            <button
+              onClick={() => importFileInputRef.current?.click()}
+              className="px-3 py-2 text-sm border border-theme-primary-600 text-theme-primary-600 rounded hover:bg-theme-primary-100 transition-colors min-h-[44px] touch-manipulation"
+              title="Import character from JSON file"
+            >
+              Import
+            </button>
+          </div>
+          <div className="flex items-center justify-center gap-2">
+            <h1 className={`text-3xl text-theme-primary-800 mb-2 font-header text-center ${
+              !character.alive ? 'line-through opacity-60' : ''
+            }`}>
+              {character.name || 'Unnamed Character'}
+            </h1>
+            {!character.alive && <span className="text-2xl mb-2">💀</span>}
+          </div>
+        </div>
+
+        {/* Desktop layout: original layout */}
+        <div className="hidden sm:flex items-center justify-between gap-4">
           <div className="flex-1"></div>
           <div className="flex items-center justify-center gap-3">
-            <h1 className={`text-5xl text-theme-primary-800 mb-2 font-header ${
+            <h1 className={`text-5xl text-theme-primary-800 mb-2 font-header text-center ${
               !character.alive ? 'line-through opacity-60' : ''
             }`}>
               {character.name || 'Unnamed Character'}
@@ -116,38 +145,40 @@ export const CharacterSheet: React.FC<CharacterSheetProps> = ({ character }) => 
           <div className="flex-1 flex justify-end gap-2">
             <button
               onClick={exportCharacter}
-              className="px-3 py-1 text-sm border border-theme-primary-600 text-theme-primary-600 rounded hover:bg-theme-primary-100 transition-colors"
+              className="px-3 py-2 text-sm border border-theme-primary-600 text-theme-primary-600 rounded hover:bg-theme-primary-100 transition-colors min-h-[44px] touch-manipulation"
               title="Export character to JSON file"
             >
               Export
             </button>
             <button
               onClick={() => importFileInputRef.current?.click()}
-              className="px-3 py-1 text-sm border border-theme-primary-600 text-theme-primary-600 rounded hover:bg-theme-primary-100 transition-colors"
+              className="px-3 py-2 text-sm border border-theme-primary-600 text-theme-primary-600 rounded hover:bg-theme-primary-100 transition-colors min-h-[44px] touch-manipulation"
               title="Import character from JSON file"
             >
               Import
             </button>
-            <input
-              ref={importFileInputRef}
-              type="file"
-              accept=".json"
-              onChange={importCharacter}
-              className="hidden"
-            />
           </div>
         </div>
-        <p className="text-lg text-theme-primary-800 opacity-75">
+
+        <input
+          ref={importFileInputRef}
+          type="file"
+          accept=".json"
+          onChange={importCharacter}
+          className="hidden"
+        />
+        
+        <p className="text-base sm:text-lg text-theme-primary-800 opacity-75 mt-2">
           Level {character.level} • {character.experience} XP
         </p>
       </header>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-1 space-y-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
+        <div className="lg:col-span-1 space-y-4 sm:space-y-6">
           <CharacterDetails character={character} onUpdate={handleUpdate} />
         </div>
 
-        <div className="lg:col-span-2 space-y-6">
+        <div className="lg:col-span-2 space-y-4 sm:space-y-6">
           <TactileInventory 
             items={character.tactileInventory} 
             onItemsChange={(items) => handleUpdate({ tactileInventory: items })}

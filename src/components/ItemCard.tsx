@@ -3,8 +3,8 @@ import { useDraggable } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities';
 import { RiDeleteBin6Line } from 'react-icons/ri';
 import { PlacedItem } from '../types/inventory';
-import { GRID_CONFIG } from '../constants/inventory';
 import { useItemImages } from '../hooks/useItemImages';
+import { useResponsiveInventory } from '../hooks/useResponsiveInventory';
 
 interface ItemCardProps {
   item: PlacedItem;
@@ -13,10 +13,22 @@ interface ItemCardProps {
   onToggleUsagePip?: (itemId: string, pipIndex: number) => void;
   onPipValueChange?: (itemId: string, value: number) => void;
   isDragging?: boolean;
+  onMobileClick?: (id: string) => void;
+  isSelected?: boolean;
 }
 
-export const ItemCard: React.FC<ItemCardProps> = ({ item, onRotate, onDelete, onToggleUsagePip, onPipValueChange, isDragging }) => {
+export const ItemCard: React.FC<ItemCardProps> = ({ 
+  item, 
+  onRotate, 
+  onDelete, 
+  onToggleUsagePip, 
+  onPipValueChange, 
+  isDragging, 
+  onMobileClick,
+  isSelected 
+}) => {
   const { getImageUrl } = useItemImages();
+  const { isMobile, GRID_CONFIG } = useResponsiveInventory();
   const {
     attributes,
     listeners,
@@ -25,6 +37,7 @@ export const ItemCard: React.FC<ItemCardProps> = ({ item, onRotate, onDelete, on
     isDragging: dndKitDragging
   } = useDraggable({
     id: item.id,
+    disabled: isMobile, // Disable dragging on mobile
   });
 
   const style = {
@@ -77,6 +90,14 @@ export const ItemCard: React.FC<ItemCardProps> = ({ item, onRotate, onDelete, on
     }
   };
 
+  const handleMobileClick = (e: React.MouseEvent) => {
+    if (isMobile && onMobileClick) {
+      e.preventDefault();
+      e.stopPropagation();
+      onMobileClick(item.id);
+    }
+  };
+
   const handlePipClick = (e: React.MouseEvent, pipIndex: number) => {
     e.preventDefault();
     e.stopPropagation();
@@ -104,19 +125,23 @@ export const ItemCard: React.FC<ItemCardProps> = ({ item, onRotate, onDelete, on
         width: dimensions.width,
         height: dimensions.height,
         zIndex: isActive ? 1000 : 1,
+        transform: `${CSS.Translate.toString(transform)} ${getRotationTransform()}`,
       }}
-      {...listeners}
-      {...attributes}
-      onContextMenu={handleRightClick}
+      {...(!isMobile ? listeners : {})} // Only attach drag listeners on non-mobile
+      {...(!isMobile ? attributes : {})}
+      onContextMenu={isMobile ? undefined : handleRightClick}
+      onClick={handleMobileClick}
       className={`
-        item-card absolute cursor-grab active:cursor-grabbing
-        border-2 border-theme-primary-800 rounded-lg
-        flex flex-col p-2 select-none
-        hover:border-theme-primary-600 group
+        item-card absolute select-none
+        border-2 rounded-lg flex flex-col
+        hover:border-theme-primary-600 group transition-all duration-200
         ${getItemSizeClass()}
         ${isActive ? 'dragging opacity-90' : ''}
+        ${isMobile ? 'cursor-pointer touch-manipulation' : 'cursor-grab active:cursor-grabbing'}
+        ${isSelected ? 'border-theme-primary-600 bg-theme-primary-100' : 'border-theme-primary-800'}
         ${item.type === 'condition' ? 'bg-red-100' : 
-          'bg-white'}
+          isSelected ? 'bg-theme-primary-100' : 'bg-white'}
+        ${isMobile ? 'p-1' : 'p-2'}
       `}
     >
       <div className="text-left pointer-events-none w-full h-full flex flex-col">
