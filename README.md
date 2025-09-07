@@ -1,6 +1,6 @@
-# Mausritter Character Sheet
+# Mausritter Character Manager
 
-A modern, interactive character sheet for the Mausritter tabletop RPG, built with React and TypeScript.
+A modern, interactive character manager for the Mausritter tabletop RPG, built with React and TypeScript.
 
 ## Features
 
