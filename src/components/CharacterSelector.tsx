@@ -29,7 +29,7 @@ export const CharacterSelector: React.FC = () => {
         <div className="max-w-md mx-auto mt-20 text-center">
           <div className="card">
             <h1 className="text-3xl text-theme-primary-800 text-theme-primary-800 mb-6">
-              Mausritter Character Sheet
+              Mausritter Character Manager
             </h1>
             <p className="text-theme-primary-800 mb-6">
               Welcome! You don't have any characters yet.
