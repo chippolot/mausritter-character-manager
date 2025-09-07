@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useCharacterStore, createNewCharacter } from '../stores/characterStore-simple';
+import React, { useState, useRef } from 'react';
+import { useCharacterStore, createNewCharacter, Character } from '../stores/characterStore-simple';
 import { CharacterGenerationWizard } from './CharacterGenerationWizard';
 
 export const CharacterSelector: React.FC = () => {
@@ -12,6 +12,7 @@ export const CharacterSelector: React.FC = () => {
   } = useCharacterStore();
   const [showDeleteConfirm, setShowDeleteConfirm] = useState<string | null>(null);
   const [showWizard, setShowWizard] = useState(false);
+  const importFileInputRef = useRef<HTMLInputElement>(null);
 
   const handleCreateCharacter = () => {
     const newCharacter = createNewCharacter();
@@ -21,6 +22,39 @@ export const CharacterSelector: React.FC = () => {
   const handleDeleteCharacter = (id: string) => {
     deleteCharacter(id);
     setShowDeleteConfirm(null);
+  };
+
+  const importCharacter = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const imported = JSON.parse(e.target?.result as string) as Character;
+        
+        // Validate that it's a valid character object by checking required fields
+        if (!imported.id || typeof imported.name !== 'string' || typeof imported.level !== 'number') {
+          alert('Invalid character file format');
+          return;
+        }
+
+        // Generate new ID to avoid conflicts
+        const characterWithNewId = {
+          ...imported,
+          id: crypto.randomUUID(),
+        };
+
+        addCharacter(characterWithNewId);
+        alert(`Character "${characterWithNewId.name}" imported successfully!`);
+      } catch (error) {
+        alert('Error reading character file. Please make sure it\'s a valid JSON file.');
+      }
+    };
+
+    reader.readAsText(file);
+    // Reset the input value so the same file can be imported again if needed
+    event.target.value = '';
   };
 
   if (characters.length === 0) {
@@ -48,6 +82,13 @@ export const CharacterSelector: React.FC = () => {
               >
                 Create Blank Character
               </button>
+              <div className="text-sm text-theme-text-light">or</div>
+              <button
+                onClick={() => importFileInputRef.current?.click()}
+                className="px-6 py-3 border border-theme-primary-800 text-theme-primary-800 rounded hover:bg-theme-primary-100 transition-colors text-lg w-full"
+              >
+                📄 Import from JSON
+              </button>
             </div>
           </div>
         </div>
@@ -55,6 +96,14 @@ export const CharacterSelector: React.FC = () => {
         <CharacterGenerationWizard 
           isOpen={showWizard}
           onClose={() => setShowWizard(false)}
+        />
+        
+        <input
+          ref={importFileInputRef}
+          type="file"
+          accept=".json"
+          onChange={importCharacter}
+          className="hidden"
         />
       </>
     );
@@ -79,6 +128,13 @@ export const CharacterSelector: React.FC = () => {
               className="px-4 py-2 border border-theme-primary-800 text-theme-primary-800 rounded hover:bg-theme-primary-100 transition-colors"
             >
               Blank Character
+            </button>
+            <button
+              onClick={() => importFileInputRef.current?.click()}
+              className="px-4 py-2 border border-theme-primary-800 text-theme-primary-800 rounded hover:bg-theme-primary-100 transition-colors"
+              title="Import character from JSON file"
+            >
+              📄 Import
             </button>
           </div>
         </div>
@@ -164,6 +220,14 @@ export const CharacterSelector: React.FC = () => {
       <CharacterGenerationWizard 
         isOpen={showWizard}
         onClose={() => setShowWizard(false)}
+      />
+      
+      <input
+        ref={importFileInputRef}
+        type="file"
+        accept=".json"
+        onChange={importCharacter}
+        className="hidden"
       />
     </div>
   );

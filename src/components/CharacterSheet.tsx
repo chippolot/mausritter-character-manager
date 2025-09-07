@@ -71,14 +71,23 @@ export const CharacterSheet: React.FC<CharacterSheetProps> = ({ character }) => 
           return;
         }
 
-        // Generate new ID to avoid conflicts
-        const newCharacter: Character = {
+        // Show confirmation dialog for overwrite
+        const confirmed = window.confirm(
+          `Are you sure you want to overwrite "${character.name || 'this character'}" with "${imported.name}"?\n\nThis action cannot be undone.`
+        );
+
+        if (!confirmed) {
+          return;
+        }
+
+        // Keep the current character's ID but overwrite all other data
+        const updatedCharacter: Character = {
           ...imported,
-          id: crypto.randomUUID()
+          id: character.id
         };
 
-        addCharacter(newCharacter);
-        alert(`Character "${newCharacter.name}" imported successfully!`);
+        updateCharacter(character.id, updatedCharacter);
+        alert(`Character overwritten with "${updatedCharacter.name}" successfully!`);
       } catch (error) {
         alert('Error reading character file. Please ensure it\'s a valid JSON file.');
       }
