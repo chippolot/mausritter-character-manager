@@ -19,7 +19,20 @@ export const CharacterDetails: React.FC<CharacterDetailsProps> = ({
   const handleNumberChange = (field: keyof Character) => (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
-    onUpdate({ [field]: parseInt(e.target.value) || 0 });
+    const value = parseInt(e.target.value) || 0;
+    
+    // Validate current attributes don't exceed their max values
+    if (field === 'strength' && value > character.maxStrength) {
+      onUpdate({ [field]: character.maxStrength });
+    } else if (field === 'dexterity' && value > character.maxDexterity) {
+      onUpdate({ [field]: character.maxDexterity });
+    } else if (field === 'will' && value > character.maxWill) {
+      onUpdate({ [field]: character.maxWill });
+    } else if (field === 'hitPoints' && value > character.maxHitPoints) {
+      onUpdate({ [field]: character.maxHitPoints });
+    } else {
+      onUpdate({ [field]: value });
+    }
   };
 
   const handleCheckboxChange = (field: keyof Character) => (
