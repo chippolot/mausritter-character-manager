@@ -1,7 +1,6 @@
 import React from 'react';
 import { Character } from '../stores/characterStore-simple';
 import { useCharacterStore } from '../stores/characterStore-simple';
-import { AttributeBlock } from './AttributeBlock';
 import { TactileInventory } from './TactileInventory';
 import { HirelingList } from './HirelingList';
 import { CharacterDetails } from './CharacterDetails';
@@ -36,7 +35,6 @@ export const CharacterSheet: React.FC<CharacterSheetProps> = ({ character }) => 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-1 space-y-6">
           <CharacterDetails character={character} onUpdate={handleUpdate} />
-          <AttributeBlock character={character} onUpdate={handleUpdate} />
         </div>
 
         <div className="lg:col-span-2 space-y-6">

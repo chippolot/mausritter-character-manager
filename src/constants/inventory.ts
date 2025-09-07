@@ -23,7 +23,7 @@ export const GRID_PADDING = 16; // Grid container padding (p-4 in Tailwind)
 // Dynamic positioning offsets (scale with cell size)
 export const GRID_OFFSET = {
   // These offsets position items correctly within the grid container
-  top: Math.round(CELL_SIZE * 0.36), // Roughly 70% of cell size
+  top: Math.round(CELL_SIZE * 0.52), // Roughly 70% of cell size
   left: Math.round(CELL_SIZE * 0.14), // Roughly 14% of cell size
 };
 

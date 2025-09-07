@@ -84,7 +84,7 @@ export const CharacterDetails: React.FC<CharacterDetailsProps> = ({
           </div>
           <div>
             <label className="block text-sm font-semibold text-theme-primary-800 mb-1">
-              Experience
+              XP
             </label>
             <input
               type="number"
@@ -93,6 +93,131 @@ export const CharacterDetails: React.FC<CharacterDetailsProps> = ({
               className="input-field w-full"
               min="0"
             />
+          </div>
+        </div>
+        <div className="text-xs text-theme-primary-600 -mt-2">
+          Recovered treasure → XP
+        </div>
+
+        {/* Attributes */}
+        <div className="space-y-3">
+          {/* STR */}
+          <div className="flex items-center justify-between">
+            <label className="text-lg font-semibold text-theme-primary-800">
+              STR
+            </label>
+            <div className="flex items-center space-x-1">
+              <input
+                type="number"
+                value={character.strength}
+                onChange={handleNumberChange('strength')}
+                className="input-field w-24 text-center font-semibold"
+                min="0"
+                max={character.maxStrength}
+              />
+              <span className="text-theme-primary-800 font-bold">/</span>
+              <input
+                type="number"
+                value={character.maxStrength}
+                onChange={handleNumberChange('maxStrength')}
+                className="input-field w-24 text-center font-semibold"
+                min="1"
+              />
+            </div>
+          </div>
+          
+          {/* DEX */}
+          <div className="flex items-center justify-between">
+            <label className="text-lg font-semibold text-theme-primary-800">
+              DEX
+            </label>
+            <div className="flex items-center space-x-1">
+              <input
+                type="number"
+                value={character.dexterity}
+                onChange={handleNumberChange('dexterity')}
+                className="input-field w-24 text-center font-semibold"
+                min="0"
+                max={character.maxDexterity}
+              />
+              <span className="text-theme-primary-800 font-bold">/</span>
+              <input
+                type="number"
+                value={character.maxDexterity}
+                onChange={handleNumberChange('maxDexterity')}
+                className="input-field w-24 text-center font-semibold"
+                min="1"
+              />
+            </div>
+          </div>
+          
+          {/* WIL */}
+          <div className="flex items-center justify-between">
+            <label className="text-lg font-semibold text-theme-primary-800">
+              WIL
+            </label>
+            <div className="flex items-center space-x-1">
+              <input
+                type="number"
+                value={character.will}
+                onChange={handleNumberChange('will')}
+                className="input-field w-24 text-center font-semibold"
+                min="0"
+                max={character.maxWill}
+              />
+              <span className="text-theme-primary-800 font-bold">/</span>
+              <input
+                type="number"
+                value={character.maxWill}
+                onChange={handleNumberChange('maxWill')}
+                className="input-field w-24 text-center font-semibold"
+                min="1"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Hit Points - spaced apart */}
+        <div className="flex items-center justify-between">
+          <label className="text-lg font-semibold text-theme-primary-800">
+            HP
+          </label>
+          <div className="flex items-center space-x-1">
+            <input
+              type="number"
+              value={character.hitPoints}
+              onChange={handleNumberChange('hitPoints')}
+              className="input-field w-24 text-center font-semibold"
+              min="0"
+              max={character.maxHitPoints}
+            />
+            <span className="text-theme-primary-800 font-bold">/</span>
+            <input
+              type="number"
+              value={character.maxHitPoints}
+              onChange={handleNumberChange('maxHitPoints')}
+              className="input-field w-24 text-center font-semibold"
+              min="1"
+            />
+          </div>
+        </div>
+
+        {/* Pips */}
+        <div className="flex items-center justify-between">
+          <label className="text-lg font-semibold text-theme-primary-800">
+            Pips
+          </label>
+          <div className="flex items-center space-x-1">
+            <input
+              type="number"
+              value={character.pips}
+              onChange={handleNumberChange('pips')}
+              className="input-field w-24 text-center font-semibold"
+              min="0"
+              max="250"
+            />
+            <span className="text-theme-primary-800 font-bold">/</span>
+            <span className="w-24 text-center font-semibold text-theme-primary-800">250</span>
           </div>
         </div>
 
@@ -147,38 +272,34 @@ export const CharacterDetails: React.FC<CharacterDetailsProps> = ({
           />
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-semibold text-theme-primary-800 mb-1">
-              Grit
-            </label>
-            <input
-              type="number"
-              value={character.grit}
-              onChange={handleNumberChange('grit')}
-              className="input-field w-full"
-              min="0"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-semibold text-theme-primary-800 mb-1">
-              Pips
-            </label>
-            <div className="relative">
-              <input
-                type="number"
-                value={character.pips}
-                onChange={handleNumberChange('pips')}
-                className="input-field w-full pr-12"
-                min="0"
-                max="250"
-              />
-              <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-theme-primary-700 text-sm font-medium pointer-events-none">
-                / 250
-              </span>
-            </div>
+        <div>
+          <label className="block text-sm font-semibold text-theme-primary-800 mb-1">
+            Grit
+          </label>
+          <input
+            type="number"
+            value={character.grit}
+            onChange={handleNumberChange('grit')}
+            className="input-field w-full"
+            min="0"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-semibold text-theme-primary-800 mb-1">
+            Ignored Conditions
+          </label>
+          <textarea
+            value={character.ignoredConditions}
+            onChange={handleInputChange('ignoredConditions')}
+            className="input-field w-full h-16 resize-none"
+            placeholder="List conditions you are ignoring due to Grit"
+          />
+          <div className="text-xs text-theme-primary-600 mt-1">
+            Ignore a number of conditions equal to your Grit
           </div>
         </div>
+
       </div>
     </div>
   );

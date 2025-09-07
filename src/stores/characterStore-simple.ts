@@ -9,8 +9,11 @@ interface Character {
   level: number;
   experience: number;
   strength: number;
+  maxStrength: number;
   dexterity: number;
+  maxDexterity: number;
   will: number;
+  maxWill: number;
   hitPoints: number;
   maxHitPoints: number;
   background: string;
@@ -20,6 +23,7 @@ interface Character {
   grit: number;
   pips: number;
   alive: boolean;
+  ignoredConditions: string;
   mainHandWeapon?: InventoryItem;
   offHandWeapon?: InventoryItem;
   armor?: InventoryItem;
@@ -112,8 +116,11 @@ export const createNewCharacter = (): Character => ({
   level: 1,
   experience: 0,
   strength: 8,
+  maxStrength: 8,
   dexterity: 8,
+  maxDexterity: 8,
   will: 8,
+  maxWill: 8,
   hitPoints: 4,
   maxHitPoints: 4,
   background: '',
@@ -123,6 +130,7 @@ export const createNewCharacter = (): Character => ({
   grit: 0,
   pips: 0,
   alive: true,
+  ignoredConditions: '',
   inventory: new Array(6).fill(null),
   tactileInventory: [],
   hirelings: [],

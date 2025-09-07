@@ -19,16 +19,8 @@ export const InventoryGrid: React.FC<InventoryGridProps> = ({ onGridDrop }) => {
     let sectionClass = '';
     let borderClass = 'border border-dashed border-theme-primary-400';
     
-    if (x === 0) {
-      // Paws column (left)
-      sectionClass = 'bg-red-50 bg-opacity-40';
-    } else if (x === 1) {
-      // Body column (middle)
-      sectionClass = 'bg-blue-50 bg-opacity-40';
-    } else {
-      // Pack (right columns)
-      sectionClass = 'bg-theme-primary-100 bg-opacity-30';
-    }
+    // All sections use the same background color
+    sectionClass = 'bg-theme-primary-100 bg-opacity-30';
     
     return `${borderClass} ${sectionClass}`;
   };
@@ -96,18 +88,21 @@ export const InventoryGrid: React.FC<InventoryGridProps> = ({ onGridDrop }) => {
     <div className="relative">
       
       {/* Section labels */}
-      <div className="mb-2 flex" style={{
+      <div className="mb-3 flex" style={{
         paddingLeft: '16px', // Match grid padding
         gap: '2px',
       }}>
-        <div className="text-center text-sm font-semibold text-theme-primary-700" style={{width: GRID_CONFIG.cellSize}}>
-          Paws
+        <div className="text-center" style={{width: GRID_CONFIG.cellSize}}>
+          <div className="text-sm font-semibold text-theme-primary-700">Carried</div>
+          <div className="text-xs text-theme-primary-600">Ready to use.</div>
         </div>
-        <div className="text-center text-sm font-semibold text-theme-primary-700" style={{width: GRID_CONFIG.cellSize}}>
-          Body
+        <div className="text-center" style={{width: GRID_CONFIG.cellSize}}>
+          <div className="text-sm font-semibold text-theme-primary-700">Worn</div>
+          <div className="text-xs text-theme-primary-600">Quick to ready.</div>
         </div>
-        <div className="text-center text-sm font-semibold text-theme-primary-700" style={{width: GRID_CONFIG.cellSize * 3 + 4}}>
-          Pack
+        <div className="text-center" style={{width: GRID_CONFIG.cellSize * 3 + 4}}>
+          <div className="text-sm font-semibold text-theme-primary-700">Pack</div>
+          <div className="text-xs text-theme-primary-600">Takes time to ready. During combat, requires an action to retrieve.</div>
         </div>
       </div>
       
