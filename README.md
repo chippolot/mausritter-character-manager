@@ -22,8 +22,8 @@ A modern, interactive character sheet for the Mausritter tabletop RPG, built wit
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/chippolot/mausritter-character-sheet.git
-   cd mausritter-character-sheet
+   git clone https://github.com/chippolot/mausritter-character-manager.git
+   cd mausritter-character-manager
    ```
 
 2. Install dependencies:
