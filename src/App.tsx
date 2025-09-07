@@ -1,4 +1,3 @@
-import React from 'react';
 import { useCharacterStore } from './stores/characterStore-simple';
 import { CharacterSelector } from './components/CharacterSelector';
 import { CharacterSheet } from './components/CharacterSheet';
