@@ -25,14 +25,6 @@
       "imageKey": "dagger"
     },
     {
-      "name": "Hatchet",
-      "damage": "d6",
-      "weaponCategory": "light",
-      "size": "small",
-      "maxUsageDots": 3,
-      "imageKey": "axe"
-    },
-    {
       "name": "Sword",
       "damage": "d6/d8",
       "weaponCategory": "medium",
@@ -49,12 +41,12 @@
       "imageKey": "axe"
     },
     {
-      "name": "Staff",
+      "name": "Mace",
       "damage": "d6/d8",
       "weaponCategory": "medium",
-      "size": "tall",
+      "size": "small",
       "maxUsageDots": 3,
-      "imageKey": "spear"
+      "imageKey": "mace"
     },
     {
       "name": "Spear",
@@ -65,7 +57,7 @@
       "imageKey": "spear"
     },
     {
-      "name": "Trashhook",
+      "name": "Hookarm",
       "damage": "d10",
       "weaponCategory": "heavy",
       "size": "tall",
@@ -73,12 +65,12 @@
       "imageKey": "hookarm"
     },
     {
-      "name": "Hammer",
+      "name": "Warhammer",
       "damage": "d10",
       "weaponCategory": "heavy",
       "size": "tall",
       "maxUsageDots": 3,
-      "imageKey": "hammer"
+      "imageKey": "warhammer"
     },
     {
       "name": "Sling",
@@ -89,23 +81,7 @@
       "imageKey": "sling"
     },
     {
-      "name": "Light Crossbow",
-      "damage": "d6",
-      "weaponCategory": "light",
-      "size": "small",
-      "maxUsageDots": 3,
-      "imageKey": "bow"
-    },
-    {
       "name": "Bow",
-      "damage": "d8",
-      "weaponCategory": "heavy",
-      "size": "tall",
-      "maxUsageDots": 3,
-      "imageKey": "bow"
-    },
-    {
-      "name": "Heavy Crossbow",
       "damage": "d8",
       "weaponCategory": "heavy",
       "size": "tall",
@@ -114,27 +90,6 @@
     }
   ],
   "armor": [
-    {
-      "name": "Helm",
-      "defense": 1,
-      "size": "small",
-      "maxUsageDots": 3,
-      "imageKey": "helm"
-    },
-    {
-      "name": "Armour",
-      "defense": 1,
-      "size": "small",
-      "maxUsageDots": 3,
-      "imageKey": "chestpiece"
-    },
-    {
-      "name": "Shield",
-      "defense": 1,
-      "size": "small",
-      "maxUsageDots": 3,
-      "imageKey": "shield"
-    },
     {
       "name": "Light Armour",
       "defense": 1,
@@ -168,6 +123,20 @@
       "size": "small",
       "maxUsageDots": 3,
       "imageKey": "rations"
+    },
+    {
+      "name": "Arrows",
+      "size": "small",
+      "weaponCategory": "ammunition",
+      "maxUsageDots": 3,
+      "imageKey": "arrows"
+    },
+    {
+      "name": "Stones",
+      "size": "small",
+      "weaponCategory": "ammunition",
+      "maxUsageDots": 3,
+      "imageKey": "stones"
     },
     {
       "name": "Rope",
