@@ -1,6 +1,6 @@
 import React from 'react';
 import { Character, Hireling } from '../stores/characterStore-simple';
-import { createNewHireling } from '../stores/characterStore-simple';
+import { HirelingFactory } from '../factories';
 
 interface HirelingListProps {
   character: Character;
@@ -13,7 +13,7 @@ export const HirelingList: React.FC<HirelingListProps> = ({
 }) => {
 
   const addHireling = () => {
-    const newHireling = createNewHireling(); // No name parameter = blank name, random stats
+    const newHireling = HirelingFactory.create(); // No name parameter = blank name, random stats
     onUpdate({ 
       hirelings: [...character.hirelings, newHireling] 
     });

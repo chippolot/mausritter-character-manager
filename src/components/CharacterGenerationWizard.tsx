@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Character, createNewHireling } from '../stores/characterStore-simple';
+import { Character } from '../stores/characterStore-simple';
 import { useCharacterStore } from '../stores/characterStore-simple';
 import { PlacedItem } from '../types/inventory';
-import { ITEM_SIZES } from '../constants/inventory';
+import { HirelingFactory, PlacedItemFactory } from '../factories';
 import generationTables from '../data/generationTables.json';
 import mausritterItems from '../data/mausritterItems.json';
 
@@ -66,18 +66,7 @@ const createItemFromName = (itemName: string, scratchX: number, scratchY: number
   if (!foundItem) {
     // Create a custom item for unknown background items
     console.log(`Creating custom item: ${itemName}`);
-    return {
-      id: crypto.randomUUID(),
-      name: itemName,
-      type: 'item',
-      usageDots: 0,
-      maxUsageDots: 3,
-      size: ITEM_SIZES.small, // 1x1 size
-      position: { x: 0, y: 0 },
-      rotation: 0,
-      isInGrid: false,
-      scratchPosition: { x: scratchX, y: scratchY }
-    };
+    return PlacedItemFactory.createCustom(itemName, { x: scratchX, y: scratchY });
   }
 
   // Determine item type
@@ -86,26 +75,11 @@ const createItemFromName = (itemName: string, scratchX: number, scratchY: number
   else if (mausritterItems.armor.some(a => a.name === itemName)) itemType = 'armor';
   else if (mausritterItems.spells.some(s => s.name === itemName)) itemType = 'spell';
 
-  // Get size from ITEM_SIZES constant
-  const sizeKey = foundItem.size as keyof typeof ITEM_SIZES;
-  const itemSize = ITEM_SIZES[sizeKey] || ITEM_SIZES.small;
-
-  return {
-    id: crypto.randomUUID(),
-    name: foundItem.name,
-    type: itemType,
-    damage: 'damage' in foundItem ? foundItem.damage : undefined,
-    defense: 'defense' in foundItem ? foundItem.defense : undefined,
-    usageDots: 0,
-    maxUsageDots: foundItem.maxUsageDots || 0,
-    imageKey: foundItem.imageKey,
-    weaponCategory: 'weaponCategory' in foundItem ? foundItem.weaponCategory : undefined,
-    size: itemSize,
-    position: { x: 0, y: 0 },
-    rotation: 0,
-    isInGrid: false,
-    scratchPosition: { x: scratchX, y: scratchY }
-  };
+  return PlacedItemFactory.createFromMausritterData(
+    foundItem,
+    itemType,
+    { x: scratchX, y: scratchY }
+  );
 };
 
 export const CharacterGenerationWizard: React.FC<CharacterGenerationWizardProps> = ({ isOpen, onClose }) => {
@@ -290,7 +264,7 @@ export const CharacterGenerationWizard: React.FC<CharacterGenerationWizardProps>
       const hirelingName = extractHirelingName(itemName);
       if (hirelingName) {
         // Create a hireling with the extracted name
-        const hireling = createNewHireling(hirelingName);
+        const hireling = HirelingFactory.create(hirelingName);
         startingHirelings.push(hireling);
       } else {
         // Create a physical item

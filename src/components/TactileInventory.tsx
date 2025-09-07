@@ -17,6 +17,7 @@ import { ItemAddForm } from './ItemAddForm';
 import { PlacedItem, GridPosition } from '../types/inventory';
 import { useMausritterItems, MausritterItemData } from '../hooks/useMausritterItems';
 import { useResponsiveInventory } from '../hooks/useResponsiveInventory';
+import { PlacedItemFactory } from '../factories';
 
 interface TactileInventoryProps {
   items: PlacedItem[];
@@ -31,7 +32,7 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
   const [pendingItem, setPendingItem] = useState<PlacedItem | null>(null);
   const [dragOffset, setDragOffset] = useState<{ x: number; y: number } | null>(null);
   const [selectedItem, setSelectedItem] = useState<string | null>(null); // For mobile item selection
-  const { createItemFromData, items: itemsData } = useMausritterItems();
+  const { items: itemsData } = useMausritterItems();
   const { 
     isMobile, 
     GRID_CONFIG, 
@@ -417,31 +418,15 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
   }, [isMobile, selectedItem, items, onItemsChange]);
 
   const handleItemSelect = useCallback((itemData: MausritterItemData, type: PlacedItem['type']) => {
-    const itemBase = createItemFromData(itemData, type);
-    const newItem: PlacedItem = {
-      id: crypto.randomUUID(),
-      ...itemBase,
-      position: { x: 0, y: 0 },
-      rotation: 0,
-      isInGrid: false,
-      scratchPosition: { x: 50, y: 50 },
-    };
+    const newItem = PlacedItemFactory.createFromMausritterData(itemData, type, { x: 50, y: 50 });
     onItemsChange([...items, newItem]);
-  }, [items, onItemsChange, createItemFromData]);
+  }, [items, onItemsChange]);
 
   const addPipPurse = useCallback(() => {
     const purseData = itemsData.pipPurse;
-    const itemBase = createItemFromData(purseData, 'pip-purse');
-    const newItem: PlacedItem = {
-      id: crypto.randomUUID(),
-      ...itemBase,
-      position: { x: 0, y: 0 },
-      rotation: 0,
-      isInGrid: false,
-      scratchPosition: { x: 50, y: 50 },
-    };
+    const newItem = PlacedItemFactory.createFromMausritterData(purseData, 'pip-purse', { x: 50, y: 50 });
     onItemsChange([...items, newItem]);
-  }, [items, onItemsChange, itemsData.pipPurse, createItemFromData]);
+  }, [items, onItemsChange, itemsData.pipPurse]);
 
   return (
     <div className="card inventory-container">

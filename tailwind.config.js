@@ -7,12 +7,6 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Legacy colors (keeping for backward compatibility)
-        parchment: '#F5F4E8',
-        ink: '#2D1810',
-        brown: '#8B4513',
-        gold: '#D4AF37',
-        
         // Theme colors using CSS custom properties
         theme: {
           primary: {

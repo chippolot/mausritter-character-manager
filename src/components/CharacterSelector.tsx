@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
-import { useCharacterStore, createNewCharacter, Character } from '../stores/characterStore-simple';
+import { useCharacterStore, Character } from '../stores/characterStore-simple';
 import { CharacterGenerationWizard } from './CharacterGenerationWizard';
+import { CharacterFactory } from '../factories';
 
 export const CharacterSelector: React.FC = () => {
   const { 
@@ -15,7 +16,7 @@ export const CharacterSelector: React.FC = () => {
   const importFileInputRef = useRef<HTMLInputElement>(null);
 
   const handleCreateCharacter = () => {
-    const newCharacter = createNewCharacter();
+    const newCharacter = CharacterFactory.createBlank();
     addCharacter(newCharacter);
   };
 
@@ -39,11 +40,8 @@ export const CharacterSelector: React.FC = () => {
           return;
         }
 
-        // Generate new ID to avoid conflicts
-        const characterWithNewId = {
-          ...imported,
-          id: crypto.randomUUID(),
-        };
+        // Use factory to create character from imported data with new ID
+        const characterWithNewId = CharacterFactory.createFromImport(imported);
 
         addCharacter(characterWithNewId);
         alert(`Character "${characterWithNewId.name}" imported successfully!`);

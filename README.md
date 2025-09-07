@@ -2,6 +2,9 @@
 
 A modern, interactive character manager for the Mausritter tabletop RPG, built with React and TypeScript.
 
+## Try it Out!
+[Try the character manager here](https://chippolot.github.io/mausritter-character-manager/)
+
 ## Features
 
 - **Character Management**: Create, edit, and manage multiple mouse characters
@@ -69,9 +72,6 @@ npm run deploy
 ## Legal
 
 This work is based on [Mausritter](https://mausritter.com), a product of Losing Games and Isaac Williams, and is licensed for use under the [Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/) licence.
+This project is not affiliated with or endorsed by Losing Games.
 
 Compatible with Mausritter.
-
-## License
-
-MIT License - see LICENSE file for details.
