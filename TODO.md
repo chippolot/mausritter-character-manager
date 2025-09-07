@@ -1,3 +1,3 @@
 # TODO
-- [ ] Handle auto-adding hirelings based on backgrounds
 - [ ] Handle special items for backgrounds (like IOUs)
+- [ ] Fix up mobile drag and drop

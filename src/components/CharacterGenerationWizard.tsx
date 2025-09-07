@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Character } from '../stores/characterStore-simple';
+import { Character, createNewHireling } from '../stores/characterStore-simple';
 import { useCharacterStore } from '../stores/characterStore-simple';
 import { PlacedItem } from '../types/inventory';
 import { ITEM_SIZES } from '../constants/inventory';
@@ -41,8 +41,19 @@ const getBackground = (hp: number, pips: number) => {
   return generationTables.backgrounds[hpKey][pipIndex];
 };
 
+// Helper function to extract hireling name from background items
+const extractHirelingName = (itemName: string): string | null => {
+  const hirelingMatch = itemName.match(/^Hireling:\s*(.+)$/);
+  return hirelingMatch ? hirelingMatch[1] : null;
+};
+
 // Helper function to create PlacedItem from item name
 const createItemFromName = (itemName: string, scratchX: number, scratchY: number): PlacedItem | null => {
+  // Check if this is a hireling item - if so, don't create a physical item
+  if (itemName.startsWith('Hireling:')) {
+    return null;
+  }
+
   // Search for the item in all categories
   const allItems = [
     ...mausritterItems.weapons,
@@ -261,14 +272,23 @@ export const CharacterGenerationWizard: React.FC<CharacterGenerationWizardProps>
       }
     });
     
-    // Add background items
+    // Process background items - separate hirelings from physical items
+    const startingHirelings = [];
     results.background.items.forEach((itemName) => {
-      const scratchX = 50 + (itemIndex % 3) * 150; // 3 columns
-      const scratchY = 50 + Math.floor(itemIndex / 3) * 100; // New row every 3 items
-      const placedItem = createItemFromName(itemName, scratchX, scratchY);
-      if (placedItem) {
-        startingItems.push(placedItem);
-        itemIndex++;
+      const hirelingName = extractHirelingName(itemName);
+      if (hirelingName) {
+        // Create a hireling with the extracted name
+        const hireling = createNewHireling(hirelingName);
+        startingHirelings.push(hireling);
+      } else {
+        // Create a physical item
+        const scratchX = 50 + (itemIndex % 3) * 150; // 3 columns
+        const scratchY = 50 + Math.floor(itemIndex / 3) * 100; // New row every 3 items
+        const placedItem = createItemFromName(itemName, scratchX, scratchY);
+        if (placedItem) {
+          startingItems.push(placedItem);
+          itemIndex++;
+        }
       }
     });
     
@@ -306,7 +326,7 @@ export const CharacterGenerationWizard: React.FC<CharacterGenerationWizardProps>
       bankedItemsAndPips: '',
       inventory: new Array(6).fill(null),
       tactileInventory: startingItems,
-      hirelings: []
+      hirelings: startingHirelings
     };
     
     addCharacter(newCharacter);

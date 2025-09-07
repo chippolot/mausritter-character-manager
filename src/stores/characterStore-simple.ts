@@ -144,15 +144,27 @@ export const createNewItem = (name: string, type: InventoryItem['type']): Invent
   type,
 });
 
-export const createNewHireling = (): Hireling => ({
-  id: crypto.randomUUID(),
-  name: '',
-  strength: 6,
-  dexterity: 6,
-  will: 6,
-  hitPoints: 2,
-  maxHitPoints: 2,
-  cost: 1,
-});
+// Helper function to roll dice
+const rollDice = (count: number, sides: number): number => {
+  let total = 0;
+  for (let i = 0; i < count; i++) {
+    total += Math.floor(Math.random() * sides) + 1;
+  }
+  return total;
+};
+
+export const createNewHireling = (name?: string): Hireling => {
+  const hitPoints = rollDice(1, 6); // d6 HP
+  return {
+    id: crypto.randomUUID(),
+    name: name || '',
+    strength: rollDice(2, 6),   // 2d6 STR
+    dexterity: rollDice(2, 6),  // 2d6 DEX  
+    will: rollDice(2, 6),       // 2d6 WIL
+    hitPoints: hitPoints,
+    maxHitPoints: hitPoints,
+    cost: 0,
+  };
+};
 
 export type { Character, InventoryItem, Hireling };

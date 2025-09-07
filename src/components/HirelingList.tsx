@@ -13,7 +13,7 @@ export const HirelingList: React.FC<HirelingListProps> = ({
 }) => {
 
   const addHireling = () => {
-    const newHireling = createNewHireling();
+    const newHireling = createNewHireling(); // No name parameter = blank name, random stats
     onUpdate({ 
       hirelings: [...character.hirelings, newHireling] 
     });
