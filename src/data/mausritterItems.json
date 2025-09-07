@@ -1,6 +1,14 @@
 {
   "weapons": [
     {
+      "name": "Improvised",
+      "damage": "d6",
+      "weaponCategory": "improvised",
+      "size": "small",
+      "maxUsageDots": 3,
+      "imageKey": "improvised"
+    },
+    {
       "name": "Needle",
       "damage": "d6",
       "weaponCategory": "light",

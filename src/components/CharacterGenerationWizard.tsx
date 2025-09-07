@@ -64,8 +64,20 @@ const createItemFromName = (itemName: string, scratchX: number, scratchY: number
   
   const foundItem = allItems.find(item => item.name === itemName);
   if (!foundItem) {
-    console.warn(`Item not found: ${itemName}`);
-    return null;
+    // Create a custom item for unknown background items
+    console.log(`Creating custom item: ${itemName}`);
+    return {
+      id: crypto.randomUUID(),
+      name: itemName,
+      type: 'item',
+      usageDots: 0,
+      maxUsageDots: 3,
+      size: ITEM_SIZES.small, // 1x1 size
+      position: { x: 0, y: 0 },
+      rotation: 0,
+      isInGrid: false,
+      scratchPosition: { x: scratchX, y: scratchY }
+    };
   }
 
   // Determine item type
@@ -84,7 +96,7 @@ const createItemFromName = (itemName: string, scratchX: number, scratchY: number
     type: itemType,
     damage: 'damage' in foundItem ? foundItem.damage : undefined,
     defense: 'defense' in foundItem ? foundItem.defense : undefined,
-    usageDots: foundItem.maxUsageDots || 0,
+    usageDots: 0,
     maxUsageDots: foundItem.maxUsageDots || 0,
     imageKey: foundItem.imageKey,
     weaponCategory: 'weaponCategory' in foundItem ? foundItem.weaponCategory : undefined,
