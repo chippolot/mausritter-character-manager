@@ -36,7 +36,7 @@ export const useResponsiveInventory = () => {
   };
 
   const RESPONSIVE_SCRATCH_PADDING = {
-    top: Math.round(cellSize * -0.58), // Adjusted for removed header text
+    top: Math.round(cellSize * -0.58),
     left: Math.round(cellSize * -0.09),
     bottom: Math.round(cellSize * 1.22),
     right: Math.round(cellSize * 0.25),

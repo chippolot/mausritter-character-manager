@@ -72,13 +72,20 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
     const itemPixelWidth = actualWidth * cellSize;
     const itemPixelHeight = actualHeight * cellSize;
 
-    // Calculate usable content area
-    const contentWidth = bounds.width - SCRATCH_PADDING.left - SCRATCH_PADDING.right;
-    const contentHeight = bounds.height - SCRATCH_PADDING.top - SCRATCH_PADDING.bottom;
-
-    // Clamp position within bounds
-    const clampedX = Math.max(0, Math.min(contentWidth - itemPixelWidth, position.x));
-    const clampedY = Math.max(0, Math.min(contentHeight - itemPixelHeight, position.y));
+    // Use the same padding logic as the original drag handler
+    const paddingTop = SCRATCH_PADDING.top;
+    const paddingLeft = SCRATCH_PADDING.left;
+    const paddingBottom = SCRATCH_PADDING.bottom;
+    const paddingRight = SCRATCH_PADDING.right;
+    
+    // Calculate the usable content area accounting for individual padding
+    const contentWidth = bounds.width - paddingLeft - paddingRight;
+    const contentHeight = bounds.height - paddingTop - paddingBottom;
+    
+    // Clamp the item position so it stays within the scratch area bounds
+    // This matches the original: Math.max(paddingLeft, Math.min(contentWidth - itemPixelWidth, scratchX))
+    const clampedX = Math.max(paddingLeft, Math.min(contentWidth - itemPixelWidth, position.x));
+    const clampedY = Math.max(paddingTop, Math.min(contentHeight - itemPixelHeight, position.y));
 
     return { x: clampedX, y: clampedY };
   }, [cellSize, SCRATCH_PADDING, isMobile]);
@@ -269,42 +276,25 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
       const currentMouseX = event.activatorEvent.clientX + (event.delta?.x || 0);
       const currentMouseY = event.activatorEvent.clientY + (event.delta?.y || 0);
       
-      // Calculate item dimensions in pixels
-      const { width, height } = draggedItem.size;
-      const isRotated = draggedItem.rotation === 90;
-      const actualWidth = isRotated ? height : width;
-      const actualHeight = isRotated ? width : height;
-      const itemPixelWidth = actualWidth * GRID_CONFIG.cellSize;
-      const itemPixelHeight = actualHeight * GRID_CONFIG.cellSize;
-      
       // Use the drag offset to calculate where the top-left corner should be
       const itemVisualLeft = currentMouseX - dragOffset.x;
       const itemVisualTop = currentMouseY - dragOffset.y;
       
       // Convert to scratch area coordinate system
-      const paddingTop = SCRATCH_PADDING.top;
-      const paddingLeft = SCRATCH_PADDING.left;
-      const paddingBottom = SCRATCH_PADDING.bottom;
-      const paddingRight = SCRATCH_PADDING.right;
+      const scratchX = itemVisualLeft - rect.left - SCRATCH_PADDING.left;
+      const scratchY = itemVisualTop - rect.top - SCRATCH_PADDING.top;
       
-      const scratchX = itemVisualLeft - rect.left - paddingLeft;
-      const scratchY = itemVisualTop - rect.top - paddingTop;
-      
-      // Calculate the usable content area accounting for individual padding
-      const contentWidth = rect.width - paddingLeft - paddingRight;
-      const contentHeight = rect.height - paddingTop - paddingBottom;
-      
-      // Clamp the item position so it stays within the scratch area bounds
-      const clampedX = Math.max(paddingLeft, Math.min(contentWidth - itemPixelWidth, scratchX));
-      const clampedY = Math.max(paddingTop, Math.min(contentHeight - itemPixelHeight, scratchY));
+      // Use the helper function to clamp the position
+      const clampedPosition = clampScratchPosition(
+        draggedItem, 
+        { x: scratchX, y: scratchY },
+        { width: rect.width, height: rect.height }
+      );
 
       updatedItem = {
         ...draggedItem,
         isInGrid: false,
-        scratchPosition: { 
-          x: clampedX, 
-          y: clampedY 
-        },
+        scratchPosition: clampedPosition,
       };
     } else {
       return;
@@ -380,33 +370,16 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
           if (scratchElement) {
             const rect = scratchElement.getBoundingClientRect();
             
-            // Calculate item dimensions after rotation
-            const { width, height } = rotatedItem.size;
-            const isRotated = newRotation === 90;
-            const actualWidth = isRotated ? height : width;
-            const actualHeight = isRotated ? width : height;
-            const itemPixelWidth = actualWidth * GRID_CONFIG.cellSize;
-            const itemPixelHeight = actualHeight * GRID_CONFIG.cellSize;
-            
-            // Get current position and ensure it stays within bounds after rotation
-            const paddingTop = SCRATCH_PADDING.top;
-            const paddingLeft = SCRATCH_PADDING.left;
-            const paddingBottom = SCRATCH_PADDING.bottom;
-            const paddingRight = SCRATCH_PADDING.right;
-            
-            const contentWidth = rect.width - paddingLeft - paddingRight;
-            const contentHeight = rect.height - paddingTop - paddingBottom;
-            
             // Clamp the current position to ensure the rotated item fits
-            const clampedX = Math.max(0, Math.min(contentWidth - itemPixelWidth, item.scratchPosition.x));
-            const clampedY = Math.max(0, Math.min(contentHeight - itemPixelHeight, item.scratchPosition.y));
+            const clampedPosition = clampScratchPosition(
+              rotatedItem,
+              item.scratchPosition,
+              { width: rect.width, height: rect.height }
+            );
             
             return {
               ...rotatedItem,
-              scratchPosition: {
-                x: clampedX,
-                y: clampedY
-              }
+              scratchPosition: clampedPosition
             };
           }
         }
