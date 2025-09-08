@@ -7,7 +7,6 @@ export interface ItemImageData {
     name: string;
     images: string[];
   }>;
-  itemNameToImage: Record<string, string>;
 }
 
 export const useItemImages = () => {

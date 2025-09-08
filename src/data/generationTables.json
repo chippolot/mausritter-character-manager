@@ -11,43 +11,163 @@
   "coatPatterns": ["Solid", "Brindle", "Patchy", "Banded", "Marbled", "Flecked"],
   "backgrounds": {
     "hp1": [
-      { "name": "Test subject", "items": ["Magic Missile", "Lead coat"] },
-      { "name": "Kitchen forager", "items": ["Shield", "Cookpots"] },
+      { 
+        "name": "Test subject", 
+        "items": [
+          "Magic Missile", 
+          {
+            "type": "custom",
+            "itemType": "armor",
+            "name": "Lead coat",
+            "defense": 1,
+            "size": "tall",
+            "maxUsageDots": 3,
+            "imageKey": "heavy-armour"
+          }
+        ] 
+      },
+      { "name": "Kitchen forager", "items": [{
+            "type": "custom",
+            "itemType": "armor",
+            "name": "Shield & jerkin",
+            "defense": 1,
+            "size": "wide",
+            "maxUsageDots": 3,
+            "imageKey": "light-armour"
+          }, "Cookpots"] },
       { "name": "Cage dweller", "items": ["Be Understood", "Bottle of milk"] },
       { "name": "Hedge witch", "items": ["Heal", "Incense stick"] },
-      { "name": "Leatherworker", "items": ["Shield", "Shears"] },
-      { "name": "Street tough", "items": ["Dagger", "Flask of coffee"] }
+      { "name": "Leatherworker", "items": [{
+            "type": "custom",
+            "itemType": "armor",
+            "name": "Shield & jerkin",
+            "defense": 1,
+            "size": "wide",
+            "maxUsageDots": 3,
+            "imageKey": "light-armour"
+          }, "Shears"] },
+      { "name": "Street tough", "items": [{
+            "type": "custom",
+            "itemType": "weapon",
+            "name": "Dagger",
+            "damage": "d6",
+            "weaponCategory": "light",
+            "size": "small",
+            "maxUsageDots": 3,
+            "imageKey": "dagger"
+          }, "Flask of coffee"] }
     ],
     "hp2": [
       { "name": "Mendicant priest", "items": ["Restore", "Holy symbol"] },
       { "name": "Beetleherd", "items": ["Hireling: Loyal beetle", "Pole, 6\""] },
       { "name": "Ale brewer", "items": ["Hireling: Drunken torchbearer", "Small barrel of ale"] },
-      { "name": "Fishermouse", "items": ["Net", "Needle"] },
-      { "name": "Blacksmith", "items": ["Hammer", "Metal file"] },
+      { "name": "Fishermouse", "items": ["Net", {
+            "type": "custom",
+            "itemType": "weapon",
+            "name": "Needle",
+            "damage": "d6",
+            "weaponCategory": "light",
+            "size": "small",
+            "maxUsageDots": 3,
+            "imageKey": "needle"
+          }] },
+      { "name": "Blacksmith", "items": [{
+            "type": "custom",
+            "itemType": "weapon",
+            "name": "Hammer",
+            "damage": "d6/d8",
+            "weaponCategory": "medium",
+            "size": "small",
+            "maxUsageDots": 3,
+            "imageKey": "hammer"
+          }, "Metal file"] },
       { "name": "Wireworker", "items": ["Wire, spool", "Electric lantern"] }
     ],
     "hp3": [
-      { "name": "Woodcutter", "items": ["Axe", "Twine, roll"] },
+      { "name": "Woodcutter", "items": [{
+            "type": "custom",
+            "itemType": "weapon",
+            "name": "Axe",
+            "damage": "d6/d8",
+            "weaponCategory": "medium",
+            "size": "small",
+            "maxUsageDots": 3,
+            "imageKey": "axe"
+          }, "Twine, roll"] },
       { "name": "Bat cultist", "items": ["Darkness", "Bag of bat teeth"] },
-      { "name": "Tin miner", "items": ["Pickaxe", "Lantern"] },
-      { "name": "Trash collector", "items": ["Trashhook", "Mirror"] },
+      { "name": "Tin miner", "items": [{
+            "type": "custom",
+            "itemType": "weapon",
+            "name": "Pickaxe",
+            "damage": "d6/d8",
+            "weaponCategory": "medium",
+            "size": "small",
+            "maxUsageDots": 3,
+            "imageKey": "pickaxe"
+          }, "Lantern"] },
+      { 
+        "name": "Trash collector", 
+        "items": [
+          {
+            "type": "custom",
+            "itemType": "weapon",
+            "name": "Trashhook",
+            "damage": "d10",
+            "weaponCategory": "heavy",
+            "size": "tall",
+            "maxUsageDots": 3,
+            "imageKey": "hookarm"
+          }, 
+          "Mirror"
+        ] 
+      },
       { "name": "Wall rover", "items": ["Fishhook", "Thread, spool"] },
       { "name": "Merchant", "items": ["Hireling: Pack rat", "20p IOU from a noblemouse"] }
     ],
     "hp4": [
-      { "name": "Raft crew", "items": ["Hammer", "Wooden spikes"] },
+      { "name": "Raft crew", "items": [{
+            "type": "custom",
+            "itemType": "weapon",
+            "name": "Hammer",
+            "damage": "d6/d8",
+            "weaponCategory": "medium",
+            "size": "small",
+            "maxUsageDots": 3,
+            "imageKey": "hammer"
+          }, "Wooden spikes"] },
       { "name": "Worm wrangler", "items": ["Pole, 6\"", "Soap"] },
       { "name": "Sparrow rider", "items": ["Fishhook", "Goggles"] },
       { "name": "Sewer guide", "items": ["Metal file", "Thread, spool"] },
-      { "name": "Prison guard", "items": ["Chain, 6\"", "Spear"] },
-      { "name": "Fungus farmer", "items": ["Dried mushroom", "Spore mask"] }
+      { "name": "Prison guard", "items": ["Chain, 6\"", {
+            "type": "custom",
+            "itemType": "weapon",
+            "name": "Spear",
+            "damage": "d10",
+            "weaponCategory": "heavy",
+            "size": "tall",
+            "maxUsageDots": 3,
+            "imageKey": "spear"
+          }] },
+      { 
+        "name": "Fungus farmer", 
+        "items": ["Dried mushrooms (rations)", "Spore mask"] 
+      }
     ],
     "hp5": [
       { "name": "Dam builder", "items": ["Shovel", "Wooden spikes"] },
       { "name": "Cartographer", "items": ["Quill", "Compass"] },
       { "name": "Trap thief", "items": ["Block of cheese", "Glue"] },
       { "name": "Vagabond", "items": ["Tent", "Treasure map, dubious"] },
-      { "name": "Grain farmer", "items": ["Spear", "Whistle"] },
+      { "name": "Grain farmer", "items": [{
+            "type": "custom",
+            "itemType": "weapon",
+            "name": "Trashhook",
+            "damage": "d10",
+            "weaponCategory": "heavy",
+            "size": "tall",
+            "maxUsageDots": 3,
+            "imageKey": "hookarm"
+          }, "Whistle"] },
       { "name": "Message runner", "items": ["Bedroll", "Documents, sealed"] }
     ],
     "hp6": [

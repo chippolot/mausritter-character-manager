@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Character } from '../stores/characterStore-simple';
 import { useCharacterStore } from '../stores/characterStore-simple';
 import { PlacedItem } from '../types/inventory';
 import { CharacterFactory, HirelingFactory, PlacedItemFactory } from '../factories';
@@ -10,6 +9,19 @@ interface CharacterGenerationWizardProps {
   isOpen: boolean;
   onClose: () => void;
 }
+
+type BackgroundItem = string | {
+  type: 'custom';
+  itemType: 'weapon' | 'armor' | 'item';
+  name: string;
+  damage?: string;
+  defense?: number;
+  weaponCategory?: string;
+  size?: string;
+  maxUsageDots?: number;
+  imageKey?: string;
+  description?: string;
+};
 
 interface GenerationResults {
   step: number;
@@ -22,7 +34,7 @@ interface GenerationResults {
   };
   hitPoints: number;
   pips: number;
-  background: { name: string; items: string[] };
+  background: { name: string; items: BackgroundItem[] };
   birthsign: { name: string; description: string };
   coat: { color: string; pattern: string };
   physicalDetail: string;
@@ -42,12 +54,16 @@ const getBackground = (hp: number, pips: number) => {
 };
 
 // Helper function to extract hireling name from background items
-const extractHirelingName = (itemName: string): string | null => {
-  const hirelingMatch = itemName.match(/^Hireling:\s*(.+)$/);
+const extractHirelingName = (backgroundItem: BackgroundItem): string | null => {
+  if (typeof backgroundItem === 'object') {
+    return null; // Custom items are never hirelings
+  }
+  
+  const hirelingMatch = backgroundItem.match(/^Hireling:\s*(.+)$/);
   return hirelingMatch ? hirelingMatch[1] : null;
 };
 
-// Helper function to create PlacedItem from item name
+// Helper function to create PlacedItem from item name (string only)
 const createItemFromName = (itemName: string, scratchX: number, scratchY: number): PlacedItem | null => {
   // Check if this is a hireling item - if so, don't create a physical item
   if (itemName.startsWith('Hireling:')) {
@@ -80,6 +96,35 @@ const createItemFromName = (itemName: string, scratchX: number, scratchY: number
     itemType,
     { x: scratchX, y: scratchY }
   );
+};
+
+// Helper function to create PlacedItem from background item (string or custom object)
+const createItemFromBackgroundItem = (backgroundItem: BackgroundItem, scratchX: number, scratchY: number): PlacedItem | null => {
+  // Handle custom items
+  if (typeof backgroundItem === 'object' && backgroundItem.type === 'custom') {
+    const itemType = backgroundItem.itemType === 'weapon' ? 'weapon' 
+                  : backgroundItem.itemType === 'armor' ? 'armor' 
+                  : 'item';
+    
+    return PlacedItemFactory.create({
+      name: backgroundItem.name,
+      type: itemType,
+      damage: backgroundItem.damage,
+      defense: backgroundItem.defense,
+      weaponCategory: backgroundItem.weaponCategory,
+      maxUsageDots: backgroundItem.maxUsageDots || 0,
+      imageKey: backgroundItem.imageKey,
+      size: backgroundItem.size ? 
+        { 
+          width: backgroundItem.size === 'large' ? 2 : 1, 
+          height: backgroundItem.size === 'large' ? 2 : backgroundItem.size === 'medium' ? 1 : 1 
+        } : undefined,
+      scratchPosition: { x: scratchX, y: scratchY }
+    });
+  }
+
+  // Handle string items - delegate to createItemFromName
+  return createItemFromName(backgroundItem as string, scratchX, scratchY);
 };
 
 export const CharacterGenerationWizard: React.FC<CharacterGenerationWizardProps> = ({ isOpen, onClose }) => {
@@ -260,8 +305,8 @@ export const CharacterGenerationWizard: React.FC<CharacterGenerationWizardProps>
     
     // Process background items - separate hirelings from physical items
     const startingHirelings = [];
-    results.background.items.forEach((itemName) => {
-      const hirelingName = extractHirelingName(itemName);
+    results.background.items.forEach((backgroundItem) => {
+      const hirelingName = extractHirelingName(backgroundItem);
       if (hirelingName) {
         // Create a hireling with the extracted name
         const hireling = HirelingFactory.create(hirelingName);
@@ -270,7 +315,7 @@ export const CharacterGenerationWizard: React.FC<CharacterGenerationWizardProps>
         // Create a physical item
         const scratchX = 50 + (itemIndex % 3) * 150; // 3 columns
         const scratchY = 50 + Math.floor(itemIndex / 3) * 100; // New row every 3 items
-        const placedItem = createItemFromName(itemName, scratchX, scratchY);
+        const placedItem = createItemFromBackgroundItem(backgroundItem, scratchX, scratchY);
         if (placedItem) {
           startingItems.push(placedItem);
           itemIndex++;
@@ -411,7 +456,9 @@ export const CharacterGenerationWizard: React.FC<CharacterGenerationWizardProps>
             <div className="text-2xl font-bold mb-2">{results.background.name}</div>
             <div className="mb-4">
               <div className="font-semibold">Starting Items:</div>
-              <div>{results.background.items.join(', ')}</div>
+              <div>{results.background.items.map(item => 
+                typeof item === 'object' ? item.name : item
+              ).join(', ')}</div>
             </div>
             <p>Now let's roll for your birthsign...</p>
           </div>
@@ -441,7 +488,7 @@ export const CharacterGenerationWizard: React.FC<CharacterGenerationWizardProps>
           <div className="text-center">
             <h3 className="text-xl font-bold mb-4">Physical Detail</h3>
             <div className="text-xl mb-4">{results.physicalDetail}</div>
-            <p>Finally, let's give your mouse a name...</p>
+            <p>Now let's choose your starting weapon...</p>
           </div>
         );
         
@@ -598,7 +645,9 @@ export const CharacterGenerationWizard: React.FC<CharacterGenerationWizardProps>
                 <div><strong>Coat:</strong> {results.customCoat.pattern || results.coat.pattern} {results.customCoat.color || results.coat.color}</div>
                 <div><strong>Look:</strong> {results.customPhysicalDetail || results.physicalDetail}</div>
                 <div><strong>Weapon:</strong> {results.selectedWeapon}</div>
-                <div><strong>Items:</strong> Torch, Rations, {results.background.items.join(', ')}</div>
+                <div><strong>Items:</strong> Torch, Rations, {results.background.items.map(item => 
+                  typeof item === 'object' ? item.name : item
+                ).join(', ')}</div>
               </div>
             </div>
           </div>
