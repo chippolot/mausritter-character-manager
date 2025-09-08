@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import {
   DndContext,
   DragEndEvent,
@@ -37,12 +37,70 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
   const { items: itemsData } = useMausritterItems();
   const { 
     isMobile, 
+    cellSize,
     GRID_CONFIG, 
     GRID_GAP, 
     GRID_PADDING, 
     GRID_OFFSET, 
     SCRATCH_PADDING 
   } = useResponsiveInventory();
+
+  // Utility function to clamp scratch position within bounds
+  const clampScratchPosition = useCallback((
+    item: InventoryItem, 
+    position: { x: number; y: number },
+    scratchBounds?: { width: number; height: number }
+  ): { x: number; y: number } => {
+    // Use provided bounds or try to get current scratch area bounds
+    let bounds = scratchBounds;
+    if (!bounds) {
+      const scratchElement = document.querySelector('[data-id="scratch-area"]') as HTMLElement;
+      if (scratchElement) {
+        const rect = scratchElement.getBoundingClientRect();
+        bounds = { width: rect.width, height: rect.height };
+      } else {
+        // Fallback bounds if scratch area isn't available yet
+        bounds = { width: isMobile ? 400 : 600, height: 300 };
+      }
+    }
+
+    // Calculate item pixel dimensions
+    const { width, height } = item.size;
+    const isRotated = item.rotation === 90;
+    const actualWidth = isRotated ? height : width;
+    const actualHeight = isRotated ? width : height;
+    const itemPixelWidth = actualWidth * cellSize;
+    const itemPixelHeight = actualHeight * cellSize;
+
+    // Calculate usable content area
+    const contentWidth = bounds.width - SCRATCH_PADDING.left - SCRATCH_PADDING.right;
+    const contentHeight = bounds.height - SCRATCH_PADDING.top - SCRATCH_PADDING.bottom;
+
+    // Clamp position within bounds
+    const clampedX = Math.max(0, Math.min(contentWidth - itemPixelWidth, position.x));
+    const clampedY = Math.max(0, Math.min(contentHeight - itemPixelHeight, position.y));
+
+    return { x: clampedX, y: clampedY };
+  }, [cellSize, SCRATCH_PADDING, isMobile]);
+
+  // Effect to clamp existing items' scratch positions on mount/update
+  useEffect(() => {
+    let hasChanges = false;
+    const clampedItems = safeItems.map(item => {
+      if (!item.isInGrid && item.scratchPosition) {
+        const clampedPosition = clampScratchPosition(item, item.scratchPosition);
+        if (clampedPosition.x !== item.scratchPosition.x || clampedPosition.y !== item.scratchPosition.y) {
+          hasChanges = true;
+          return { ...item, scratchPosition: clampedPosition };
+        }
+      }
+      return item;
+    });
+    
+    if (hasChanges) {
+      onItemsChange(clampedItems);
+    }
+  }, [safeItems, clampScratchPosition, onItemsChange]);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -408,27 +466,34 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
     const item = items.find(i => i.id === selectedItem);
     if (!item) return;
 
-    // Move item to scratch area at a default position
+    // Move item to scratch area at a clamped position
+    const clampedPosition = clampScratchPosition(item, { x: 50, y: 50 });
     const updatedItem = {
       ...item,
       isInGrid: false,
-      scratchPosition: { x: 50, y: 50 }, // Default scratch position
+      scratchPosition: clampedPosition,
     };
     const newItems = items.map((i) => i.id === selectedItem ? updatedItem : i);
     onItemsChange(newItems);
     setSelectedItem(null);
-  }, [isMobile, selectedItem, items, onItemsChange]);
+  }, [isMobile, selectedItem, items, onItemsChange, clampScratchPosition]);
 
   const handleItemSelect = useCallback((itemData: MausritterItemData, type: InventoryItem['type']) => {
     const newItem = InventoryItemFactory.createFromMausritterData(itemData, type, { x: 50, y: 50 });
-    onItemsChange([...safeItems, newItem]);
-  }, [items, onItemsChange]);
+    // Clamp the scratch position to ensure it's within bounds
+    const clampedPosition = clampScratchPosition(newItem, newItem.scratchPosition);
+    const clampedItem = { ...newItem, scratchPosition: clampedPosition };
+    onItemsChange([...safeItems, clampedItem]);
+  }, [safeItems, onItemsChange, clampScratchPosition]);
 
   const addPipPurse = useCallback(() => {
     const purseData = itemsData.pipPurse;
     const newItem = InventoryItemFactory.createFromMausritterData(purseData, 'pip-purse', { x: 50, y: 50 });
-    onItemsChange([...safeItems, newItem]);
-  }, [items, onItemsChange, itemsData.pipPurse]);
+    // Clamp the scratch position to ensure it's within bounds
+    const clampedPosition = clampScratchPosition(newItem, newItem.scratchPosition);
+    const clampedItem = { ...newItem, scratchPosition: clampedPosition };
+    onItemsChange([...safeItems, clampedItem]);
+  }, [safeItems, onItemsChange, itemsData.pipPurse, clampScratchPosition]);
 
   return (
     <div className="card inventory-container">

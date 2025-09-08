@@ -657,8 +657,8 @@ export const CharacterGenerationWizard: React.FC<CharacterGenerationWizardProps>
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-theme-surface rounded-lg shadow-lg w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto">
-        <div className="p-6">
+      <div className="bg-theme-surface rounded-lg shadow-lg w-full max-w-2xl mx-4 max-h-[90vh] flex flex-col">
+        <div className="p-6 flex-shrink-0">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-2xl font-medium text-theme-primary-800">
               Mouse Generator
@@ -682,10 +682,16 @@ export const CharacterGenerationWizard: React.FC<CharacterGenerationWizardProps>
               Step {results.step + 1} of 12
             </div>
           </div>
+        </div>
 
-          {renderStep()}
+        <div className="flex-1 overflow-y-auto px-6">
+          <div className="min-h-[400px]">
+            {renderStep()}
+          </div>
+        </div>
 
-          <div className="flex gap-2 mt-6">
+        <div className="flex-shrink-0 p-6 pt-4 border-t border-theme-primary-200">
+          <div className="flex gap-2">
             {results.step < 11 ? (
               <button
                 onClick={nextStep}
