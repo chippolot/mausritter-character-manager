@@ -134,15 +134,15 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
     }
 
     const occupiedCells = new Set<string>();
-    safeItems.forEach((item) => {
-      if (item.id === item.id || !item.isInGrid) return;
+    safeItems.forEach((existingItem) => {
+      if (existingItem.id === item.id || !existingItem.isInGrid) return;
       
-      const placedIsRotated = item.rotation === 90;
-      const placedWidth = placedIsRotated ? item.size.height : item.size.width;
-      const placedHeight = placedIsRotated ? item.size.width : item.size.height;
+      const placedIsRotated = existingItem.rotation === 90;
+      const placedWidth = placedIsRotated ? existingItem.size.height : existingItem.size.width;
+      const placedHeight = placedIsRotated ? existingItem.size.width : existingItem.size.height;
       
-      for (let x = item.position.x; x < item.position.x + placedWidth; x++) {
-        for (let y = item.position.y; y < item.position.y + placedHeight; y++) {
+      for (let x = existingItem.position.x; x < existingItem.position.x + placedWidth; x++) {
+        for (let y = existingItem.position.y; y < existingItem.position.y + placedHeight; y++) {
           occupiedCells.add(`${x}-${y}`);
         }
       }
