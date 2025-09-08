@@ -57,24 +57,6 @@
   --theme-text-light: rgb(82 82 82);      /* Secondary text - dark gray */
 }
 
-/* Alternative Theme Examples */
-/* Uncomment one of these to try different themes:
-
-// Original amber theme:
-:root {
-  --theme-primary-50: rgb(255 251 235);
-  --theme-primary-800: rgb(146 64 14);
-  --theme-text: rgb(41 37 36);
-}
-
-// Blue theme:
-:root {
-  --theme-primary-50: rgb(240 249 255);
-  --theme-primary-800: rgb(7 89 133);
-  --theme-text: rgb(30 64 175);
-}
-*/
-
 @layer base {
   body {
     @apply bg-theme-background text-theme-text font-body;
