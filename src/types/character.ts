@@ -34,7 +34,6 @@ export interface Character {
   alive: boolean;
   ignoredConditions: string;
   bankedItemsAndPips: string;
-  inventory: (InventoryItem | null)[];
-  tactileInventory: InventoryItem[];
+  inventory: InventoryItem[];
   hirelings: Hireling[];
 }

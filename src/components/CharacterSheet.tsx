@@ -180,8 +180,8 @@ export const CharacterSheet: React.FC<CharacterSheetProps> = ({ character }) => 
 
         <div className="lg:col-span-2 space-y-4 sm:space-y-6">
           <TactileInventory 
-            items={character.tactileInventory} 
-            onItemsChange={(items) => handleUpdate({ tactileInventory: items })}
+            items={character.inventory} 
+            onItemsChange={(items) => handleUpdate({ inventory: items })}
           />
           <HirelingList character={character} onUpdate={handleUpdate} />
         </div>

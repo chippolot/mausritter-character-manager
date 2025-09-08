@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
-import { CELL_SIZE, MOBILE_CELL_SIZE } from '../constants/inventory';
+
+const CELL_SIZE = 128; // Base cell size in pixels for desktop
+const MOBILE_CELL_SIZE = 64; // Smaller cell size for mobile devices
 
 export const useResponsiveInventory = () => {
   const [isMobile, setIsMobile] = useState(false);
@@ -34,9 +36,9 @@ export const useResponsiveInventory = () => {
   };
 
   const RESPONSIVE_SCRATCH_PADDING = {
-    top: Math.round(cellSize * -0.23),
+    top: Math.round(cellSize * -0.58), // Adjusted for removed header text
     left: Math.round(cellSize * -0.09),
-    bottom: Math.round(cellSize * 0.5),
+    bottom: Math.round(cellSize * 1.22),
     right: Math.round(cellSize * 0.25),
   };
 

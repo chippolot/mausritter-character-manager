@@ -21,8 +21,6 @@ export const ScratchArea: React.FC<ScratchAreaProps> = ({ onMobileScratchClick }
 
   return (
     <div className="mt-8">
-      <h2 className={`font-medium text-theme-primary-800 mb-4 ${isMobile ? 'text-xl' : 'text-2xl'}`}>Scratch Area</h2>
-      
       <div
         ref={setNodeRef}
         data-id="scratch-area"

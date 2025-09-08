@@ -4,7 +4,13 @@
  */
 import { Character, Hireling } from '../types/character';
 import { InventoryItem } from '../types/inventory';
-import { ITEM_SIZES } from '../constants/inventory';
+
+const ITEM_SIZES = {
+  small: { width: 1, height: 1 },     // 1x1
+  wide: { width: 2, height: 1 },      // 2x1
+  tall: { width: 1, height: 2 },      // 1x2
+  large: { width: 2, height: 2 }      // 2x2
+} as const;
 
 // Utility functions
 const generateId = () => crypto.randomUUID();
@@ -42,8 +48,7 @@ export class CharacterFactory {
       alive: true,
       ignoredConditions: '',
       bankedItemsAndPips: '',
-      inventory: new Array(6).fill(null),
-      tactileInventory: [],
+      inventory: [],
       hirelings: [],
     };
   }
@@ -59,7 +64,7 @@ export class CharacterFactory {
     coat: string;
     look: string;
     pips: number;
-    tactileInventory: InventoryItem[];
+    inventory: InventoryItem[];
     hirelings: Hireling[];
   }): Character {
     const base = this.createBlank();
@@ -79,7 +84,7 @@ export class CharacterFactory {
       coat: options.coat,
       look: options.look,
       pips: options.pips,
-      tactileInventory: options.tactileInventory,
+      inventory: options.inventory,
       hirelings: options.hirelings,
     };
   }

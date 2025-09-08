@@ -28,6 +28,8 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
   items,
   onItemsChange,
 }) => {
+  // Safe fallback for undefined items
+  const safeItems = items || [];
   const [activeItem, setActiveItem] = useState<InventoryItem | null>(null);
   const [pendingItem, setPendingItem] = useState<InventoryItem | null>(null);
   const [dragOffset, setDragOffset] = useState<{ x: number; y: number } | null>(null);
@@ -67,7 +69,7 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
     }
 
     const occupiedCells = new Set<string>();
-    items.forEach((item) => {
+    safeItems.forEach((item) => {
       if (item.id === item.id || !item.isInGrid) return;
       
       const placedIsRotated = item.rotation === 90;
@@ -90,7 +92,7 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
     }
 
     return true;
-  }, [items]);
+  }, [safeItems]);
 
   const snapToGrid = useCallback((itemTopLeftX: number, itemTopLeftY: number, item: InventoryItem): GridPosition => {
     // We want to snap based on the item's top-left corner position
@@ -157,7 +159,7 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
     setActiveItem(null);
     setDragOffset(null);
 
-    const draggedItem = items.find((item) => item.id === active.id);
+    const draggedItem = safeItems.find((item) => item.id === active.id);
     if (!draggedItem) return;
 
     if (!over) {
@@ -419,13 +421,13 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
 
   const handleItemSelect = useCallback((itemData: MausritterItemData, type: InventoryItem['type']) => {
     const newItem = InventoryItemFactory.createFromMausritterData(itemData, type, { x: 50, y: 50 });
-    onItemsChange([...items, newItem]);
+    onItemsChange([...safeItems, newItem]);
   }, [items, onItemsChange]);
 
   const addPipPurse = useCallback(() => {
     const purseData = itemsData.pipPurse;
     const newItem = InventoryItemFactory.createFromMausritterData(purseData, 'pip-purse', { x: 50, y: 50 });
-    onItemsChange([...items, newItem]);
+    onItemsChange([...safeItems, newItem]);
   }, [items, onItemsChange, itemsData.pipPurse]);
 
   return (
@@ -456,7 +458,7 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
             onGridDrop={handleGridDrop}
             onMobileGridClick={isMobile ? (pos) => selectedItem && handleMobileItemMove(selectedItem, pos) : undefined}
           />
-          {items.filter(item => item.isInGrid && item.id !== activeItem?.id).map((item) => {
+          {safeItems.filter(item => item.isInGrid && item.id !== activeItem?.id).map((item) => {
             // Position items relative to the grid element using responsive offsets
             return (
               <div
@@ -486,7 +488,7 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
         <div className="relative">
           <ScratchArea onMobileScratchClick={handleMobileItemToScratch} />
           <div className="absolute top-20 left-4 pointer-events-none">
-            {items.filter(item => !item.isInGrid && item.id !== activeItem?.id).map((item) => {
+            {safeItems.filter(item => !item.isInGrid && item.id !== activeItem?.id).map((item) => {
               if (!item.scratchPosition) return null;
               
               const style: React.CSSProperties = {
