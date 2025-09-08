@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { RiDeleteBin6Line } from 'react-icons/ri';
 import { useCharacterStore } from '../stores/characterStore-simple';
 import { Character } from '../types/character';
 import { CharacterGenerationWizard } from './CharacterGenerationWizard';
@@ -142,7 +143,7 @@ export const CharacterSelector: React.FC = () => {
           {characters.map((character) => (
             <div
               key={character.id}
-              className={`border-2 rounded-lg p-4 cursor-pointer transition-colors ${
+              className={`relative group border-2 rounded-lg p-4 cursor-pointer transition-colors ${
                 currentCharacter?.id === character.id
                   ? 'border-theme-primary-600 bg-theme-primary-600 bg-opacity-10'
                   : 'border-theme-primary-800 bg-theme-surface hover:bg-theme-primary-200'
@@ -163,9 +164,12 @@ export const CharacterSelector: React.FC = () => {
                     e.stopPropagation();
                     setShowDeleteConfirm(character.id);
                   }}
-                  className="text-theme-primary-800 hover:text-theme-error-600 text-xl"
+                  className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 
+                             text-theme-primary-600 hover:text-theme-error-600 w-6 h-6 
+                             flex items-center justify-center pointer-events-auto"
+                  title="Delete character"
                 >
-                  ×
+                  <RiDeleteBin6Line size={16} />
                 </button>
               </div>
               

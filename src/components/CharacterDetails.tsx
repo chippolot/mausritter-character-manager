@@ -61,25 +61,23 @@ export const CharacterDetails: React.FC<CharacterDetailsProps> = ({
           />
         </div>
 
-        <div className="flex items-center gap-3 p-3 bg-theme-primary-100 rounded-lg">
+        <div className="flex items-center justify-between">
+          <label className="text-sm font-semibold text-theme-primary-800">
+            Status
+          </label>
           <label className="flex items-center gap-2 cursor-pointer">
             <input
               type="checkbox"
               checked={character.alive}
               onChange={handleCheckboxChange('alive')}
-              className="w-4 h-4 text-theme-primary-600 border-theme-primary-800 rounded focus:ring-theme-primary-600"
+              className="w-3 h-3 text-theme-primary-600 border-theme-primary-300 rounded focus:ring-theme-primary-600 focus:ring-1"
             />
-            <span className={`text-sm font-semibold ${
-              character.alive ? 'text-green-700' : 'text-red-700'
+            <span className={`text-xs ${
+              character.alive ? 'text-theme-primary-800' : 'text-theme-primary-500'
             }`}>
-              {character.alive ? '✓ Alive' : '💀 Dead'}
+              {character.alive ? 'Alive' : 'Dead'}
             </span>
           </label>
-          {!character.alive && (
-            <span className="text-xs text-theme-primary-700">
-              Character appears crossed out in lists
-            </span>
-          )}
         </div>
 
         <div className="grid grid-cols-2 gap-4">
