@@ -2,12 +2,12 @@ import React from 'react';
 import { useDraggable } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities';
 import { RiDeleteBin6Line } from 'react-icons/ri';
-import { PlacedItem } from '../types/inventory';
+import { InventoryItem } from '../types/inventory';
 import { useItemImages } from '../hooks/useItemImages';
 import { useResponsiveInventory } from '../hooks/useResponsiveInventory';
 
 interface ItemCardProps {
-  item: PlacedItem;
+  item: InventoryItem;
   onRotate: (id: string) => void;
   onDelete: (id: string) => void;
   onToggleUsagePip?: (itemId: string, pipIndex: number) => void;

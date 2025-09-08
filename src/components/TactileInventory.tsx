@@ -14,22 +14,22 @@ import { ItemCard } from './ItemCard';
 import { InventoryGrid } from './InventoryGrid';
 import { ScratchArea } from './ScratchArea';
 import { ItemAddForm } from './ItemAddForm';
-import { PlacedItem, GridPosition } from '../types/inventory';
+import { InventoryItem, GridPosition } from '../types/inventory';
 import { useMausritterItems, MausritterItemData } from '../hooks/useMausritterItems';
 import { useResponsiveInventory } from '../hooks/useResponsiveInventory';
-import { PlacedItemFactory } from '../factories';
+import { InventoryItemFactory } from '../factories';
 
 interface TactileInventoryProps {
-  items: PlacedItem[];
-  onItemsChange: (items: PlacedItem[]) => void;
+  items: InventoryItem[];
+  onItemsChange: (items: InventoryItem[]) => void;
 }
 
 export const TactileInventory: React.FC<TactileInventoryProps> = ({
   items,
   onItemsChange,
 }) => {
-  const [activeItem, setActiveItem] = useState<PlacedItem | null>(null);
-  const [pendingItem, setPendingItem] = useState<PlacedItem | null>(null);
+  const [activeItem, setActiveItem] = useState<InventoryItem | null>(null);
+  const [pendingItem, setPendingItem] = useState<InventoryItem | null>(null);
   const [dragOffset, setDragOffset] = useState<{ x: number; y: number } | null>(null);
   const [selectedItem, setSelectedItem] = useState<string | null>(null); // For mobile item selection
   const { items: itemsData } = useMausritterItems();
@@ -56,7 +56,7 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
     })
   );
 
-  const canPlaceItem = useCallback((item: PlacedItem, gridPos: GridPosition): boolean => {
+  const canPlaceItem = useCallback((item: InventoryItem, gridPos: GridPosition): boolean => {
     const { width, height } = item.size;
     const isRotated = item.rotation === 90;
     const actualWidth = isRotated ? height : width;
@@ -67,15 +67,15 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
     }
 
     const occupiedCells = new Set<string>();
-    items.forEach((placedItem) => {
-      if (placedItem.id === item.id || !placedItem.isInGrid) return;
+    items.forEach((item) => {
+      if (item.id === item.id || !item.isInGrid) return;
       
-      const placedIsRotated = placedItem.rotation === 90;
-      const placedWidth = placedIsRotated ? placedItem.size.height : placedItem.size.width;
-      const placedHeight = placedIsRotated ? placedItem.size.width : placedItem.size.height;
+      const placedIsRotated = item.rotation === 90;
+      const placedWidth = placedIsRotated ? item.size.height : item.size.width;
+      const placedHeight = placedIsRotated ? item.size.width : item.size.height;
       
-      for (let x = placedItem.position.x; x < placedItem.position.x + placedWidth; x++) {
-        for (let y = placedItem.position.y; y < placedItem.position.y + placedHeight; y++) {
+      for (let x = item.position.x; x < item.position.x + placedWidth; x++) {
+        for (let y = item.position.y; y < item.position.y + placedHeight; y++) {
           occupiedCells.add(`${x}-${y}`);
         }
       }
@@ -92,7 +92,7 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
     return true;
   }, [items]);
 
-  const snapToGrid = useCallback((itemTopLeftX: number, itemTopLeftY: number, item: PlacedItem): GridPosition => {
+  const snapToGrid = useCallback((itemTopLeftX: number, itemTopLeftY: number, item: InventoryItem): GridPosition => {
     // We want to snap based on the item's top-left corner position
     // The itemTopLeftX and itemTopLeftY should already be the top-left corner coordinates
     
@@ -165,7 +165,7 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
       return;
     }
 
-    let updatedItem: PlacedItem;
+    let updatedItem: InventoryItem;
 
     if (over.id === 'inventory-grid') {
       // Get the actual grid element to calculate precise positioning
@@ -417,14 +417,14 @@ export const TactileInventory: React.FC<TactileInventoryProps> = ({
     setSelectedItem(null);
   }, [isMobile, selectedItem, items, onItemsChange]);
 
-  const handleItemSelect = useCallback((itemData: MausritterItemData, type: PlacedItem['type']) => {
-    const newItem = PlacedItemFactory.createFromMausritterData(itemData, type, { x: 50, y: 50 });
+  const handleItemSelect = useCallback((itemData: MausritterItemData, type: InventoryItem['type']) => {
+    const newItem = InventoryItemFactory.createFromMausritterData(itemData, type, { x: 50, y: 50 });
     onItemsChange([...items, newItem]);
   }, [items, onItemsChange]);
 
   const addPipPurse = useCallback(() => {
     const purseData = itemsData.pipPurse;
-    const newItem = PlacedItemFactory.createFromMausritterData(purseData, 'pip-purse', { x: 50, y: 50 });
+    const newItem = InventoryItemFactory.createFromMausritterData(purseData, 'pip-purse', { x: 50, y: 50 });
     onItemsChange([...items, newItem]);
   }, [items, onItemsChange, itemsData.pipPurse]);
 

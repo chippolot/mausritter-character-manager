@@ -1,5 +1,5 @@
 import React from 'react';
-import { Character, Hireling } from '../stores/characterStore-simple';
+import { Character, Hireling } from '../types/character';
 import { HirelingFactory } from '../factories';
 
 interface HirelingListProps {

@@ -2,8 +2,8 @@
  * Centralized factory module for all model creation
  * Eliminates duplication of initialization logic across components
  */
-import { Character, Hireling, InventoryItem } from '../stores/characterStore-simple';
-import { PlacedItem } from '../types/inventory';
+import { Character, Hireling } from '../types/character';
+import { InventoryItem } from '../types/inventory';
 import { ITEM_SIZES } from '../constants/inventory';
 
 // Utility functions
@@ -59,7 +59,7 @@ export class CharacterFactory {
     coat: string;
     look: string;
     pips: number;
-    tactileInventory: PlacedItem[];
+    tactileInventory: InventoryItem[];
     hirelings: Hireling[];
   }): Character {
     const base = this.createBlank();
@@ -111,11 +111,11 @@ export class HirelingFactory {
   }
 }
 
-// PlacedItem Factory
-export class PlacedItemFactory {
+// InventoryItem Factory
+export class InventoryItemFactory {
   static create(options: {
     name: string;
-    type: PlacedItem['type'];
+    type: InventoryItem['type'];
     scratchPosition?: { x: number; y: number };
     damage?: string;
     defense?: number;
@@ -126,7 +126,7 @@ export class PlacedItemFactory {
     size?: { width: number; height: number };
     pipValue?: number;
     maxPipValue?: number;
-  }): PlacedItem {
+  }): InventoryItem {
     return {
       id: generateId(),
       name: options.name,
@@ -147,7 +147,7 @@ export class PlacedItemFactory {
     };
   }
 
-  static createCustom(name: string, scratchPosition?: { x: number; y: number }): PlacedItem {
+  static createCustom(name: string, scratchPosition?: { x: number; y: number }): InventoryItem {
     return this.create({
       name,
       type: 'item',
@@ -159,9 +159,9 @@ export class PlacedItemFactory {
 
   static createFromMausritterData(
     itemData: Record<string, any>,
-    type: PlacedItem['type'],
+    type: InventoryItem['type'],
     scratchPosition?: { x: number; y: number }
-  ): PlacedItem {
+  ): InventoryItem {
     const sizeKey = itemData.size as keyof typeof ITEM_SIZES;
     const itemSize = ITEM_SIZES[sizeKey] || ITEM_SIZES.small;
 
@@ -179,18 +179,3 @@ export class PlacedItemFactory {
   }
 }
 
-// Legacy InventoryItem Factory (for backward compatibility)
-export class InventoryItemFactory {
-  static create(name: string, type: InventoryItem['type']): InventoryItem {
-    return {
-      id: generateId(),
-      name,
-      type,
-    };
-  }
-}
-
-// Re-export for backward compatibility
-export const createNewCharacter = CharacterFactory.createBlank;
-export const createNewHireling = HirelingFactory.create;
-export const createNewItem = InventoryItemFactory.create;

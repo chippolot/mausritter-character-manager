@@ -8,7 +8,7 @@ export interface ItemSize {
   height: number;
 }
 
-export interface PlacedItem {
+export interface InventoryItem {
   id: string;
   name: string;
   type: 'weapon' | 'armor' | 'item' | 'spell' | 'condition' | 'pip-purse';
@@ -33,9 +33,4 @@ export interface PlacedItem {
   scratchPosition?: { x: number; y: number };
 }
 
-export interface InventoryGrid {
-  width: number;
-  height: number;
-  items: PlacedItem[];
-}
 

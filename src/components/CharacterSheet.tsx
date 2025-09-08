@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { Character } from '../stores/characterStore-simple';
+import { Character } from '../types/character';
 import { useCharacterStore } from '../stores/characterStore-simple';
 import { TactileInventory } from './TactileInventory';
 import { HirelingList } from './HirelingList';

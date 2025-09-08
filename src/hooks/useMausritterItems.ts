@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { PlacedItem } from '../types/inventory';
+import { InventoryItem } from '../types/inventory';
 import itemsData from '../data/mausritterItems.json';
 
 export interface MausritterItemData {
@@ -31,8 +31,8 @@ export const useMausritterItems = () => {
 
   const createItemFromData = (
     itemData: MausritterItemData,
-    type: PlacedItem['type']
-  ): Omit<PlacedItem, 'id' | 'position' | 'rotation' | 'isInGrid' | 'scratchPosition'> => {
+    type: InventoryItem['type']
+  ): Omit<InventoryItem, 'id' | 'position' | 'rotation' | 'isInGrid' | 'scratchPosition'> => {
     return {
       name: itemData.name,
       type,

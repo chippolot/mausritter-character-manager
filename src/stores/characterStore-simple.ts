@@ -1,62 +1,6 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
-import { PlacedItem } from '../types/inventory';
-
-// Inline types for testing
-interface Character {
-  id: string;
-  name: string;
-  level: number;
-  experience: number;
-  strength: number;
-  maxStrength: number;
-  dexterity: number;
-  maxDexterity: number;
-  will: number;
-  maxWill: number;
-  hitPoints: number;
-  maxHitPoints: number;
-  background: string;
-  birthsign: string;
-  coat: string;
-  look: string;
-  grit: number;
-  pips: number;
-  alive: boolean;
-  ignoredConditions: string;
-  bankedItemsAndPips: string;
-  mainHandWeapon?: InventoryItem;
-  offHandWeapon?: InventoryItem;
-  armor?: InventoryItem;
-  inventory: (InventoryItem | null)[];
-  tactileInventory: PlacedItem[];
-  hirelings: Hireling[];
-}
-
-interface InventoryItem {
-  id: string;
-  name: string;
-  type: 'weapon' | 'armor' | 'item' | 'spell';
-  description?: string;
-  damage?: string;
-  armor?: number;
-  usageDots?: number;
-  maxUsageDots?: number;
-  cost?: number;
-  weight?: number;
-}
-
-interface Hireling {
-  id: string;
-  name: string;
-  strength: number;
-  dexterity: number;
-  will: number;
-  hitPoints: number;
-  maxHitPoints: number;
-  equipment?: string;
-  cost: number;
-}
+import { Character, Hireling } from '../types/character';
 
 interface CharacterState {
   characters: Character[];
@@ -111,60 +55,5 @@ export const useCharacterStore = create<CharacterState>()(
   )
 );
 
-export const createNewCharacter = (): Character => ({
-  id: crypto.randomUUID(),
-  name: '',
-  level: 1,
-  experience: 0,
-  strength: 8,
-  maxStrength: 8,
-  dexterity: 8,
-  maxDexterity: 8,
-  will: 8,
-  maxWill: 8,
-  hitPoints: 4,
-  maxHitPoints: 4,
-  background: '',
-  birthsign: '',
-  coat: '',
-  look: '',
-  grit: 0,
-  pips: 0,
-  alive: true,
-  ignoredConditions: '',
-  bankedItemsAndPips: '',
-  inventory: new Array(6).fill(null),
-  tactileInventory: [],
-  hirelings: [],
-});
-
-export const createNewItem = (name: string, type: InventoryItem['type']): InventoryItem => ({
-  id: crypto.randomUUID(),
-  name,
-  type,
-});
-
-// Helper function to roll dice
-const rollDice = (count: number, sides: number): number => {
-  let total = 0;
-  for (let i = 0; i < count; i++) {
-    total += Math.floor(Math.random() * sides) + 1;
-  }
-  return total;
-};
-
-export const createNewHireling = (name?: string): Hireling => {
-  const hitPoints = rollDice(1, 6); // d6 HP
-  return {
-    id: crypto.randomUUID(),
-    name: name || '',
-    strength: rollDice(2, 6),   // 2d6 STR
-    dexterity: rollDice(2, 6),  // 2d6 DEX  
-    will: rollDice(2, 6),       // 2d6 WIL
-    hitPoints: hitPoints,
-    maxHitPoints: hitPoints,
-    cost: 0,
-  };
-};
 
 export type { Character, InventoryItem, Hireling };

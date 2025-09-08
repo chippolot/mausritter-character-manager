@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { PlacedItem } from '../types/inventory';
+import { InventoryItem } from '../types/inventory';
 import { MausritterItemData } from '../hooks/useMausritterItems';
 import { useItemImages } from '../hooks/useItemImages';
 
@@ -7,7 +7,7 @@ interface CustomItemDialogProps {
   isOpen: boolean;
   onClose: () => void;
   category: 'weapon' | 'armor' | 'item' | 'spell' | 'condition';
-  onSubmit: (itemData: MausritterItemData, type: PlacedItem['type']) => void;
+  onSubmit: (itemData: MausritterItemData, type: InventoryItem['type']) => void;
 }
 
 export const CustomItemDialog: React.FC<CustomItemDialogProps> = ({

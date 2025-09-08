@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useCharacterStore } from '../stores/characterStore-simple';
-import { PlacedItem } from '../types/inventory';
-import { CharacterFactory, HirelingFactory, PlacedItemFactory } from '../factories';
+import { InventoryItem } from '../types/inventory';
+import { CharacterFactory, HirelingFactory, InventoryItemFactory } from '../factories';
 import generationTables from '../data/generationTables.json';
 import mausritterItems from '../data/mausritterItems.json';
 
@@ -63,8 +63,8 @@ const extractHirelingName = (backgroundItem: BackgroundItem): string | null => {
   return hirelingMatch ? hirelingMatch[1] : null;
 };
 
-// Helper function to create PlacedItem from item name (string only)
-const createItemFromName = (itemName: string, scratchX: number, scratchY: number): PlacedItem | null => {
+// Helper function to create InventoryItem from item name (string only)
+const createItemFromName = (itemName: string, scratchX: number, scratchY: number): InventoryItem | null => {
   // Check if this is a hireling item - if so, don't create a physical item
   if (itemName.startsWith('Hireling:')) {
     return null;
@@ -82,31 +82,31 @@ const createItemFromName = (itemName: string, scratchX: number, scratchY: number
   if (!foundItem) {
     // Create a custom item for unknown background items
     console.log(`Creating custom item: ${itemName}`);
-    return PlacedItemFactory.createCustom(itemName, { x: scratchX, y: scratchY });
+    return InventoryItemFactory.createCustom(itemName, { x: scratchX, y: scratchY });
   }
 
   // Determine item type
-  let itemType: PlacedItem['type'] = 'item';
+  let itemType: InventoryItem['type'] = 'item';
   if (mausritterItems.weapons.some(w => w.name === itemName)) itemType = 'weapon';
   else if (mausritterItems.armor.some(a => a.name === itemName)) itemType = 'armor';
   else if (mausritterItems.spells.some(s => s.name === itemName)) itemType = 'spell';
 
-  return PlacedItemFactory.createFromMausritterData(
+  return InventoryItemFactory.createFromMausritterData(
     foundItem,
     itemType,
     { x: scratchX, y: scratchY }
   );
 };
 
-// Helper function to create PlacedItem from background item (string or custom object)
-const createItemFromBackgroundItem = (backgroundItem: BackgroundItem, scratchX: number, scratchY: number): PlacedItem | null => {
+// Helper function to create InventoryItem from background item (string or custom object)
+const createItemFromBackgroundItem = (backgroundItem: BackgroundItem, scratchX: number, scratchY: number): InventoryItem | null => {
   // Handle custom items
   if (typeof backgroundItem === 'object' && backgroundItem.type === 'custom') {
     const itemType = backgroundItem.itemType === 'weapon' ? 'weapon' 
                   : backgroundItem.itemType === 'armor' ? 'armor' 
                   : 'item';
     
-    return PlacedItemFactory.create({
+    return InventoryItemFactory.create({
       name: backgroundItem.name,
       type: itemType,
       damage: backgroundItem.damage,
@@ -287,8 +287,8 @@ export const CharacterGenerationWizard: React.FC<CharacterGenerationWizardProps>
   };
 
   const createCharacterFromResults = () => {
-    // Create PlacedItems for starting items
-    const startingItems: PlacedItem[] = [];
+    // Create InventoryItems for starting items
+    const startingItems: InventoryItem[] = [];
     let itemIndex = 0;
     
     // Add torches and rations (always included)
@@ -296,9 +296,9 @@ export const CharacterGenerationWizard: React.FC<CharacterGenerationWizardProps>
     standardItems.forEach((itemName) => {
       const scratchX = 50 + (itemIndex % 3) * 150; // 3 columns
       const scratchY = 50 + Math.floor(itemIndex / 3) * 100; // New row every 3 items
-      const placedItem = createItemFromName(itemName, scratchX, scratchY);
-      if (placedItem) {
-        startingItems.push(placedItem);
+      const inventoryItem = createItemFromName(itemName, scratchX, scratchY);
+      if (inventoryItem) {
+        startingItems.push(inventoryItem);
         itemIndex++;
       }
     });
@@ -315,9 +315,9 @@ export const CharacterGenerationWizard: React.FC<CharacterGenerationWizardProps>
         // Create a physical item
         const scratchX = 50 + (itemIndex % 3) * 150; // 3 columns
         const scratchY = 50 + Math.floor(itemIndex / 3) * 100; // New row every 3 items
-        const placedItem = createItemFromBackgroundItem(backgroundItem, scratchX, scratchY);
-        if (placedItem) {
-          startingItems.push(placedItem);
+        const inventoryItem = createItemFromBackgroundItem(backgroundItem, scratchX, scratchY);
+        if (inventoryItem) {
+          startingItems.push(inventoryItem);
           itemIndex++;
         }
       }
@@ -344,7 +344,7 @@ export const CharacterGenerationWizard: React.FC<CharacterGenerationWizardProps>
       coat: `${results.customCoat.pattern || results.coat.pattern} ${results.customCoat.color || results.coat.color}`,
       look: results.customPhysicalDetail || results.physicalDetail,
       pips: results.pips,
-      tactileInventory: startingItems,
+      inventory: startingItems,
       hirelings: startingHirelings
     });
     

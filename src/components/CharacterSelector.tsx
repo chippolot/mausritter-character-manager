@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
-import { useCharacterStore, Character } from '../stores/characterStore-simple';
+import { useCharacterStore } from '../stores/characterStore-simple';
+import { Character } from '../types/character';
 import { CharacterGenerationWizard } from './CharacterGenerationWizard';
 import { CharacterFactory } from '../factories';
 

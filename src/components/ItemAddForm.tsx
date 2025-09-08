@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useMausritterItems, MausritterItemData } from '../hooks/useMausritterItems';
-import { PlacedItem } from '../types/inventory';
+import { InventoryItem } from '../types/inventory';
 import { CustomItemDialog } from './CustomItemDialog';
 
 interface ItemAddFormProps {
-  onItemSelect: (itemData: MausritterItemData, type: PlacedItem['type']) => void;
+  onItemSelect: (itemData: MausritterItemData, type: InventoryItem['type']) => void;
   onAddPipPurse: () => void;
 }
 
@@ -73,7 +73,7 @@ export const ItemAddForm: React.FC<ItemAddFormProps> = ({ onItemSelect, onAddPip
     setCustomDialogOpen(true);
   };
 
-  const handleCustomSubmit = (itemData: MausritterItemData, type: PlacedItem['type']) => {
+  const handleCustomSubmit = (itemData: MausritterItemData, type: InventoryItem['type']) => {
     onItemSelect(itemData, type);
     setCustomDialogOpen(false);
   };
