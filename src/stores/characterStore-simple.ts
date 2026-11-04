@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { Character, Hireling } from '../types/character';
+import { InventoryItem } from '../types/inventory';
 
 interface CharacterState {
   characters: Character[];
@@ -13,7 +14,7 @@ interface CharacterState {
 
 export const useCharacterStore = create<CharacterState>()(
   persist(
-    (set, get) => ({
+    (set) => ({
   characters: [],
   currentCharacter: null,
   

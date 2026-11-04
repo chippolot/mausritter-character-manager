@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 import { useCharacterStore } from '../stores/characterStore-simple';
 import { InventoryItem } from '../types/inventory';
-import { CharacterFactory, HirelingFactory, InventoryItemFactory } from '../factories';
+import { Hireling } from '../types/character';
+import { CharacterFactory, HirelingFactory, InventoryItemFactory, ITEM_SIZES } from '../factories';
 import generationTables from '../data/generationTables.json';
-import mausritterItems from '../data/mausritterItems.json';
+import mausritterItemsData from '../data/mausritterItems.json';
+import { MausritterItemsData } from '../hooks/useMausritterItems';
+
+const mausritterItems = mausritterItemsData as MausritterItemsData;
 
 interface CharacterGenerationWizardProps {
   isOpen: boolean;
@@ -16,8 +20,8 @@ type BackgroundItem = string | {
   name: string;
   damage?: string;
   defense?: number;
-  weaponCategory?: string;
-  size?: string;
+  weaponCategory?: InventoryItem['weaponCategory'];
+  size?: keyof typeof ITEM_SIZES;
   maxUsageDots?: number;
   imageKey?: string;
   description?: string;
@@ -50,7 +54,7 @@ interface GenerationResults {
 const getBackground = (hp: number, pips: number) => {
   const hpKey = `hp${Math.min(hp, 6)}` as keyof typeof generationTables.backgrounds;
   const pipIndex = Math.min(pips - 1, 5);
-  return generationTables.backgrounds[hpKey][pipIndex];
+  return generationTables.backgrounds[hpKey][pipIndex] as GenerationResults['background'];
 };
 
 // Helper function to extract hireling name from background items
@@ -111,14 +115,11 @@ const createItemFromBackgroundItem = (backgroundItem: BackgroundItem, scratchX: 
       type: itemType,
       damage: backgroundItem.damage,
       defense: backgroundItem.defense,
+      description: backgroundItem.description,
       weaponCategory: backgroundItem.weaponCategory,
       maxUsageDots: backgroundItem.maxUsageDots || 0,
       imageKey: backgroundItem.imageKey,
-      size: backgroundItem.size ? 
-        { 
-          width: backgroundItem.size === 'large' ? 2 : 1, 
-          height: backgroundItem.size === 'large' ? 2 : backgroundItem.size === 'medium' ? 1 : 1 
-        } : undefined,
+      size: backgroundItem.size ? ITEM_SIZES[backgroundItem.size] : undefined,
       scratchPosition: { x: scratchX, y: scratchY }
     });
   }
@@ -164,22 +165,21 @@ export const CharacterGenerationWizard: React.FC<CharacterGenerationWizardProps>
 
   const swapStats = (stat1: 'str' | 'dex' | 'wil', stat2: 'str' | 'dex' | 'wil') => {
     const swapKey = `${stat1}-${stat2}`;
-    const newResults = { ...results };
-    
-    // If same swap is selected, revert to original
-    if (results.selectedSwap === swapKey) {
-      newResults.attributes.final = { ...results.attributes.original };
-      newResults.selectedSwap = null;
-    } else {
-      // Apply new swap from original values
-      newResults.attributes.final = { ...results.attributes.original };
-      const temp = newResults.attributes.final[stat1];
-      newResults.attributes.final[stat1] = newResults.attributes.final[stat2];
-      newResults.attributes.final[stat2] = temp;
-      newResults.selectedSwap = swapKey;
+    const final = { ...results.attributes.original };
+    let selectedSwap: string | null = null;
+
+    // If same swap is selected, revert to original; otherwise apply new swap from original values
+    if (results.selectedSwap !== swapKey) {
+      final[stat1] = results.attributes.original[stat2];
+      final[stat2] = results.attributes.original[stat1];
+      selectedSwap = swapKey;
     }
-    
-    setResults(newResults);
+
+    setResults({
+      ...results,
+      attributes: { ...results.attributes, final },
+      selectedSwap,
+    });
   };
 
   const resetWizard = () => {
@@ -216,26 +216,27 @@ export const CharacterGenerationWizard: React.FC<CharacterGenerationWizardProps>
     const newResults = { ...results };
     
     switch (results.step) {
-      case 0: // Roll Attributes
-        const strRolls = rollAttribute();
-        const dexRolls = rollAttribute();
-        const wilRolls = rollAttribute();
+      case 0: { // Roll Attributes
+          const strRolls = rollAttribute();
+          const dexRolls = rollAttribute();
+          const wilRolls = rollAttribute();
         
-        const finalStats = {
-          str: strRolls[0] + strRolls[1],
-          dex: dexRolls[0] + dexRolls[1],
-          wil: wilRolls[0] + wilRolls[1]
-        };
+          const finalStats = {
+            str: strRolls[0] + strRolls[1],
+            dex: dexRolls[0] + dexRolls[1],
+            wil: wilRolls[0] + wilRolls[1]
+          };
         
-        newResults.attributes = {
-          str: strRolls,
-          dex: dexRolls, 
-          wil: wilRolls,
-          final: finalStats,
-          original: { ...finalStats }
-        };
-        newResults.selectedSwap = null;
-        break;
+          newResults.attributes = {
+            str: strRolls,
+            dex: dexRolls, 
+            wil: wilRolls,
+            final: finalStats,
+            original: { ...finalStats }
+          };
+          newResults.selectedSwap = null;
+          break;
+        }
         
       case 1: // Roll HP
         newResults.hitPoints = rollDice(6)[0];
@@ -249,29 +250,33 @@ export const CharacterGenerationWizard: React.FC<CharacterGenerationWizardProps>
         newResults.background = getBackground(newResults.hitPoints, newResults.pips);
         break;
         
-      case 4: // Roll Birthsign
-        const birthsignRoll = rollDice(6)[0] - 1;
-        newResults.birthsign = generationTables.birthsigns[birthsignRoll];
-        break;
+      case 4: { // Roll Birthsign
+          const birthsignRoll = rollDice(6)[0] - 1;
+          newResults.birthsign = generationTables.birthsigns[birthsignRoll];
+          break;
+        }
         
-      case 5: // Roll Coat
-        const colorRoll = rollDice(6)[0] - 1;
-        const patternRoll = rollDice(6)[0] - 1;
-        newResults.coat = {
-          color: generationTables.coatColors[colorRoll],
-          pattern: generationTables.coatPatterns[patternRoll]
-        };
-        break;
+      case 5: { // Roll Coat
+          const colorRoll = rollDice(6)[0] - 1;
+          const patternRoll = rollDice(6)[0] - 1;
+          newResults.coat = {
+            color: generationTables.coatColors[colorRoll],
+            pattern: generationTables.coatPatterns[patternRoll]
+          };
+          break;
+        }
         
-      case 6: // Roll Physical Detail
-        const detailRoll = rollDice(generationTables.physicalDetails.length)[0] - 1;
-        newResults.physicalDetail = generationTables.physicalDetails[detailRoll];
-        break;
+      case 6: { // Roll Physical Detail
+          const detailRoll = rollDice(generationTables.physicalDetails.length)[0] - 1;
+          newResults.physicalDetail = generationTables.physicalDetails[detailRoll];
+          break;
+        }
         
-      case 7: // Generate Name suggestion
-        const nameRoll = rollDice(generationTables.mouseNames.length)[0] - 1;
-        newResults.name = generationTables.mouseNames[nameRoll];
-        break;
+      case 7: { // Generate Name suggestion
+          const nameRoll = rollDice(generationTables.mouseNames.length)[0] - 1;
+          newResults.name = generationTables.mouseNames[nameRoll];
+          break;
+        }
         
       case 8: // Weapon Selection
         // Step for weapon selection - no automatic roll
@@ -304,7 +309,7 @@ export const CharacterGenerationWizard: React.FC<CharacterGenerationWizardProps>
     });
     
     // Process background items - separate hirelings from physical items
-    const startingHirelings = [];
+    const startingHirelings: Hireling[] = [];
     results.background.items.forEach((backgroundItem) => {
       const hirelingName = extractHirelingName(backgroundItem);
       if (hirelingName) {

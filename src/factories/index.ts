@@ -4,8 +4,9 @@
  */
 import { Character, Hireling } from '../types/character';
 import { InventoryItem } from '../types/inventory';
+import { MausritterItemData } from '../hooks/useMausritterItems';
 
-const ITEM_SIZES = {
+export const ITEM_SIZES = {
   small: { width: 1, height: 1 },     // 1x1
   wide: { width: 2, height: 1 },      // 2x1
   tall: { width: 1, height: 2 },      // 1x2
@@ -124,10 +125,12 @@ export class InventoryItemFactory {
     scratchPosition?: { x: number; y: number };
     damage?: string;
     defense?: number;
+    description?: string;
+    clearInstructions?: string;
     usageDots?: number;
     maxUsageDots?: number;
     imageKey?: string;
-    weaponCategory?: string;
+    weaponCategory?: InventoryItem['weaponCategory'];
     size?: { width: number; height: number };
     pipValue?: number;
     maxPipValue?: number;
@@ -138,6 +141,8 @@ export class InventoryItemFactory {
       type: options.type,
       damage: options.damage,
       defense: options.defense,
+      description: options.description,
+      clearInstructions: options.clearInstructions,
       usageDots: options.usageDots || 0,
       maxUsageDots: options.maxUsageDots || 0,
       imageKey: options.imageKey,
@@ -163,21 +168,25 @@ export class InventoryItemFactory {
   }
 
   static createFromMausritterData(
-    itemData: Record<string, any>,
+    itemData: MausritterItemData,
     type: InventoryItem['type'],
     scratchPosition?: { x: number; y: number }
   ): InventoryItem {
-    const sizeKey = itemData.size as keyof typeof ITEM_SIZES;
-    const itemSize = ITEM_SIZES[sizeKey] || ITEM_SIZES.small;
+    const itemSize = ITEM_SIZES[itemData.size] || ITEM_SIZES.small;
 
     return this.create({
       name: itemData.name,
       type,
       damage: itemData.damage,
       defense: itemData.defense,
+      description: itemData.description,
+      clearInstructions: itemData.clearInstructions,
+      usageDots: itemData.usageDots,
       maxUsageDots: itemData.maxUsageDots || 0,
       imageKey: itemData.imageKey,
       weaponCategory: itemData.weaponCategory,
+      pipValue: itemData.pipValue,
+      maxPipValue: itemData.maxPipValue,
       size: itemSize,
       scratchPosition,
     });

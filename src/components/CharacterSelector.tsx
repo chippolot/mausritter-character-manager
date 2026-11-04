@@ -47,7 +47,7 @@ export const CharacterSelector: React.FC = () => {
 
         addCharacter(characterWithNewId);
         alert(`Character "${characterWithNewId.name}" imported successfully!`);
-      } catch (error) {
+      } catch {
         alert('Error reading character file. Please make sure it\'s a valid JSON file.');
       }
     };

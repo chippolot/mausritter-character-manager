@@ -2,6 +2,132 @@ import React from 'react';
 import { Character, Hireling } from '../types/character';
 import { HirelingFactory } from '../factories';
 
+interface HirelingCardProps {
+  hireling: Hireling;
+  onChange: (id: string, updates: Partial<Hireling>) => void;
+  onRemove: (id: string) => void;
+}
+
+// Defined at module scope so inputs keep focus across re-renders
+const HirelingCard: React.FC<HirelingCardProps> = ({ hireling, onChange, onRemove }) => {
+  const handleInputChange = (field: keyof Hireling) => (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const value = ['strength', 'dexterity', 'will', 'hitPoints', 'maxHitPoints', 'cost'].includes(field)
+      ? parseInt(e.target.value) || 0
+      : e.target.value;
+    onChange(hireling.id, { [field]: value });
+  };
+
+  return (
+    <div className="border border-theme-primary-800 rounded p-4 bg-theme-surface bg-opacity-50">
+      <div className="flex justify-between items-start mb-3">
+        <div className="flex-1 mr-4">
+          <label className="block text-sm font-semibold text-theme-primary-800 mb-1">
+            Name
+          </label>
+          <input
+            type="text"
+            value={hireling.name}
+            onChange={handleInputChange('name')}
+            className="input-field text-theme-primary-800 text-xl w-full"
+            placeholder="Hireling name"
+          />
+        </div>
+        <button
+          onClick={() => onRemove(hireling.id)}
+          className="text-theme-primary-800 hover:text-red-600 text-sm mt-6"
+        >
+          Remove
+        </button>
+      </div>
+
+      <div className="flex items-end space-x-3 mb-3">
+        <div>
+          <label className="text-sm font-semibold text-theme-primary-800 block mb-1">STR</label>
+          <input
+            type="number"
+            value={hireling.strength}
+            onChange={handleInputChange('strength')}
+            className="input-field w-12 text-sm text-center"
+            min="1"
+            max="20"
+          />
+        </div>
+        <div>
+          <label className="text-sm font-semibold text-theme-primary-800 block mb-1">DEX</label>
+          <input
+            type="number"
+            value={hireling.dexterity}
+            onChange={handleInputChange('dexterity')}
+            className="input-field w-12 text-sm text-center"
+            min="1"
+            max="20"
+          />
+        </div>
+        <div>
+          <label className="text-sm font-semibold text-theme-primary-800 block mb-1">WIL</label>
+          <input
+            type="number"
+            value={hireling.will}
+            onChange={handleInputChange('will')}
+            className="input-field w-12 text-sm text-center"
+            min="1"
+            max="20"
+          />
+        </div>
+        <div>
+          <label className="text-sm font-semibold text-theme-primary-800 block mb-1">Cost</label>
+          <div className="flex items-center">
+            <input
+              type="number"
+              value={hireling.cost}
+              onChange={handleInputChange('cost')}
+              className="input-field w-20 text-sm text-center"
+              min="0"
+            />
+            <span className="text-theme-primary-800 text-sm ml-1">p</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="flex items-center space-x-4">
+        <div>
+          <label className="text-sm font-semibold text-theme-primary-800 block">HP</label>
+          <div className="flex items-center space-x-1">
+            <input
+              type="number"
+              value={hireling.hitPoints}
+              onChange={handleInputChange('hitPoints')}
+              className="input-field w-12 text-sm text-center"
+              min="0"
+            />
+            <span className="text-theme-primary-800">/</span>
+            <input
+              type="number"
+              value={hireling.maxHitPoints}
+              onChange={handleInputChange('maxHitPoints')}
+              className="input-field w-12 text-sm text-center"
+              min="1"
+            />
+          </div>
+        </div>
+        
+        <div className="flex-1">
+          <label className="text-sm font-semibold text-theme-primary-800 block">Equipment</label>
+          <input
+            type="text"
+            value={hireling.equipment || ''}
+            onChange={handleInputChange('equipment')}
+            className="input-field w-full text-sm"
+            placeholder="Equipment list"
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
 interface HirelingListProps {
   character: Character;
   onUpdate: (updates: Partial<Character>) => void;
@@ -31,125 +157,6 @@ export const HirelingList: React.FC<HirelingListProps> = ({
     onUpdate({ hirelings: updatedHirelings });
   };
 
-  const HirelingCard: React.FC<{ hireling: Hireling }> = ({ hireling }) => {
-    const handleInputChange = (field: keyof Hireling) => (
-      e: React.ChangeEvent<HTMLInputElement>
-    ) => {
-      const value = ['strength', 'dexterity', 'will', 'hitPoints', 'maxHitPoints', 'cost'].includes(field)
-        ? parseInt(e.target.value) || 0
-        : e.target.value;
-      updateHireling(hireling.id, { [field]: value });
-    };
-
-    return (
-      <div className="border border-theme-primary-800 rounded p-4 bg-theme-surface bg-opacity-50">
-        <div className="flex justify-between items-start mb-3">
-          <div className="flex-1 mr-4">
-            <label className="block text-sm font-semibold text-theme-primary-800 mb-1">
-              Name
-            </label>
-            <input
-              type="text"
-              value={hireling.name}
-              onChange={handleInputChange('name')}
-              className="input-field text-theme-primary-800 text-xl w-full"
-              placeholder="Hireling name"
-            />
-          </div>
-          <button
-            onClick={() => removeHireling(hireling.id)}
-            className="text-theme-primary-800 hover:text-red-600 text-sm mt-6"
-          >
-            Remove
-          </button>
-        </div>
-
-        <div className="flex items-end space-x-3 mb-3">
-          <div>
-            <label className="text-sm font-semibold text-theme-primary-800 block mb-1">STR</label>
-            <input
-              type="number"
-              value={hireling.strength}
-              onChange={handleInputChange('strength')}
-              className="input-field w-12 text-sm text-center"
-              min="1"
-              max="20"
-            />
-          </div>
-          <div>
-            <label className="text-sm font-semibold text-theme-primary-800 block mb-1">DEX</label>
-            <input
-              type="number"
-              value={hireling.dexterity}
-              onChange={handleInputChange('dexterity')}
-              className="input-field w-12 text-sm text-center"
-              min="1"
-              max="20"
-            />
-          </div>
-          <div>
-            <label className="text-sm font-semibold text-theme-primary-800 block mb-1">WIL</label>
-            <input
-              type="number"
-              value={hireling.will}
-              onChange={handleInputChange('will')}
-              className="input-field w-12 text-sm text-center"
-              min="1"
-              max="20"
-            />
-          </div>
-          <div>
-            <label className="text-sm font-semibold text-theme-primary-800 block mb-1">Cost</label>
-            <div className="flex items-center">
-              <input
-                type="number"
-                value={hireling.cost}
-                onChange={handleInputChange('cost')}
-                className="input-field w-20 text-sm text-center"
-                min="0"
-              />
-              <span className="text-theme-primary-800 text-sm ml-1">p</span>
-            </div>
-          </div>
-        </div>
-
-        <div className="flex items-center space-x-4">
-          <div>
-            <label className="text-sm font-semibold text-theme-primary-800 block">HP</label>
-            <div className="flex items-center space-x-1">
-              <input
-                type="number"
-                value={hireling.hitPoints}
-                onChange={handleInputChange('hitPoints')}
-                className="input-field w-12 text-sm text-center"
-                min="0"
-              />
-              <span className="text-theme-primary-800">/</span>
-              <input
-                type="number"
-                value={hireling.maxHitPoints}
-                onChange={handleInputChange('maxHitPoints')}
-                className="input-field w-12 text-sm text-center"
-                min="1"
-              />
-            </div>
-          </div>
-          
-          <div className="flex-1">
-            <label className="text-sm font-semibold text-theme-primary-800 block">Equipment</label>
-            <input
-              type="text"
-              value={hireling.equipment || ''}
-              onChange={handleInputChange('equipment')}
-              className="input-field w-full text-sm"
-              placeholder="Equipment list"
-            />
-          </div>
-        </div>
-      </div>
-    );
-  };
-
   return (
     <div className="card">
       <div className="flex justify-between items-center mb-4">
@@ -173,7 +180,12 @@ export const HirelingList: React.FC<HirelingListProps> = ({
       ) : (
         <div className="space-y-4">
           {character.hirelings.map(hireling => (
-            <HirelingCard key={hireling.id} hireling={hireling} />
+            <HirelingCard
+              key={hireling.id}
+              hireling={hireling}
+              onChange={updateHireling}
+              onRemove={removeHireling}
+            />
           ))}
         </div>
       )}

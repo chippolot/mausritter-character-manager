@@ -218,9 +218,9 @@ export const ItemCard: React.FC<ItemCardProps> = ({
               )}
               
               {/* Usage pips in upper-left (3 column grid) */}
-              {item.maxUsageDots && (
+              {!!item.maxUsageDots && (
                 <div className="absolute top-1 left-1 grid grid-cols-3 gap-0.5">
-                  {Array.from({ length: item.maxUsageDots || 3 }, (_, index) => (
+                  {Array.from({ length: item.maxUsageDots }, (_, index) => (
                     <button
                       key={index}
                       onClick={(e) => handlePipClick(e, index)}
@@ -236,11 +236,11 @@ export const ItemCard: React.FC<ItemCardProps> = ({
               )}
               
               {/* Damage/Defense in upper-right */}
-              {(item.damage || item.defense || item.armor) && (
+              {!!(item.damage || item.defense || item.armor) && (
                 <div className="absolute top-1 right-1 text-xs font-semibold text-stone-800 bg-white bg-opacity-80 px-1 rounded border-2 border-solid">
-                  {item.damage && item.damage}
-                  {item.defense && `${item.defense} def`}
-                  {!item.defense && item.armor && `${item.armor} def`}
+                  {item.damage}
+                  {!!item.defense && `${item.defense} def`}
+                  {!item.defense && !!item.armor && `${item.armor} def`}
                 </div>
               )}
               

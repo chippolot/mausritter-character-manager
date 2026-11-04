@@ -19,7 +19,7 @@ A modern, interactive character manager for the Mausritter tabletop RPG, built w
 ### Prerequisites
 
 - Node.js (version 20.19+ or 22.12+)
-- npm or yarn
+- [pnpm](https://pnpm.io) 11+
 
 ### Installation
 
@@ -31,12 +31,12 @@ A modern, interactive character manager for the Mausritter tabletop RPG, built w
 
 2. Install dependencies:
    ```bash
-   npm install
+   pnpm install
    ```
 
 3. Start the development server:
    ```bash
-   npm run dev
+   pnpm dev
    ```
 
 4. Open your browser and navigate to `http://localhost:5173`
@@ -44,13 +44,13 @@ A modern, interactive character manager for the Mausritter tabletop RPG, built w
 ### Building for Production
 
 ```bash
-npm run build
+pnpm build
 ```
 
 ### Deployment to GitHub Pages
 
 ```bash
-npm run deploy
+pnpm deploy
 ```
 
 ## Usage
