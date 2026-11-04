@@ -4,13 +4,24 @@ import { useCharacterStore } from '../stores/characterStore-simple';
 import { TactileInventory } from './TactileInventory';
 import { HirelingList } from './HirelingList';
 import { CharacterDetails } from './CharacterDetails';
+import { CharacterFactory } from '../factories';
+
+// File System Access API (not yet in TypeScript's DOM lib)
+type SaveFilePickerWindow = Window & {
+  showSaveFilePicker: (options: {
+    suggestedName?: string;
+    types?: { description: string; accept: Record<string, string[]> }[];
+  }) => Promise<{
+    createWritable: () => Promise<{ write: (data: string) => Promise<void>; close: () => Promise<void> }>;
+  }>;
+};
 
 interface CharacterSheetProps {
   character: Character;
 }
 
 export const CharacterSheet: React.FC<CharacterSheetProps> = ({ character }) => {
-  const { updateCharacter, addCharacter } = useCharacterStore();
+  const { updateCharacter } = useCharacterStore();
   const importFileInputRef = useRef<HTMLInputElement>(null);
 
   const handleUpdate = (updates: Partial<Character>) => {
@@ -23,7 +34,7 @@ export const CharacterSheet: React.FC<CharacterSheetProps> = ({ character }) => 
     // Try to use the modern File System Access API if available
     if ('showSaveFilePicker' in window) {
       try {
-        const fileHandle = await (window as any).showSaveFilePicker({
+        const fileHandle = await (window as SaveFilePickerWindow).showSaveFilePicker({
           suggestedName: `${character.name || 'character'}.json`,
           types: [{
             description: 'JSON files',
@@ -35,9 +46,9 @@ export const CharacterSheet: React.FC<CharacterSheetProps> = ({ character }) => 
         await writable.write(dataStr);
         await writable.close();
         return;
-      } catch (error: any) {
+      } catch (error) {
         // Check if user cancelled the dialog
-        if (error.name === 'AbortError') {
+        if (error instanceof DOMException && error.name === 'AbortError') {
           return; // User cancelled, don't do anything
         }
         // If it's a different error, fall through to fallback
@@ -80,15 +91,16 @@ export const CharacterSheet: React.FC<CharacterSheetProps> = ({ character }) => 
           return;
         }
 
-        // Keep the current character's ID but overwrite all other data
+        // Keep the current character's ID but overwrite all other data,
+        // filling in defaults for any fields missing from older exports
         const updatedCharacter: Character = {
-          ...imported,
+          ...CharacterFactory.createFromImport(imported),
           id: character.id
         };
 
         updateCharacter(character.id, updatedCharacter);
         alert(`Character overwritten with "${updatedCharacter.name}" successfully!`);
-      } catch (error) {
+      } catch {
         alert('Error reading character file. Please ensure it\'s a valid JSON file.');
       }
     };

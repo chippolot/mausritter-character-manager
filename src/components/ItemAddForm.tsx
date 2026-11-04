@@ -12,11 +12,10 @@ type ItemCategory = 'weapon' | 'armor' | 'item' | 'spell' | 'condition' | 'curre
 
 export const ItemAddForm: React.FC<ItemAddFormProps> = ({ onItemSelect, onAddPipPurse }) => {
   const { items } = useMausritterItems();
-  const [selectedCategory, setSelectedCategory] = useState<ItemCategory>('');
+  const [selectedCategory, setSelectedCategory] = useState<ItemCategory | ''>('');
   const [selectedItem, setSelectedItem] = useState<string>('');
   const [customDialogOpen, setCustomDialogOpen] = useState(false);
   const [customDialogCategory, setCustomDialogCategory] = useState<'weapon' | 'armor' | 'item' | 'spell' | 'condition'>('weapon');
-  const [isExpanded, setIsExpanded] = useState(false);
 
   const categories = [
     { value: 'weapon' as const, label: 'Weapons', colorClass: 'bg-theme-error-100 text-theme-error-800 border-theme-error-100 hover:bg-theme-error-100' },

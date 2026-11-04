@@ -21,15 +21,8 @@ export const InventoryGrid: React.FC<InventoryGridProps> = ({ onGridDrop, onMobi
     }
   };
 
-  const getSectionStyle = (x: number, y: number) => {
-    let sectionClass = '';
-    let borderClass = 'border border-dashed border-theme-primary-400';
-    
-    // All sections use the same background color
-    sectionClass = 'bg-theme-primary-100 bg-opacity-30';
-    
-    return `${borderClass} ${sectionClass}`;
-  };
+  // All sections share the same border and background
+  const cellStyle = 'border border-dashed border-theme-primary-400 bg-theme-primary-100 bg-opacity-30';
 
   const getCellLabel = (x: number, y: number) => {
     if (x === 0) {
@@ -47,7 +40,7 @@ export const InventoryGrid: React.FC<InventoryGridProps> = ({ onGridDrop, onMobi
     }
   };
 
-  const getCellLabelStyle = (x: number, y: number) => {
+  const getCellLabelStyle = (x: number) => {
     if (x <= 1) {
       // Paws and Body - small text at top, absolute positioned
       const textSize = isMobile ? 'text-xs' : 'text-xs';
@@ -68,7 +61,7 @@ export const InventoryGrid: React.FC<InventoryGridProps> = ({ onGridDrop, onMobi
           <div
             key={`${x}-${y}`}
             className={`
-              ${getSectionStyle(x, y)}
+              ${cellStyle}
               cursor-pointer transition-colors duration-200 relative
               hover:bg-theme-primary-100 hover:border-theme-primary-600
               ${isOver ? 'bg-theme-primary-200 border-theme-primary-500' : ''}
@@ -81,7 +74,7 @@ export const InventoryGrid: React.FC<InventoryGridProps> = ({ onGridDrop, onMobi
             }}
             onClick={() => handleCellClick(x, y)}
           >
-            <span className={`${getCellLabelStyle(x, y)} pointer-events-none select-none`}>
+            <span className={`${getCellLabelStyle(x)} pointer-events-none select-none`}>
               {getCellLabel(x, y)}
             </span>
           </div>
